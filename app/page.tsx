@@ -3,13 +3,13 @@ import Image from "next/image";
 export default function Home() {
   return (
     <div className="bg-black p-4">
-      <header className="flex space-x-20 items-center p-4 h-[50px] font-sans font-bold text-white bg-opacity-12 rounded-2xl">
+      <header className="flex space-x-20 items-center h-[50px] p-4 font-sans font-bold text-white bg-opacity-12 rounded-2xl">
         <Image
           className="transition-transform duration-300 transform hover:scale-110"
           src="/logo.png"
           alt="logo"
-          width={100}
-          height={100}
+          width={120}
+          height={120}
         />
         <a
           className="transition-transform duration-300 transform hover:scale-110 hover:text-cyan-500"
@@ -35,7 +35,7 @@ export default function Home() {
         >
           Contact
         </a>
-        <button className="ml-auto border-2 border-white rounded-b-lg p-2 hover:text-cyan-500 text-white font-bold transition-transform duration-300 transform hover:scale-110">
+        <button className="ml-auto border-2 border-white rounded-b-lg p-2 hover:text-black hover:bg-cyan-500 text-white font-bold transition-transform duration-300 transform hover:scale-110">
           Download Resume
         </button>
       </header>
@@ -61,12 +61,13 @@ export default function Home() {
           <Image
             src="/Safeer.png"
             alt="Profile Picture"
-            width={700}
-            height={700}
+            width={800}
+            height={800}
             className="object-contain max-w-full"
           />
         </div>
       </div>
+      <div className="border-1 border-cyan-500"></div>
 
       {/* Space before Cyan Diagonal Banner */}
       <div className="h-6 w-full"></div>
@@ -169,8 +170,8 @@ export default function Home() {
             Turning ideas into reality, beyond expectations.
           </h2>
           <div className="grid grid-col-3 gap-4 space-y-4 mt-10 justify-center items-center">
-            <div className="flex border-1 border-white rounded-2xl w-5xl p-10 h-60">
-              <div className="w-1/2 space-y-6">
+            <div className="flex border-1 border-white rounded-2xl w-5xl p-10 h-60 transition-transform duration-300 transform hover:scale-110 hover:shadow-2xl shadow-cyan-500">
+              <div className="w-1/2 space-y-6 ">
                 <h1 className="text-2xl text-left font-bold">
                   Bachelors Science in Computer Science
                 </h1>
@@ -197,7 +198,7 @@ export default function Home() {
                 </a>
               </div>
             </div>
-            <div className="flex border-1 border-white rounded-2xl w-5xl p-10 h-60">
+            <div className="flex border-1 border-white rounded-2xl w-5xl p-10 h-60 transition-transform duration-300 transform hover:scale-110 hover:shadow-2xl shadow-cyan-500">
               <div className="w-1/2 space-y-6">
                 <h1 className="text-2xl text-justify font-bold">
                   Higher Secondary School
@@ -225,7 +226,7 @@ export default function Home() {
                 </a>
               </div>
             </div>
-            <div className="flex border-1 border-white rounded-2xl w-5xl p-10 h-60">
+            <div className="flex border-1 border-white rounded-2xl w-5xl p-10 h-60 transition-transform duration-300 transform hover:scale-110 hover:shadow-2xl shadow-cyan-500">
               <div className="w-1/2 space-y-6">
                 <h1 className="text-2xl text-justify font-bold">
                   Secondary School
@@ -327,11 +328,15 @@ export default function Home() {
           </div>
           <div className="border-1 border-white mt-28"></div>
           <footer className="flex justify-center">
-            <div className="w-1/2 bg-amber-100">
-              <p>Working in development and design has given me a <br />stronger sense of the extraordinary in my digital world</p>
+            <div className="w-1/2">
+              <p className="mt-10">Working in development and design has given me a <br />stronger sense of the extraordinary in my digital world</p>
+              <p className="text-white mt-16">© 2025 Safeer Ahmad Rana. All rights reserved.</p>
             </div>
-            <div className="w-1/2 bg-amber-600">
-              <p>Working in development and design has given me a <br />stronger sense of the extraordinary in my digital world</p>
+            <div className="w-1/2 p-5 h-60 space-y-5 font-sans font-bold text-xl">
+              <p className="transition-transform duration-300 transform hover:scale-110"><a href="/" className="ml-[90%]">Instagram</a></p>
+              <p className="transition-transform duration-300 transform hover:scale-110"><a href="/" className="ml-[90%]">GitHub</a></p>
+              <p className="transition-transform duration-300 transform hover:scale-110"><a href="/" className="ml-[90%]">LinkedIn</a></p>
+              <p className="transition-transform duration-300 transform hover:scale-110"><a href="/" className="ml-[90%]">WhatsApp</a></p>
             </div>
           </footer>
         </div>
