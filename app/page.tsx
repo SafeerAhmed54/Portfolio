@@ -333,10 +333,10 @@ export default function Home() {
               <p className="text-white mt-16">© 2025 Safeer Ahmad Rana. All rights reserved.</p>
             </div>
             <div className="w-1/2 p-5 h-60 space-y-5 font-sans font-bold text-xl">
-              <p className="transition-transform duration-300 transform hover:scale-110"><a href="/" className="ml-[90%]">Instagram</a></p>
-              <p className="transition-transform duration-300 transform hover:scale-110"><a href="/" className="ml-[90%]">GitHub</a></p>
-              <p className="transition-transform duration-300 transform hover:scale-110"><a href="/" className="ml-[90%]">LinkedIn</a></p>
-              <p className="transition-transform duration-300 transform hover:scale-110"><a href="/" className="ml-[90%]">WhatsApp</a></p>
+              <p className="transition-transform duration-300 transform hover:scale-110 ml-[90%]"><a href="https://www.instagram.com/" className="">Instagram</a></p>
+              <p className="transition-transform duration-300 transform hover:scale-110 ml-[90%]"><a href="https://www.github.com/" className="">GitHub</a></p>
+              <p className="transition-transform duration-300 transform hover:scale-110 ml-[90%]"><a href="https://www.LinkedIn.com/" className="">LinkedIn</a></p>
+              <p className="transition-transform duration-300 transform hover:scale-110 ml-[90%]"><a href="https://www.Whatsappweb.com/" className="">WhatsApp</a></p>
             </div>
           </footer>
         </div>
