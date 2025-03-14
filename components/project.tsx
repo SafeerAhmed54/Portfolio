@@ -8,8 +8,8 @@ const project = () => {
     {/* Project */}
     <div  className="h-screen w-full text-white flex flex-col items-start  mt-28">
       {/* Title Section */}
-      <div id='project-id' className="text-start space-y-3 pt-20 pr-20 pl-20">
-        <h1 className="font-bold text-3xl text-cyan-500">PROJECTS</h1>
+      <div  className="text-start space-y-3 pt-20 pr-20 pl-20">
+        <h1 id='project-id' className="font-bold text-3xl text-cyan-500">PROJECTS</h1>
         <h2 className="font-bold text-6xl">
           Selected works
           <br/>

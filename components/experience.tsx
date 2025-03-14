@@ -1,31 +1,29 @@
 import React from 'react'
 
-const education = () => {
+const experience = () => {
   return (
-    <div>{/* Space before About Me */}
-    <div className="h-8 w-full"></div>
-
-    {/* Education */}
+    <div>
+        {/* Education */}
     <div  className="flex justify-center p-20 mt-28 h-screen w-full">
       <div  className="w-full pt-16 space-y-3">
         <h1 id='education-id' className="font-bold font-sans text-3xl text-cyan-500">
-          EDUCATION
+          EXPERIENCE
         </h1>
         <h2 className="font-bold font-sans text-6xl">
-          Turning ideas into reality, beyond expectations.
+        Companies I have worked for
         </h2>
         <div className="grid grid-col-3 gap-4 space-y-4 mt-10 justify-center items-center">
           <div className="flex border-1 border-white rounded-2xl w-5xl p-10 h-60 transition-transform duration-300 transform hover:scale-110 hover:shadow-2xl shadow-cyan-500">
             <div className="w-1/2 space-y-6 ">
               <h1 className="text-2xl text-left font-bold">
-                Bachelors Science in Computer Science
+                Unity Developer
               </h1>
               <h2 className="text-2xl text-left">
-                COMSATS University Islamabad, Wah
+                Skyhisoft, Rawalpindi
               </h2>
               <p className="text-2xl text-justify">
-                Status: Feb, 2019{" "}
-                <span className="text-cyan-500">--------</span> March, 2023
+                Status: Feb, 2023{" "}
+                <span className="text-cyan-500">--------</span> Current
               </p>
             </div>
             <div className="w-1/2 pl-60">
@@ -43,18 +41,19 @@ const education = () => {
               </a>
             </div>
           </div>
-          <div className="flex border-1 border-white rounded-2xl w-5xl p-10 h-60 transition-transform duration-300 transform hover:scale-110 hover:shadow-2xl shadow-cyan-500">
-            <div className="w-1/2 space-y-6">
+          <div className="flex border-1 border-white rounded-2xl w-5xl p-10 h-auto transition-transform duration-300 transform hover:scale-110 hover:shadow-2xl shadow-cyan-500">
+            <div className="w-1/2 space-y-6 h-auto">
               <h1 className="text-2xl text-justify font-bold">
-                Higher Secondary School
+                Freelancer (Game Developer)
               </h1>
               <h2 className="text-2xl text-left">
-                Sir Syed Science College for Boys
+                Fiverr
               </h2>
               <p className="text-2xl text-justify">
-                Status: Sep, 2016{" "}
-                <span className="text-cyan-500">--------</span> Aug, 2018
+                Status: May, 2020{" "}
+                <span className="text-cyan-500">--------</span> Current
               </p>
+              <p>Responsabilities</p>
             </div>
             <div className="w-1/2 pl-72">
               <a
@@ -101,8 +100,9 @@ const education = () => {
           </div>
         </div>
       </div>
-    </div></div>
+    </div>
+    </div>
   )
 }
 
-export default education
+export default experience
