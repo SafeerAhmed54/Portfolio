@@ -101,7 +101,8 @@ const education = () => {
           </div>
         </div>
       </div>
-    </div></div>
+    </div>
+    </div>
   )
 }
 
