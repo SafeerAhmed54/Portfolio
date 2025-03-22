@@ -15,7 +15,7 @@ const Skills = () => {
         {/* Grid Section */}
         <div className="grid grid-cols-2 gap-6 mt-16 mx-auto w-full">
         <div className='text-center'>
-            <h1 className='text-4xl font-bold font-sans'>WEBs DEVELOPMENT</h1>
+            <h1 className='text-4xl font-bold font-sans'>WEB DEVELOPMENT</h1>
             <div className="h-[635px] flex justify-center items-center flex-wrap space-x-5">
                 <p className="bg-cyan-700 p-5 text-center rounded-3xl font-bold transition-transform duration-300 transform hover:scale-110"><img src="python.png" alt="unity" width={100} height={100} /> Python</p>
                 <p className="bg-cyan-700 p-5 text-center rounded-3xl font-bold transition-transform duration-300 transform hover:scale-110"><img src="typescript.png" alt="typescript" width={100} height={100} /> TypeScript</p>
