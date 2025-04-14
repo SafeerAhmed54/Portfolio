@@ -9,6 +9,8 @@ import Experience from "@/components/experience";
 import Project from "@/components/project";
 import Contact from "@/components/contact";
 
+// Main Page
+
 export default function Home() {
   return (
     <div className="bg-black p-4">
