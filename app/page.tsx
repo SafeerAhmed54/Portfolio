@@ -11,6 +11,7 @@ import Contact from "@/components/contact";
 
 // Main Page
 // Home Page
+// Need to work
 
 export default function Home() {
   return (
