@@ -12,6 +12,7 @@ import Contact from "@/components/contact";
 // Main Page
 // Home Page
 // Need to work
+// Improving it
 
 export default function Home() {
   return (
