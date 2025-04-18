@@ -13,6 +13,7 @@ import Contact from "@/components/contact";
 // Home Page
 // Need to work
 // Improving it
+// Hello
 
 export default function Home() {
   return (
