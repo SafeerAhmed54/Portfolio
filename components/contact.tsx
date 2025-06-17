@@ -1,43 +1,104 @@
-import React from 'react'
+/* Contact.tsx */
+import React from 'react';
 
-const contact = () => {
+const Contact = () => {
   return (
-    <div >{/* Space before About Me */}
-    <div className="h-8 w-full"></div>
+    <>
+      {/* main “hero” area */}
+      <div
+        id="contact-id"
+        className="flex flex-col items-center justify-center
+                   h-screen w-full bg-black
+                   px-4 sm:px-10 lg:px-20"
+      >
+        {/* top spacing – kept but responsive */}
+        <div className="h-6 sm:h-8" />
 
-    {/* About Me */}
-    <div id='contact-id' className="flex justify-center p-20 space-x-20 mt-28 h-screen w-full flex-wrap">
-      <div className="w-full pt-16 space-y-3">
-        <h1 className="font-bold font-sans text-4xl text-cyan-500 text-center">
+        {/* heading */}
+        <h1 className="font-sans font-bold text-cyan-500 text-2xl sm:text-3xl md:text-4xl text-center">
           COLLABORATION
         </h1>
-        <h2 className="font-bold font-sans text-9xl text-center">
-          Lets talk for<br></br> Collaboration
+
+        {/* big call-out */}
+        <h2
+          className="font-sans font-bold text-center leading-tight
+                     text-5xl sm:text-7xl md:text-8xl lg:text-9xl
+                     mt-4"
+        >
+          Lets talk for
+          <br className="hidden sm:block" />
+          Collaboration
         </h2>
-        <div className="flex justify-center items-center space-x-20 mt-10">
-          <button className="border-1 bg-cyan-500 border-white text-2xl p-6 hover:text-white text-black font-bold transition-transform duration-300 transform hover:scale-110">
+
+        {/* buttons – stack on phones, inline on ≥ sm */}
+        <div
+          className="flex flex-col sm:flex-row items-center justify-center
+                     gap-6 sm:gap-20 mt-10"
+        >
+          <button
+            className="bg-cyan-500 text-black font-bold
+                       text-lg sm:text-2xl px-6 py-4 rounded
+                       hover:text-white transition-transform duration-300
+                       hover:scale-110"
+          >
             Get In Touch
           </button>
-          <button className="border-1 border-white text-2xl p-6 hover:text-cyan-500 text-white font-bold transition-transform duration-300 transform hover:scale-110">
+
+          <button
+            className="border border-white text-white font-bold
+                       text-lg sm:text-2xl px-6 py-4 rounded
+                       hover:text-cyan-500 transition-transform duration-300
+                       hover:scale-110"
+          >
             Hire Me Now
           </button>
         </div>
-        <div className="border-1 border-white mt-28"></div>
-        <footer className="flex justify-center">
-          <div className="w-1/2">
-            <p className="mt-10">Working in development and design has given me a <br />stronger sense of the extraordinary in my digital world</p>
-            <p className="text-white mt-16">© 2025 Safeer Ahmad Rana. All rights reserved.</p>
-          </div>
-          <div className="w-1/2 p-5 h-60 space-y-5 font-sans font-bold text-xl">
-            <p className="transition-transform duration-300 transform hover:scale-110 ml-[90%]"><a href="https://www.instagram.com/" className="">Instagram</a></p>
-            <p className="transition-transform duration-300 transform hover:scale-110 ml-[90%]"><a href="https://www.github.com/" className="">GitHub</a></p>
-            <p className="transition-transform duration-300 transform hover:scale-110 ml-[90%]"><a href="https://www.LinkedIn.com/" className="">LinkedIn</a></p>
-            <p className="transition-transform duration-300 transform hover:scale-110 ml-[90%]"><a href="https://www.Whatsappweb.com/" className="">WhatsApp</a></p>
-          </div>
-        </footer>
       </div>
-    </div></div>
-  )
-}
 
-export default contact
+      {/* divider */}
+      <div className="border-t border-white" />
+
+      {/* footer */}
+      <footer
+        className="w-full bg-black text-gray-300
+                   grid grid-cols-1 md:grid-cols-2
+                   gap-8 px-4 sm:px-10 lg:px-20 py-10"
+      >
+        {/* left column */}
+        <div>
+          <p>
+            Working in development and design has given me a
+            <br className="hidden sm:inline" />
+            stronger sense of the extraordinary in my digital world
+          </p>
+          <p className="text-white mt-8">
+            © 2025 Safeer Ahmad Rana. All rights reserved.
+          </p>
+        </div>
+
+        {/* right column */}
+        <nav
+          className="flex flex-col items-center md:items-end
+                     gap-4 font-sans font-bold text-lg"
+        >
+          {[
+            ['Instagram', 'https://www.instagram.com/'],
+            ['GitHub', 'https://www.github.com/'],
+            ['LinkedIn', 'https://www.linkedin.com/'],
+            ['WhatsApp', 'https://www.whatsapp.com/'],
+          ].map(([label, href]) => (
+            <a
+              key={label}
+              href={href}
+              className="hover:scale-110 transition-transform duration-300"
+            >
+              {label}
+            </a>
+          ))}
+        </nav>
+      </footer>
+    </>
+  );
+};
+
+export default Contact;

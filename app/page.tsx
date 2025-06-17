@@ -21,17 +21,17 @@ export default function Home() {
       <Header/>
       <Hero/>
       {/* <div className="h-6 w-full"></div> */}
-      <Design/>
+      {/* <Design/> */}
       <About/>
-      <Design2/>
+      {/* <Design2/> */}
       <Education/>
       {/* <div className="h-40 w-full"></div> */}
-      <Design/>
+      {/* <Design/> */}
       {/* <div className="h-20 w-full"></div> */}
       <Skill/>
       <Experience/>
       {/* <div className="h-40 w-full"></div> */}
-      <Design/>
+      {/* <Design/> */}
       <Project/>
       <Contact/>
     </div>
