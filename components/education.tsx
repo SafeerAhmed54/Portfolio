@@ -1,36 +1,35 @@
 import React from "react";
 
-const education = () => {
+const Education = () => {
   return (
     <div>
-
       {/* Education */}
-      <div className="flex justify-center p-20 mt-28 h-screen w-full">
-        <div className="w-full pt-16 space-y-3">
+      <div className="flex justify-center px-2 md:px-20 py-10 md:py-20 mt-10 md:mt-28 w-full">
+        <div className="w-full pt-8 md:pt-16 space-y-3">
           <h1
             id="education-id"
-            className="font-bold font-sans text-3xl text-cyan-500"
+            className="font-bold font-sans text-2xl md:text-3xl text-cyan-500"
           >
             EDUCATION
           </h1>
-          <h2 className="font-bold font-sans text-6xl">
+          <h2 className="font-bold font-sans text-2xl md:text-6xl">
             Turning ideas into reality, beyond expectations.
           </h2>
-          <div className="grid grid-col-3 space-y-4 mt-10 justify-center items-center">
-            <div className="flex border-1 border-white rounded-2xl w-5xl p-10 h-60 transition-transform duration-300 transform hover:scale-110 hover:shadow-2xl shadow-cyan-500">
-              <div className="w-1/2 space-y-6 ">
-                <h1 className="text-2xl text-left font-bold">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6 md:mt-10 justify-center items-stretch">
+            {/* Bachelors */}
+            <div className="flex flex-col border border-white rounded-2xl p-4 md:p-10 h-auto transition-transform duration-300 transform hover:scale-105 hover:shadow-2xl shadow-cyan-500 bg-opacity-80 bg-black">
+              <div className="flex-1 space-y-3 md:space-y-6">
+                <h1 className="text-lg md:text-2xl text-left font-bold">
                   Bachelors Science in Computer Science
                 </h1>
-                <h2 className="text-2xl text-left">
+                <h2 className="text-base md:text-2xl text-left">
                   COMSATS University Islamabad, Wah
                 </h2>
-                <p className="text-2xl text-justify">
-                  Status: Feb, 2019{" "}
-                  <span className="text-cyan-500">--------</span> March, 2023
+                <p className="text-base md:text-2xl text-justify">
+                  Status: Feb, 2019 <span className="text-cyan-500">--------</span> March, 2023
                 </p>
               </div>
-              <div className="w-1/2 pl-60">
+              <div className="flex justify-center items-center mt-4 md:mt-0">
                 <a
                   href="/path/to/your/file.pdf"
                   download
@@ -39,26 +38,25 @@ const education = () => {
                   <img
                     src="/Bachelors.png"
                     alt="Download"
-                    width={400}
-                    height={400}
+                    className="w-24 h-24 md:w-60 md:h-60 object-contain"
                   />
                 </a>
               </div>
             </div>
-            <div className="flex border-1 border-white rounded-2xl w-5xl p-10 h-60 transition-transform duration-300 transform hover:scale-110 hover:shadow-2xl shadow-cyan-500">
-              <div className="w-1/2 space-y-6">
-                <h1 className="text-2xl text-justify font-bold">
+            {/* Higher Secondary */}
+            <div className="flex flex-col border border-white rounded-2xl p-4 md:p-10 h-auto transition-transform duration-300 transform hover:scale-105 hover:shadow-2xl shadow-cyan-500 bg-opacity-80 bg-black">
+              <div className="flex-1 space-y-3 h-1/2 md:space-y-6">
+                <h1 className="text-lg md:text-2xl text-justify font-bold">
                   Higher Secondary School
                 </h1>
-                <h2 className="text-2xl text-left">
+                <h2 className="text-base md:text-2xl text-left">
                   Sir Syed Science College for Boys
                 </h2>
-                <p className="text-2xl text-justify">
-                  Status: Sep, 2016{" "}
-                  <span className="text-cyan-500">--------</span> Aug, 2018
+                <p className="text-base md:text-2xl text-justify">
+                  Status: Sep, 2016 <span className="text-cyan-500">--------</span> Aug, 2018
                 </p>
               </div>
-              <div className="w-1/2 pl-72">
+              <div className="flex justify-center items-center h-1/2 mt-4 md:mt-0">
                 <a
                   href="/path/to/your/file.pdf"
                   download
@@ -67,26 +65,25 @@ const education = () => {
                   <img
                     src="/Higher.png"
                     alt="Download"
-                    width={120}
-                    height={100}
+                    className="w-20 h-20 md:w-32 md:h-24 object-contain"
                   />
                 </a>
               </div>
             </div>
-            <div className="flex border-1 border-white rounded-2xl w-5xl p-10 h-60 transition-transform duration-300 transform hover:scale-110 hover:shadow-2xl shadow-cyan-500">
-              <div className="w-1/2 space-y-6">
-                <h1 className="text-2xl text-justify font-bold">
+            {/* Secondary School */}
+            <div className="flex flex-col border border-white rounded-2xl p-4 md:p-10 h-auto transition-transform duration-300 transform hover:scale-105 hover:shadow-2xl shadow-cyan-500 bg-opacity-80 bg-black">
+              <div className="flex-1 space-y-3 h-1/2 md:space-y-6">
+                <h1 className="text-lg md:text-2xl text-justify font-bold">
                   Secondary School
                 </h1>
-                <h2 className="text-2xl text-left">
+                <h2 className="text-base md:text-2xl text-left">
                   Fazia Inter College, Nur Khan
                 </h2>
-                <p className="text-2xl text-justify">
-                  Status: April, 2014{" "}
-                  <span className="text-cyan-500">--------</span> July, 2016
+                <p className="text-base md:text-2xl text-justify">
+                  Status: April, 2014 <span className="text-cyan-500">--------</span> July, 2016
                 </p>
               </div>
-              <div className="w-1/2 pl-72">
+              <div className="flex justify-center items-center h-1/2 mt-4 md:mt-0">
                 <a
                   href="/path/to/your/file.pdf"
                   download
@@ -95,8 +92,7 @@ const education = () => {
                   <img
                     src="/Secondary.png"
                     alt="Download"
-                    width={120}
-                    height={100}
+                    className="w-20 h-20 md:w-32 md:h-24 object-contain"
                   />
                 </a>
               </div>
@@ -108,4 +104,4 @@ const education = () => {
   );
 };
 
-export default education;
+export default Education;

@@ -8,6 +8,7 @@ import Skill from "@/components/skills";
 import Experience from "@/components/experience";
 import Project from "@/components/project";
 import Contact from "@/components/contact";
+import SkillsPage from "@/components/skillsPage";
 
 // Main Page
 // Home Page
@@ -28,7 +29,8 @@ export default function Home() {
       {/* <div className="h-40 w-full"></div> */}
       <Design/>
       {/* <div className="h-20 w-full"></div> */}
-      <Skill/>
+      {/* <Skill/> */}
+      <SkillsPage/>
       <Experience/>
       {/* <div className="h-40 w-full"></div> */}
       <Design/>
