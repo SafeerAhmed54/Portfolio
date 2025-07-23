@@ -3,48 +3,34 @@ import React from "react";
 
 const home = () => {
   return (
-    <div className="min-h-screen w-full flex flex-col justify-center items-center bg-transparent">
-      {/* Responsive Hero Section */}
-      <div className="flex flex-col md:flex-row min-h-screen w-full mb-8 relative justify-center items-center">
-        <div className="w-full md:w-1/2 flex justify-center items-center flex-col px-4 sm:px-8 md:p-20 space-y-3 sm:space-y-5 pt-10 md:pt-0">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white font-sans">Hi, I&apos;m</h1>
-          <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold font-sans bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-500 bg-clip-text text-transparent animate-gradient-x">
+    <section id="home-id" className="relative min-h-screen w-full flex items-center justify-center bg-black overflow-hidden pt-24 pb-10">
+      <div className="relative z-10 flex flex-col md:flex-row items-center justify-center w-full max-w-6xl px-4">
+        {/* Left: Text Content */}
+        <div className="flex-1 flex flex-col items-start justify-center text-left md:pr-10">
+          <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold text-white leading-tight mb-4">
             Safeer Ahmad Rana
           </h1>
-          <p className="text-base sm:text-lg md:text-xl text-white font-sans">
-            I&apos;m a Software Engineer. I welcome you to my personal portfolio
+          <p className="text-lg sm:text-2xl md:text-3xl text-cyan-300 font-medium mb-6">
+            I’m a Software Engineer. I welcome you to my personal portfolio.
           </p>
-          <a
-            href="/Safeer_Ahmad_Rana_Resume.pdf"
-            download
-            className="mt-4 inline-block bg-cyan-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 text-sm sm:text-base md:text-lg"
-          >
-            Download Resume
-          </a>
+          <a href="/Safeer_Ahmad_Rana_Resume.pdf" download className="inline-block border-2 border-cyan-400 text-cyan-400 px-6 py-3 rounded-lg font-bold hover:bg-cyan-400 hover:text-black transition-colors text-lg mt-2">Download Resume</a>
         </div>
-        <div className="w-full md:w-1/2 flex justify-center md:justify-end items-center mt-8 md:mt-0">
-          <img
-            src="/Safeer.png"
-            alt="Profile Picture"
-            width={400}
-            height={400}
-            className="object-contain max-w-[80vw] max-h-[50vh] md:max-w-full md:max-h-full"
-          />
+        {/* Right: Image with Overlay */}
+        <div className="flex-1 flex items-center justify-center w-full md:w-auto mt-10 md:mt-0 relative">
+          <div className="relative w-full max-w-md md:max-w-lg lg:max-w-xl aspect-square">
+            <img src="/Safeer.png" alt="Profile" className="w-full h-full object-cover object-center rounded-2xl shadow-2xl" />
+            <div className="absolute inset-0 bg-gradient-to-tr from-cyan-700/60 via-black/60 to-cyan-900/60 rounded-2xl mix-blend-multiply" />
+          </div>
         </div>
       </div>
-      <div className="border-1 border-cyan-500"></div>
-      {/* Keyframes for gradient animation */}
-      <style jsx>{`
-        @keyframes gradient-x {
-          0%, 100% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-        }
-        .animate-gradient-x {
-          background-size: 200% 200%;
-          animation: gradient-x 4s ease-in-out infinite;
-        }
-      `}</style>
-    </div>
+      {/* Mouse Scroll Indicator */}
+      <div className="absolute left-1/2 -translate-x-1/2 bottom-8 z-20 flex flex-col items-center">
+        <div className="w-6 h-10 border-2 border-cyan-400 rounded-full flex items-center justify-center">
+          <div className="w-2 h-2 bg-cyan-400 rounded-full animate-bounce mt-2" />
+        </div>
+        <span className="text-cyan-400 text-xs mt-2">Scroll</span>
+      </div>
+    </section>
   );
 };
 

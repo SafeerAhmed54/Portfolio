@@ -1,6 +1,6 @@
 import React from 'react';
-import Image from 'next/image'; // If using Next.js, otherwise use normal <img> tag
-import skillsImage from '../public/image.png'; // Adjust the path accordingly
+//import Image from 'next/image'; // If using Next.js, otherwise use normal <img> tag
+//import skillsImage from '../public/image.png'; // Adjust the path accordingly
 
 const Skills = () => {
   return (
