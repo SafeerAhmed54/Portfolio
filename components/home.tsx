@@ -1,37 +1,210 @@
 "use client";
 import React from "react";
+import { motion } from "framer-motion";
 
-const home = () => {
+const Home = () => {
   return (
-    <section id="home-id" className="relative min-h-screen w-full flex items-center justify-center bg-black overflow-hidden pt-24 pb-10">
-      <div className="relative z-10 flex flex-col md:flex-row items-center justify-center w-full max-w-6xl px-4">
-        {/* Left: Text Content */}
-        <div className="flex-1 flex flex-col items-start justify-center text-left md:pr-10">
-          <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold text-white leading-tight mb-4">
-            Safeer Ahmad Rana
-          </h1>
-          <p className="text-lg sm:text-2xl md:text-3xl text-cyan-300 font-medium mb-6">
-            I’m a Software Engineer. I welcome you to my personal portfolio.
-          </p>
-          <a href="/Safeer_Ahmad_Rana_Resume.pdf" download className="inline-block border-2 border-cyan-400 text-cyan-400 px-6 py-3 rounded-lg font-bold hover:bg-cyan-400 hover:text-black transition-colors text-lg mt-2">Download Resume</a>
-        </div>
-        {/* Right: Image with Overlay */}
-        <div className="flex-1 flex items-center justify-center w-full md:w-auto mt-10 md:mt-0 relative">
-          <div className="relative w-full max-w-md md:max-w-lg lg:max-w-xl aspect-square">
-            <img src="/Safeer.png" alt="Profile" className="w-full h-full object-cover object-center rounded-2xl shadow-2xl" />
-            <div className="absolute inset-0 bg-gradient-to-tr from-cyan-700/60 via-black/60 to-cyan-900/60 rounded-2xl mix-blend-multiply" />
+    <section id="home-id" className="relative min-h-screen w-full flex items-center justify-center bg-black overflow-hidden">
+      
+      {/* Animated Background Elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        {/* Floating geometric shapes */}
+        <motion.div
+          className="absolute top-20 left-10 w-32 h-32 border border-cyan-400/20"
+          animate={{
+            rotate: [0, 360],
+            scale: [1, 1.1, 1],
+          }}
+          transition={{
+            duration: 20,
+            repeat: Infinity,
+            ease: "linear"
+          }}
+        />
+        <motion.div
+          className="absolute bottom-32 right-20 w-24 h-24 border border-cyan-400/10"
+          animate={{
+            rotate: [360, 0],
+            y: [-10, 10, -10],
+          }}
+          transition={{
+            duration: 15,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
+        
+        {/* Gradient orbs */}
+        <motion.div
+          className="absolute top-1/4 right-1/4 w-96 h-96 bg-cyan-400/5 rounded-full blur-3xl"
+          animate={{
+            scale: [1, 1.2, 1],
+            opacity: [0.3, 0.5, 0.3],
+          }}
+          transition={{
+            duration: 8,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
+        <motion.div
+          className="absolute bottom-1/4 left-1/4 w-64 h-64 bg-blue-400/5 rounded-full blur-3xl"
+          animate={{
+            scale: [1.2, 1, 1.2],
+            opacity: [0.2, 0.4, 0.2],
+          }}
+          transition={{
+            duration: 10,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
+      </div>
+
+      {/* Hero Content: Clean, modern layout */}
+      <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between w-full max-w-7xl mx-auto px-6 lg:px-12 py-20">
+        
+        {/* Left: Large Typography */}
+        <motion.div 
+          className="w-full lg:w-1/2 flex flex-col items-start justify-center text-left lg:pr-16"
+          initial={{ opacity: 0, x: -50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+        >
+          <div className="mb-8">
+            <motion.h1 
+              className="text-6xl sm:text-7xl lg:text-8xl xl:text-9xl font-bold text-white leading-none mb-4"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+            >
+              Safeer
+              <br />
+              <motion.span 
+                className="text-cyan-400 inline-block"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.8, delay: 0.4 }}
+              >
+                Ahmad Rana
+              </motion.span>
+            </motion.h1>
+            <motion.p 
+              className="text-lg sm:text-xl text-gray-400 max-w-md leading-relaxed"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.6 }}
+            >
+              Software Engineer crafting exceptional digital experiences through innovative web and game development solutions.
+            </motion.p>
           </div>
-        </div>
+          
+          {/* CTA Button */}
+          <motion.a
+            href="/Safeer_Ahmad_Rana_Resume.pdf"
+            download
+            className="inline-flex items-center px-8 py-4 bg-transparent border-2 border-cyan-400 text-cyan-400 font-semibold rounded-none hover:bg-cyan-400 hover:text-black transition-all duration-300 group relative overflow-hidden"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.8 }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <span className="relative z-10">Download Resume</span>
+            <svg className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+            <motion.div
+              className="absolute inset-0 bg-cyan-400"
+              initial={{ x: "-100%" }}
+              whileHover={{ x: 0 }}
+              transition={{ duration: 0.3 }}
+            />
+          </motion.a>
+        </motion.div>
+        
+        {/* Right: Professional Portrait */}
+        <motion.div 
+          className="w-full lg:w-1/2 flex justify-center lg:justify-end items-center mt-12 lg:mt-0"
+          initial={{ opacity: 0, x: 50 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+        >
+          <div className="relative">
+            {/* Animated geometric accents */}
+            <motion.div 
+              className="absolute -top-4 -right-4 w-24 h-24 border-2 border-cyan-400 opacity-30"
+              animate={{
+                rotate: [0, 90, 180, 270, 360],
+              }}
+              transition={{
+                duration: 20,
+                repeat: Infinity,
+                ease: "linear"
+              }}
+            />
+            <motion.div 
+              className="absolute -bottom-4 -left-4 w-16 h-16 border-2 border-cyan-400/20"
+              animate={{
+                rotate: [360, 270, 180, 90, 0],
+                scale: [1, 1.1, 1],
+              }}
+              transition={{
+                duration: 15,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+            />
+            
+            <motion.div 
+              className="relative overflow-hidden"
+              whileHover={{ scale: 1.02 }}
+              transition={{ duration: 0.3 }}
+            >
+              <img
+                src="/Safeer.png"
+                alt="Safeer Ahmad Rana - Software Engineer"
+                width={500}
+                height={600}
+                className="object-cover w-full h-auto max-w-md lg:max-w-lg grayscale hover:grayscale-0 transition-all duration-500"
+              />
+              {/* Overlay gradient */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
+              
+              {/* Animated border */}
+              <motion.div
+                className="absolute inset-0 border-2 border-cyan-400/0 hover:border-cyan-400/30 transition-colors duration-500"
+                whileHover={{ 
+                  boxShadow: "0 0 30px rgba(6, 182, 212, 0.3)" 
+                }}
+              />
+            </motion.div>
+          </div>
+        </motion.div>
       </div>
-      {/* Mouse Scroll Indicator */}
-      <div className="absolute left-1/2 -translate-x-1/2 bottom-8 z-20 flex flex-col items-center">
-        <div className="w-6 h-10 border-2 border-cyan-400 rounded-full flex items-center justify-center">
-          <div className="w-2 h-2 bg-cyan-400 rounded-full animate-bounce mt-2" />
-        </div>
-        <span className="text-cyan-400 text-xs mt-2">Scroll</span>
-      </div>
+      
+      {/* Animated Scroll indicator */}
+      <motion.div 
+        className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 1.2 }}
+      >
+        <motion.div 
+          className="flex flex-col items-center text-gray-400"
+          animate={{ y: [0, 10, 0] }}
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <span className="text-sm mb-2 rotate-90 origin-center">SCROLL</span>
+          <motion.div 
+            className="w-px h-12 bg-gray-400"
+            animate={{ scaleY: [1, 1.5, 1] }}
+            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+          />
+        </motion.div>
+      </motion.div>
     </section>
   );
 };
 
-export default home;
+export default Home;
