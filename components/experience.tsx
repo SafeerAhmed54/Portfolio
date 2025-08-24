@@ -3,6 +3,20 @@ import React from "react";
 import { motion } from "framer-motion";
 
 const Experience = () => {
+  // Animation variants for scroll-based animations
+  const scrollVariants = {
+    hidden: {
+      opacity: 0,
+      y: 50,
+      scale: 0.95,
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+    },
+  };
+
   const experienceData = [
     {
       title: "Unity Developer",
@@ -51,7 +65,7 @@ const Experience = () => {
   return (
     <section
       id="experience-id"
-      className="w-full bg-black py-20 px-6 relative overflow-hidden"
+      className="w-full bg-white dark:bg-black py-20 px-6 relative overflow-hidden transition-colors duration-300"
     >
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden">
@@ -115,54 +129,61 @@ const Experience = () => {
         {/* Section Header */}
         <motion.div
           className="mb-16"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          variants={scrollVariants}
+          initial="hidden"
+          whileInView="visible"
+          exit="hidden"
           transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
+          viewport={{ once: false, amount: 0.3 }}
         >
           <motion.div
             className="flex items-center gap-4 mb-6"
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            variants={{
+              hidden: { opacity: 0, x: -30 },
+              visible: { opacity: 1, x: 0 },
+            }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            viewport={{ once: true }}
           >
             <span className="text-cyan-400 font-mono text-sm tracking-wider">
               EXPERIENCE
             </span>
             <motion.div
               className="h-px bg-cyan-400 flex-1"
-              initial={{ scaleX: 0 }}
-              whileInView={{ scaleX: 1 }}
+              variants={{
+                hidden: { scaleX: 0 },
+                visible: { scaleX: 1 },
+              }}
               transition={{ duration: 0.8, delay: 0.4 }}
-              viewport={{ once: true }}
             />
           </motion.div>
           <motion.h2
-            className="text-5xl sm:text-6xl lg:text-7xl font-bold text-white mb-4"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            className="text-5xl sm:text-6xl lg:text-7xl font-bold text-gray-900 dark:text-white mb-4 transition-colors duration-300"
+            variants={{
+              hidden: { opacity: 0, y: 30 },
+              visible: { opacity: 1, y: 0 },
+            }}
             transition={{ duration: 0.8, delay: 0.3 }}
-            viewport={{ once: true }}
           >
             Professional
             <br />
             <motion.span
               className="text-cyan-400 inline-block"
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
+              variants={{
+                hidden: { opacity: 0, scale: 0.8 },
+                visible: { opacity: 1, scale: 1 },
+              }}
               transition={{ duration: 0.8, delay: 0.5 }}
-              viewport={{ once: true }}
             >
               Experience
             </motion.span>
           </motion.h2>
           <motion.p
-            className="text-xl text-gray-400"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            className="text-xl text-gray-600 dark:text-gray-400 transition-colors duration-300"
+            variants={{
+              hidden: { opacity: 0, y: 20 },
+              visible: { opacity: 1, y: 0 },
+            }}
             transition={{ duration: 0.8, delay: 0.6 }}
-            viewport={{ once: true }}
           >
             Companies I have worked with
           </motion.p>
@@ -174,25 +195,39 @@ const Experience = () => {
             <motion.div
               key={index}
               className="group relative"
-              initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              variants={{
+                hidden: {
+                  opacity: 0,
+                  x: index % 2 === 0 ? -50 : 50,
+                  scale: 0.95,
+                },
+                visible: {
+                  opacity: 1,
+                  x: 0,
+                  scale: 1,
+                },
+              }}
+              initial="hidden"
+              whileInView="visible"
+              exit="hidden"
               transition={{ duration: 0.8, delay: index * 0.2 }}
-              viewport={{ once: true }}
+              viewport={{ once: false, amount: 0.3 }}
             >
               {/* Animated Timeline Line */}
               {index !== experienceData.length - 1 && (
                 <motion.div
                   className="absolute left-6 top-20 w-px h-32 bg-gray-700"
-                  initial={{ scaleY: 0 }}
-                  whileInView={{ scaleY: 1 }}
+                  variants={{
+                    hidden: { scaleY: 0, opacity: 0 },
+                    visible: { scaleY: 1, opacity: 1 },
+                  }}
                   transition={{ duration: 0.8, delay: 0.5 + index * 0.2 }}
-                  viewport={{ once: true }}
                 />
               )}
 
               {/* Experience Card */}
               <motion.div
-                className="flex flex-col lg:flex-row gap-8 p-8 bg-gray-900/30 border border-gray-800 hover:border-cyan-400/50 transition-all duration-300 group-hover:bg-gray-900/50 relative overflow-hidden"
+                className="flex flex-col lg:flex-row gap-8 p-8 bg-gray-100/50 dark:bg-gray-900/30 border border-gray-300 dark:border-gray-800 hover:border-cyan-400/50 transition-all duration-300 group-hover:bg-gray-200/50 dark:group-hover:bg-gray-900/50 relative overflow-hidden"
                 whileHover={{
                   scale: 1.01,
                   boxShadow: "0 20px 40px rgba(6, 182, 212, 0.1)",
@@ -209,10 +244,11 @@ const Experience = () => {
                 {/* Animated Timeline Dot */}
                 <motion.div
                   className="flex-shrink-0 w-12 h-12 bg-cyan-400 rounded-full flex items-center justify-center font-bold text-black text-lg relative z-10"
-                  initial={{ scale: 0 }}
-                  whileInView={{ scale: 1 }}
+                  variants={{
+                    hidden: { scale: 0, opacity: 0 },
+                    visible: { scale: 1, opacity: 1 },
+                  }}
                   transition={{ duration: 0.5, delay: 0.3 + index * 0.2 }}
-                  viewport={{ once: true }}
                   whileHover={{ scale: 1.1 }}
                 >
                   {exp.current && (
@@ -230,13 +266,14 @@ const Experience = () => {
                   {/* Header */}
                   <motion.div
                     className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
+                    variants={{
+                      hidden: { opacity: 0, y: 20 },
+                      visible: { opacity: 1, y: 0 },
+                    }}
                     transition={{ duration: 0.6, delay: 0.4 + index * 0.2 }}
-                    viewport={{ once: true }}
                   >
                     <div>
-                      <h3 className="text-2xl lg:text-3xl font-bold text-white group-hover:text-cyan-400 transition-colors">
+                      <h3 className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white group-hover:text-cyan-400 transition-colors">
                         {exp.title}
                       </h3>
                       <p className="text-xl text-cyan-400 font-semibold">
@@ -250,7 +287,7 @@ const Experience = () => {
                       >
                         {exp.type}
                       </motion.span>
-                      <p className="text-gray-400 font-mono mt-1">
+                      <p className="text-gray-600 dark:text-gray-400 font-mono mt-1 transition-colors duration-300">
                         {exp.period}
                       </p>
                     </div>
@@ -258,36 +295,39 @@ const Experience = () => {
 
                   {/* Responsibilities */}
                   <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
+                    variants={{
+                      hidden: { opacity: 0, y: 20 },
+                      visible: { opacity: 1, y: 0 },
+                    }}
                     transition={{ duration: 0.6, delay: 0.5 + index * 0.2 }}
-                    viewport={{ once: true }}
                   >
-                    <h4 className="text-lg font-semibold text-white mb-3">
+                    <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3 transition-colors duration-300">
                       Key Responsibilities:
                     </h4>
                     <ul className="space-y-2">
                       {exp.responsibilities.map((resp, respIndex) => (
                         <motion.li
                           key={respIndex}
-                          className="flex items-start gap-3 text-gray-300"
-                          initial={{ opacity: 0, x: -20 }}
-                          whileInView={{ opacity: 1, x: 0 }}
+                          className="flex items-start gap-3 text-gray-700 dark:text-gray-300 transition-colors duration-300"
+                          variants={{
+                            hidden: { opacity: 0, x: -20 },
+                            visible: { opacity: 1, x: 0 },
+                          }}
                           transition={{
                             duration: 0.5,
                             delay: 0.6 + index * 0.2 + respIndex * 0.1,
                           }}
-                          viewport={{ once: true }}
                         >
                           <motion.div
                             className="w-2 h-2 bg-cyan-400 rounded-full mt-2 flex-shrink-0"
-                            initial={{ scale: 0 }}
-                            whileInView={{ scale: 1 }}
+                            variants={{
+                              hidden: { scale: 0, opacity: 0 },
+                              visible: { scale: 1, opacity: 1 },
+                            }}
                             transition={{
                               duration: 0.3,
                               delay: 0.7 + index * 0.2 + respIndex * 0.1,
                             }}
-                            viewport={{ once: true }}
                           />
                           <span>{resp}</span>
                         </motion.li>
@@ -297,26 +337,28 @@ const Experience = () => {
 
                   {/* Technologies */}
                   <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
+                    variants={{
+                      hidden: { opacity: 0, y: 20 },
+                      visible: { opacity: 1, y: 0 },
+                    }}
                     transition={{ duration: 0.6, delay: 0.7 + index * 0.2 }}
-                    viewport={{ once: true }}
                   >
-                    <h4 className="text-lg font-semibold text-white mb-3">
+                    <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3 transition-colors duration-300">
                       Technologies:
                     </h4>
                     <div className="flex flex-wrap gap-2">
                       {exp.technologies.map((tech, techIndex) => (
                         <motion.span
                           key={techIndex}
-                          className="px-3 py-1 bg-gray-800 border border-gray-700 text-gray-300 text-sm font-mono hover:border-cyan-400/50 transition-colors"
-                          initial={{ opacity: 0, scale: 0.8 }}
-                          whileInView={{ opacity: 1, scale: 1 }}
+                          className="px-3 py-1 bg-gray-200 dark:bg-gray-800 border border-gray-400 dark:border-gray-700 text-gray-700 dark:text-gray-300 text-sm font-mono hover:border-cyan-400/50 transition-colors"
+                          variants={{
+                            hidden: { opacity: 0, scale: 0.8 },
+                            visible: { opacity: 1, scale: 1 },
+                          }}
                           transition={{
                             duration: 0.4,
                             delay: 0.8 + index * 0.2 + techIndex * 0.1,
                           }}
-                          viewport={{ once: true }}
                           whileHover={{
                             scale: 1.05,
                             backgroundColor: "rgba(6, 182, 212, 0.1)",
@@ -336,32 +378,36 @@ const Experience = () => {
         {/* Bottom Stats */}
         <motion.div
           className="grid grid-cols-1 sm:grid-cols-4 gap-8 mt-20 pt-16 border-t border-gray-800"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          variants={scrollVariants}
+          initial="hidden"
+          whileInView="visible"
+          exit="hidden"
           transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
+          viewport={{ once: false, amount: 0.3 }}
         >
           {[
-            { number: "5+", label: "Years Experience" },
+            { number: "2+", label: "Years Experience" },
             { number: "50+", label: "Projects Delivered" },
-            { number: "25+", label: "Happy Clients" },
+            { number: "100+", label: "Happy Clients" },
             { number: "2", label: "Active Roles" },
           ].map((stat, index) => (
             <motion.div
               key={index}
               className="text-center"
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
+              variants={{
+                hidden: { opacity: 0, scale: 0.8, y: 20 },
+                visible: { opacity: 1, scale: 1, y: 0 },
+              }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
-              viewport={{ once: true }}
               whileHover={{ scale: 1.05 }}
             >
               <motion.div
                 className="text-4xl font-bold text-cyan-400 mb-2"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  visible: { opacity: 1, y: 0 },
+                }}
                 transition={{ duration: 0.6, delay: 0.2 + index * 0.1 }}
-                viewport={{ once: true }}
               >
                 {stat.number}
               </motion.div>

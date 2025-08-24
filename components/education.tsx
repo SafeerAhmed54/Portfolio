@@ -3,11 +3,25 @@ import React from "react";
 import { motion } from "framer-motion";
 
 const Education = () => {
+  // Animation variants for scroll-based animations
+  const scrollVariants = {
+    hidden: {
+      opacity: 0,
+      y: 50,
+      scale: 0.95,
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+    },
+  };
+
   const educationData = [
     {
       degree: "Bachelor of Science",
       field: "Computer Science",
-      institution: "COMSATS University Islamabad, Wah",
+      institution: "COMSATS University Islamabad, Islamabad",
       period: "Feb 2019 - March 2023",
       icon: "/Bachelors.png",
       type: "Bachelor's Degree",
@@ -15,7 +29,7 @@ const Education = () => {
     {
       degree: "Higher Secondary School",
       field: "Science",
-      institution: "Sir Syed Science College for Boys",
+      institution: "Sir Syed Science College for Boys, Rawalpindi",
       period: "Sep 2016 - Aug 2018",
       icon: "/Higher.png",
       type: "Higher Secondary",
@@ -23,7 +37,7 @@ const Education = () => {
     {
       degree: "Secondary School",
       field: "General Education",
-      institution: "Fazia Inter College, Nur Khan",
+      institution: "Fazia Inter College, Nur Khan, Rawalpindi",
       period: "April 2014 - July 2016",
       icon: "/Secondary.png",
       type: "Secondary School",
@@ -97,10 +111,12 @@ const Education = () => {
         {/* Section Header */}
         <motion.div
           className="mb-16"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          variants={scrollVariants}
+          initial="hidden"
+          whileInView="visible"
+          exit="hidden"
           transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
+          viewport={{ once: false, amount: 0.3 }}
         >
           <motion.div
             className="flex items-center gap-4 mb-6"
@@ -156,10 +172,23 @@ const Education = () => {
             <motion.div
               key={index}
               className="group relative"
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              variants={{
+                hidden: {
+                  opacity: 0,
+                  y: 50,
+                  scale: 0.95,
+                },
+                visible: {
+                  opacity: 1,
+                  y: 0,
+                  scale: 1,
+                },
+              }}
+              initial="hidden"
+              whileInView="visible"
+              exit="hidden"
               transition={{ duration: 0.8, delay: index * 0.2 }}
-              viewport={{ once: true }}
+              viewport={{ once: false, amount: 0.3 }}
             >
               {/* Animated Timeline Line */}
               {index !== educationData.length - 1 && (
@@ -247,7 +276,9 @@ const Education = () => {
                     transition={{ duration: 0.5, delay: 0.7 + index * 0.2 }}
                     viewport={{ once: true }}
                   >
-                    <p className="text-lg text-gray-400">{edu.institution}</p>
+                    <p className="text-lg text-gray-400">
+                      {edu.institution}
+                    </p>
                     <p className="text-cyan-400 font-mono">{edu.period}</p>
                   </motion.div>
                 </motion.div>
@@ -279,14 +310,16 @@ const Education = () => {
         {/* Bottom Stats */}
         <motion.div
           className="grid grid-cols-1 sm:grid-cols-3 gap-8 mt-20 pt-16 border-t border-gray-800"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          variants={scrollVariants}
+          initial="hidden"
+          whileInView="visible"
+          exit="hidden"
           transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
+          viewport={{ once: false, amount: 0.3 }}
         >
           {[
-            { number: "4", label: "Years of Study" },
-            { number: "3.5+", label: "GPA" },
+            { number: "16", label: "Years of Study" },
+            { number: "3.5", label: "GPA" },
             { number: "2023", label: "Graduated" },
           ].map((stat, index) => (
             <motion.div

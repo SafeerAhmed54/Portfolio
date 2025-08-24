@@ -1,10 +1,38 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
 const Home = () => {
+  const [scrollDirection, setScrollDirection] = useState<'up' | 'down'>('down');
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      setScrollDirection(currentScrollY > lastScrollY ? 'down' : 'up');
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [lastScrollY]);
+
+  // Animation variants for scroll-based animations
+  const scrollVariants = {
+    hidden: {
+      opacity: 0,
+      y: 50,
+      scale: 0.95,
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+    },
+  };
+
   return (
-    <section id="home-id" className="relative min-h-screen w-full flex items-center justify-center bg-black overflow-hidden">
+    <section id="home-id" className="relative min-h-screen w-full flex items-center justify-center bg-white dark:bg-black overflow-hidden transition-colors duration-300">
       
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden">
@@ -67,13 +95,19 @@ const Home = () => {
         {/* Left: Large Typography */}
         <motion.div 
           className="w-full lg:w-1/2 flex flex-col items-start justify-center text-left lg:pr-16"
-          initial={{ opacity: 0, x: -50 }}
-          animate={{ opacity: 1, x: 0 }}
+          variants={{
+            hidden: { opacity: 0, x: -50, scale: 0.95 },
+            visible: { opacity: 1, x: 0, scale: 1 }
+          }}
+          initial="hidden"
+          whileInView="visible"
+          exit="hidden"
           transition={{ duration: 0.8, ease: "easeOut" }}
+          viewport={{ once: false, amount: 0.3 }}
         >
           <div className="mb-8">
             <motion.h1 
-              className="text-6xl sm:text-7xl lg:text-8xl xl:text-9xl font-bold text-white leading-none mb-4"
+              className="text-6xl sm:text-7xl lg:text-8xl xl:text-9xl font-bold text-gray-900 dark:text-white leading-none mb-4 transition-colors duration-300"
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
@@ -90,7 +124,7 @@ const Home = () => {
               </motion.span>
             </motion.h1>
             <motion.p 
-              className="text-lg sm:text-xl text-gray-400 max-w-md leading-relaxed"
+              className="text-lg sm:text-xl text-gray-600 dark:text-gray-400 max-w-md leading-relaxed transition-colors duration-300"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.6 }}
@@ -126,9 +160,15 @@ const Home = () => {
         {/* Right: Professional Portrait */}
         <motion.div 
           className="w-full lg:w-1/2 flex justify-center lg:justify-end items-center mt-12 lg:mt-0"
-          initial={{ opacity: 0, x: 50 }}
-          animate={{ opacity: 1, x: 0 }}
+          variants={{
+            hidden: { opacity: 0, x: 50, scale: 0.95 },
+            visible: { opacity: 1, x: 0, scale: 1 }
+          }}
+          initial="hidden"
+          whileInView="visible"
+          exit="hidden"
           transition={{ duration: 0.8, delay: 0.4 }}
+          viewport={{ once: false, amount: 0.3 }}
         >
           <div className="relative">
             {/* Animated geometric accents */}

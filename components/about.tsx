@@ -1,14 +1,41 @@
 "use client";
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from "framer-motion";
 
 const About = () => {
+  const [scrollDirection, setScrollDirection] = useState<'up' | 'down'>('down');
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      setScrollDirection(currentScrollY > lastScrollY ? 'down' : 'up');
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [lastScrollY]);
+
+  // Animation variants for scroll-based animations
+  const scrollVariants = {
+    hidden: {
+      opacity: 0,
+      y: 50,
+      scale: 0.95,
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+    },
+  };
+
   const services = [
-    { name: "Web Development", number: "01" },
-    { name: "Game Development", number: "02" },
-    { name: "UI/UX Design", number: "03" },
-    { name: "Mobile Development", number: "04" },
-    { name: "Technical Consulting", number: "05" }
+    { name: "Game Development", number: "01" },
+    { name: "Web Development", number: "02" },
+    { name: "Mobile Game Development", number: "03" },
+
   ];
 
   return (
@@ -79,10 +106,12 @@ const About = () => {
         {/* Section Header */}
         <motion.div 
           className="mb-16"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          variants={scrollVariants}
+          initial="hidden"
+          whileInView="visible"
+          exit="hidden"
           transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
+          viewport={{ once: false, amount: 0.3 }}
         >
           <motion.div 
             className="flex items-center gap-4 mb-6"
@@ -127,10 +156,15 @@ const About = () => {
           {/* Left: Description */}
           <motion.div 
             className="space-y-6"
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            variants={{
+              hidden: { opacity: 0, x: -50, scale: 0.95 },
+              visible: { opacity: 1, x: 0, scale: 1 }
+            }}
+            initial="hidden"
+            whileInView="visible"
+            exit="hidden"
             transition={{ duration: 0.8, delay: 0.2 }}
-            viewport={{ once: true }}
+            viewport={{ once: false, amount: 0.3 }}
           >
             <motion.p 
               className="text-xl text-gray-300 leading-relaxed"
@@ -139,8 +173,8 @@ const About = () => {
               transition={{ duration: 0.6, delay: 0.4 }}
               viewport={{ once: true }}
             >
-              I am a passionate Software Engineer with expertise in web development, 
-              game development, and UI/UX design. I specialize in creating innovative 
+              I am a passionate Software Engineer with expertise in web development and, 
+              game development. I specialize in creating innovative 
               digital solutions that combine technical excellence with exceptional user experience.
             </motion.p>
             <motion.p 
@@ -186,10 +220,15 @@ const About = () => {
           {/* Right: Services List */}
           <motion.div 
             className="space-y-8"
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            variants={{
+              hidden: { opacity: 0, x: 50, scale: 0.95 },
+              visible: { opacity: 1, x: 0, scale: 1 }
+            }}
+            initial="hidden"
+            whileInView="visible"
+            exit="hidden"
             transition={{ duration: 0.8, delay: 0.4 }}
-            viewport={{ once: true }}
+            viewport={{ once: false, amount: 0.3 }}
           >
             <div className="space-y-6">
               {services.map((service, index) => (

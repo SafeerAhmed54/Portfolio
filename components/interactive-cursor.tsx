@@ -18,6 +18,23 @@ const InteractiveCursor = () => {
   const lightX = useSpring(mouseX, { damping: 25, stiffness: 150 });
   const lightY = useSpring(mouseY, { damping: 25, stiffness: 150 });
 
+  // Pre-create all particle springs to avoid hooks order issues
+  const particleSpringConfigs = [
+    { damping: 15, stiffness: 100 },
+    { damping: 18, stiffness: 120 },
+    { damping: 21, stiffness: 140 },
+    { damping: 24, stiffness: 160 },
+    { damping: 27, stiffness: 180 },
+    { damping: 30, stiffness: 200 }
+  ];
+
+  const particleSpringsX = particleSpringConfigs.map(config => 
+    useSpring(mouseX, config)
+  );
+  const particleSpringsY = particleSpringConfigs.map(config => 
+    useSpring(mouseY, config)
+  );
+
   useEffect(() => {
     setIsClient(true);
     
@@ -29,20 +46,28 @@ const InteractiveCursor = () => {
       mouseY.set(newY);
     };
 
-    const handleMouseEnter = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      if (target.tagName === 'BUTTON' || target.tagName === 'A' || target.closest('button') || target.closest('a')) {
+    const handleMouseOver = (e: MouseEvent) => {
+      const target = e.target;
+      
+      // Check if target is a valid Element and has the closest method
+      if (!target || !(target instanceof Element)) return;
+      
+      // Check for interactive elements
+      const isButton = target.tagName === 'BUTTON' || target.tagName === 'A' || 
+                      target.closest('button') || target.closest('a');
+      const isText = target.closest('[data-cursor="text"]') || 
+                    ['H1', 'H2', 'H3', 'H4', 'H5', 'H6'].includes(target.tagName);
+      
+      if (isButton) {
         setCursorVariant("button");
         setIsHovering(true);
-      } else if (target.closest('[data-cursor="text"]') || target.tagName === 'H1' || target.tagName === 'H2' || target.tagName === 'H3') {
+      } else if (isText) {
         setCursorVariant("text");
         setIsHovering(true);
+      } else {
+        setCursorVariant("default");
+        setIsHovering(false);
       }
-    };
-
-    const handleMouseLeave = () => {
-      setCursorVariant("default");
-      setIsHovering(false);
     };
 
     if (typeof window !== "undefined") {
@@ -57,14 +82,12 @@ const InteractiveCursor = () => {
       document.body.classList.add('custom-cursor-active');
       
       document.addEventListener("mousemove", handleMouseMove);
-      document.addEventListener("mouseenter", handleMouseEnter, true);
-      document.addEventListener("mouseleave", handleMouseLeave, true);
+      document.addEventListener("mouseover", handleMouseOver);
       
       return () => {
         document.body.classList.remove('custom-cursor-active');
         document.removeEventListener("mousemove", handleMouseMove);
-        document.removeEventListener("mouseenter", handleMouseEnter, true);
-        document.removeEventListener("mouseleave", handleMouseLeave, true);
+        document.removeEventListener("mouseover", handleMouseOver);
       };
     }
   }, [mouseX, mouseY]);
@@ -122,7 +145,7 @@ const InteractiveCursor = () => {
           y: lightY,
           background: "radial-gradient(circle, rgba(6, 182, 212, 0.1) 0%, rgba(6, 182, 212, 0.05) 30%, rgba(6, 182, 212, 0.01) 60%, transparent 100%)",
           transform: "translate(-50%, -50%)",
-          filter: "blur(40px)",
+
         }}
         animate={{
           scale: isHovering ? 1.3 : 1,
@@ -132,13 +155,13 @@ const InteractiveCursor = () => {
       />
       
       {/* Interactive Particles */}
-      {isClient && [...Array(6)].map((_, i) => (
+      {isClient && particleSpringsX.map((springX, i) => (
         <motion.div
           key={`particle-${i}`}
           className="fixed w-1 h-1 bg-cyan-400/40 rounded-full pointer-events-none z-30"
           style={{
-            x: useSpring(mouseX, { damping: 15 + i * 3, stiffness: 100 + i * 20 }),
-            y: useSpring(mouseY, { damping: 15 + i * 3, stiffness: 100 + i * 20 }),
+            x: springX,
+            y: particleSpringsY[i],
             transform: `translate(-50%, -50%) translate(${Math.cos(i * 60 * Math.PI / 180) * 30}px, ${Math.sin(i * 60 * Math.PI / 180) * 30}px)`,
           }}
           animate={{

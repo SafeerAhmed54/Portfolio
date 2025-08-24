@@ -6,6 +6,11 @@
 }
 
 :root {
+  --background: #ffffff;
+  --foreground: #0a0a0a;
+}
+
+.dark {
   --background: #0a0a0a;
   --foreground: #ffffff;
 }
@@ -15,6 +20,11 @@ body {
   background: var(--background);
   font-family: var(--font-geist-sans), system-ui, sans-serif;
   line-height: 1.6;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 /* Custom scrollbar */
@@ -23,21 +33,52 @@ body {
 }
 
 ::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.dark ::-webkit-scrollbar-track {
   background: #111;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #333;
+  background: #c1c1c1;
   border-radius: 4px;
 }
 
+.dark ::-webkit-scrollbar-thumb {
+  background: #333;
+}
+
 ::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
 
 /* Custom background gradients */
 .bg-gradient-radial {
   background: radial-gradient(circle at center, var(--tw-gradient-stops));
+}
+
+/* Section content scrollbar styling */
+.section-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.section-content::-webkit-scrollbar-track {
+  background: rgba(31, 41, 55, 0.3);
+  border-radius: 3px;
+}
+
+.section-content::-webkit-scrollbar-thumb {
+  background: rgba(6, 182, 212, 0.6);
+  border-radius: 3px;
+}
+
+.section-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(6, 182, 212, 0.8);
 }
 
 /* Animated background effects */
@@ -102,7 +143,6 @@ body {
     rgba(6, 182, 212, 0.01) 75%,
     transparent 100%
   );
-  filter: blur(30px);
 }
 
 .ambient-light-secondary {
@@ -113,7 +153,6 @@ body {
     rgba(34, 211, 238, 0.02) 60%,
     transparent 100%
   );
-  filter: blur(25px);
 }
 
 /* Glow effects for interactive elements */

@@ -1,8 +1,36 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
 const Services = () => {
+  const [scrollDirection, setScrollDirection] = useState<'up' | 'down'>('down');
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      setScrollDirection(currentScrollY > lastScrollY ? 'down' : 'up');
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [lastScrollY]);
+
+  // Animation variants for scroll-based animations
+  const scrollVariants = {
+    hidden: {
+      opacity: 0,
+      y: 50,
+      scale: 0.95,
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+    },
+  };
+
   const services = [
     {
       icon: "💻",
@@ -94,10 +122,12 @@ const Services = () => {
         {/* Section Header */}
         <motion.div 
           className="mb-16"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          variants={scrollVariants}
+          initial="hidden"
+          whileInView="visible"
+          exit="hidden"
           transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
+          viewport={{ once: false, amount: 0.3 }}
         >
           <motion.h2 
             className="text-5xl sm:text-6xl lg:text-7xl font-bold text-white mb-6"
@@ -133,10 +163,19 @@ const Services = () => {
         {/* Services Grid */}
         <motion.div 
           className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
-          variants={containerVariants}
+          variants={{
+            hidden: { opacity: 0 },
+            visible: {
+              opacity: 1,
+              transition: {
+                staggerChildren: 0.1
+              }
+            }
+          }}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true }}
+          exit="hidden"
+          viewport={{ once: false, amount: 0.3 }}
         >
           {services.map((service, index) => (
             <motion.div 
@@ -176,10 +215,12 @@ const Services = () => {
         {/* Stats Section */}
         <motion.div 
           className="grid grid-cols-2 lg:grid-cols-4 gap-8 mt-20 pt-16 border-t border-gray-800"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
+          variants={scrollVariants}
+          initial="hidden"
+          whileInView="visible"
+          exit="hidden"
           transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
+          viewport={{ once: false, amount: 0.3 }}
         >
           {[
             { number: "50+", label: "Projects" },

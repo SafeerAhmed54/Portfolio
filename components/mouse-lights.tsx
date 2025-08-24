@@ -21,6 +21,25 @@ const MouseLights = () => {
   const x3 = useSpring(mouseX, { damping: 35, stiffness: 80 });
   const y3 = useSpring(mouseY, { damping: 35, stiffness: 80 });
 
+  // Pre-create all particle springs to avoid hooks order issues
+  const particleSpringConfigs = [
+    { damping: 20, stiffness: 50 },
+    { damping: 25, stiffness: 60 },
+    { damping: 30, stiffness: 70 },
+    { damping: 35, stiffness: 80 },
+    { damping: 40, stiffness: 90 },
+    { damping: 45, stiffness: 100 },
+    { damping: 50, stiffness: 110 },
+    { damping: 55, stiffness: 120 }
+  ];
+
+  const glowParticleSpringsX = particleSpringConfigs.map(config => 
+    useSpring(mouseX, config)
+  );
+  const glowParticleSpringsY = particleSpringConfigs.map(config => 
+    useSpring(mouseY, config)
+  );
+
   useEffect(() => {
     setIsClient(true);
     
@@ -102,13 +121,13 @@ const MouseLights = () => {
       />
       
       {/* Ambient Glow Particles that follow mouse */}
-      {isClient && [...Array(8)].map((_, i) => (
+      {isClient && glowParticleSpringsX.map((springX, i) => (
         <motion.div
           key={`glow-particle-${i}`}
           className="absolute w-2 h-2 bg-cyan-400/30 rounded-full pointer-events-none"
           style={{
-            x: useSpring(mouseX, { damping: 20 + i * 5, stiffness: 50 + i * 10 }),
-            y: useSpring(mouseY, { damping: 20 + i * 5, stiffness: 50 + i * 10 }),
+            x: springX,
+            y: glowParticleSpringsY[i],
             transform: `translate(-50%, -50%) translate(${Math.cos(i * 45 * Math.PI / 180) * 60}px, ${Math.sin(i * 45 * Math.PI / 180) * 60}px)`,
           }}
           animate={{
@@ -170,7 +189,7 @@ const MouseLights = () => {
           y: y1,
           background: "radial-gradient(circle, rgba(6, 182, 212, 0.03) 0%, rgba(6, 182, 212, 0.01) 40%, transparent 70%)",
           transform: "translate(-50%, -50%)",
-          filter: "blur(20px)",
+
         }}
       />
       
