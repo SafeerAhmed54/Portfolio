@@ -61,7 +61,7 @@ const MouseLights = () => {
       // Set initial position to center of screen
       const centerX = window.innerWidth / 2;
       const centerY = window.innerHeight / 2;
-      setMousePosition({ x: centerX, y: centerY });
+
       mouseX.set(centerX);
       mouseY.set(centerY);
       
