@@ -24,7 +24,7 @@ const Education = () => {
       institution: "COMSATS University Islamabad, Islamabad",
       period: "Feb 2019 - March 2023",
       icon: "/Bachelors.png",
-      type: "Bachelor's Degree",
+      type: "Bachelor&apos;s Degree",
     },
     {
       degree: "Higher Secondary School",
@@ -36,7 +36,7 @@ const Education = () => {
     },
     {
       degree: "Secondary School",
-      field: "General Education",
+      field: "Science",
       institution: "Fazia Inter College, Nur Khan, Rawalpindi",
       period: "April 2014 - July 2016",
       icon: "/Secondary.png",

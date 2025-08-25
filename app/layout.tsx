@@ -15,10 +15,19 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Safeer Ahmad Rana - Software Engineer & Developer",
-  description: "Professional portfolio of Safeer Ahmad Rana - Software Engineer specializing in web development, game development, and UI/UX design. Delivering exceptional digital solutions.",
-  keywords: "Software Engineer, Web Developer, Game Developer, UI/UX Designer, React, Next.js, TypeScript",
+  description:
+    "Professional portfolio of Safeer Ahmad Rana - Software Engineer specializing in web development, game development, and UI/UX design. Delivering exceptional digital solutions.",
+  keywords:
+    "Software Engineer, Web Developer, Game Developer, UI/UX Designer, React, Next.js, TypeScript",
   authors: [{ name: "Safeer Ahmad Rana" }],
   viewport: "width=device-width, initial-scale=1",
+  icons: {
+    icon: [
+      { url: "/Plain Smile.png", type: "image/png" },
+      { url: "/favicon.ico" },
+    ],
+    apple: [{ url: "/Plain Smile.png", sizes: "180x180", type: "image/png" }],
+  },
 };
 
 export default function RootLayout({
@@ -31,9 +40,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white dark:bg-black transition-colors duration-300`}
       >
-        <ThemeProvider>
-          {children}
-        </ThemeProvider>
+        <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
   );

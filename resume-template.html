@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safeer Ahmad Rana - Resume</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            background: white;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 3px solid #06b6d4;
+            padding-bottom: 20px;
+        }
+        
+        .name {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #1a1a1a;
+            margin-bottom: 10px;
+        }
+        
+        .title {
+            font-size: 1.2em;
+            color: #06b6d4;
+            margin-bottom: 15px;
+        }
+        
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            font-size: 0.9em;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+        }
+        
+        .section-title {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #1a1a1a;
+            border-bottom: 2px solid #06b6d4;
+            padding-bottom: 5px;
+            margin-bottom: 15px;
+        }
+        
+        .experience-item, .education-item, .project-item {
+            margin-bottom: 20px;
+        }
+        
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        
+        .item-title {
+            font-weight: bold;
+            color: #1a1a1a;
+        }
+        
+        .item-company {
+            color: #06b6d4;
+            font-weight: 500;
+        }
+        
+        .item-date {
+            color: #666;
+            font-size: 0.9em;
+        }
+        
+        .item-description {
+            color: #555;
+            margin-top: 5px;
+        }
+        
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        
+        .skill-category {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 4px solid #06b6d4;
+        }
+        
+        .skill-category h4 {
+            color: #1a1a1a;
+            margin-bottom: 10px;
+        }
+        
+        .skill-list {
+            list-style: none;
+        }
+        
+        .skill-list li {
+            color: #555;
+            margin-bottom: 5px;
+        }
+        
+        @media print {
+            body {
+                padding: 20px;
+            }
+            .contact-info {
+                font-size: 0.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1 class="name">Safeer Ahmad Rana</h1>
+        <p class="title">Software Engineer | Web Developer | Game Developer</p>
+        <div class="contact-info">
+            <span>📧 safeerahmadrana@gmail.com</span>
+            <span>📱 +92-XXX-XXXXXXX</span>
+            <span>🌐 LinkedIn: /in/safeer-ahmad-rana</span>
+            <span>💻 GitHub: /safeer-ahmad-rana</span>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2 class="section-title">Professional Summary</h2>
+        <p>Passionate Software Engineer with expertise in web development, game development, and UI/UX design. Experienced in modern frameworks like React, Next.js, and Unity. Committed to creating innovative solutions and delivering exceptional user experiences.</p>
+    </div>
+
+    <div class="section">
+        <h2 class="section-title">Experience</h2>
+        
+        <div class="experience-item">
+            <div class="item-header">
+                <div>
+                    <div class="item-title">Software Engineer</div>
+                    <div class="item-company">Your Company Name</div>
+                </div>
+                <div class="item-date">2024 - Present</div>
+            </div>
+            <div class="item-description">
+                • Developed modern web applications using React and Next.js<br>
+                • Collaborated with cross-functional teams to deliver high-quality software solutions<br>
+                • Implemented responsive designs and optimized application performance
+            </div>
+        </div>
+
+        <div class="experience-item">
+            <div class="item-header">
+                <div>
+                    <div class="item-title">Game Developer</div>
+                    <div class="item-company">Freelance</div>
+                </div>
+                <div class="item-date">2023 - 2024</div>
+            </div>
+            <div class="item-description">
+                • Created mobile games using Unity and C#<br>
+                • Designed engaging gameplay mechanics and user interfaces<br>
+                • Published games on mobile app stores
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2 class="section-title">Education</h2>
+        
+        <div class="education-item">
+            <div class="item-header">
+                <div>
+                    <div class="item-title">Bachelor's Degree in Computer Science</div>
+                    <div class="item-company">Your University Name</div>
+                </div>
+                <div class="item-date">2020 - 2024</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2 class="section-title">Key Projects</h2>
+        
+        <div class="project-item">
+            <div class="item-header">
+                <div class="item-title">YCDirectory - Job Posting Platform</div>
+                <div class="item-date">2025</div>
+            </div>
+            <div class="item-description">
+                Modern job-posting solution built with React, Next.js, and Firebase. Features advanced search, user authentication, and real-time updates.
+            </div>
+        </div>
+
+        <div class="project-item">
+            <div class="item-header">
+                <div class="item-title">Bazooka Blast - Mobile Game</div>
+                <div class="item-date">2024</div>
+            </div>
+            <div class="item-description">
+                Hypercasual mobile game developed with Unity and C#. Implemented engaging gameplay mechanics and published on app stores.
+            </div>
+        </div>
+
+        <div class="project-item">
+            <div class="item-header">
+                <div class="item-title">Alpha Impact - Game Development</div>
+                <div class="item-date">2023</div>
+            </div>
+            <div class="item-description">
+                Apocalyptic game with immersive visuals created using Unity, C#, and Blender for 3D modeling.
+            </div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2 class="section-title">Technical Skills</h2>
+        <div class="skills-grid">
+            <div class="skill-category">
+                <h4>Frontend Development</h4>
+                <ul class="skill-list">
+                    <li>React & Next.js</li>
+                    <li>TypeScript & JavaScript</li>
+                    <li>HTML5 & CSS3</li>
+                    <li>Tailwind CSS</li>
+                </ul>
+            </div>
+            <div class="skill-category">
+                <h4>Game Development</h4>
+                <ul class="skill-list">
+                    <li>Unity Engine</li>
+                    <li>C# Programming</li>
+                    <li>Game Design</li>
+                    <li>Mobile Game Development</li>
+                </ul>
+            </div>
+            <div class="skill-category">
+                <h4>Tools & Technologies</h4>
+                <ul class="skill-list">
+                    <li>Firebase</li>
+                    <li>Git & GitHub</li>
+                    <li>Docker</li>
+                    <li>Blender (3D Modeling)</li>
+                </ul>
+            </div>
+            <div class="skill-category">
+                <h4>Design & UI/UX</h4>
+                <ul class="skill-list">
+                    <li>UI/UX Design</li>
+                    <li>Responsive Design</li>
+                    <li>User Experience</li>
+                    <li>Visual Design</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -25,9 +25,9 @@ const Experience = () => {
       period: "July 2025 - Present",
       type: "Full-time",
       responsibilities: [
-        "Contributed to developing and scaling 3+ international mobile game titles, enhancing user engagement and immersive player experiences",
-        "Leveraged Unity and C# to optimize gameplay performance, achieving up to 30% improvement in responsiveness on mobile devices",
-        "Managed 200+ project commits using GitHub & Unity Version Control, ensuring streamlined workflows and efficient collaboration in a product-based environment",
+        "Contributed int the development 2+ mobile game titles, driving higher user engagement and immersive gameplay experiences",
+        "Utilized Unity and C# to enhance gameplay performance, resulting in up to a 30% boost in responsiveness on mobile platforms",
+        "Executed 50+ project commits via GitHub, maintaining efficient collaboration and streamlined workflows in a product-based environment"
       ],
       technologies: ["Unity", "C#", "GitHub", "Version Control"],
       current: true,
@@ -37,11 +37,11 @@ const Experience = () => {
       company: "Skyhisoft",
       location: "Rawalpindi, Pakistan",
       period: "Feb 2023 - Present",
-      type: "Full-time",
+      type: "Full-Time / Part-Time",
       responsibilities: [
         "Contributed in developing 3+ international games, enhancing user engagement and immersive experiences",
         "Utilizing Unity and C#, leading to a 30% improvement in gameplay responsiveness",
-        "Managed 200+ project commits using GitHub & Unity's Version Control for streamlined project workflows",
+        "Managed 200+ project commits using GitHub & Unity&apos;s Version Control for streamlined project workflows",
       ],
       technologies: ["Unity", "C#", "GitHub", "Plastic Version Control"],
       current: true,

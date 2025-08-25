@@ -40,7 +40,7 @@ const Project = () => {
       image: "/Bazooka.png",
       technologies: ["Unity", "C#", "Firebase", "Github"],
       liveUrl: "https://play.google.com/store/apps/details?id=your.bazooka.game", // Replace with Play Store URL
-      sourceUrl: "https://github.com/your-username/bazooka-blast",
+      sourceUrl: "https://github.com/SafeerAhmed54/Bazooka_Blast",
     },
     {
       id: 3,

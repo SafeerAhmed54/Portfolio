@@ -278,6 +278,34 @@ const Contact = () => {
               />
             </motion.a>
             <motion.a
+              href="/Safeer_Ahmad_Rana_Resume.pdf"
+              download
+              className="inline-flex items-center px-8 py-4 bg-transparent border-2 border-cyan-400 text-cyan-400 font-semibold hover:bg-cyan-400 hover:text-black transition-all duration-300 relative overflow-hidden"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <span className="relative z-10">Download Resume</span>
+              <svg
+                className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform relative z-10"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                />
+              </svg>
+              <motion.div
+                className="absolute inset-0 bg-cyan-400"
+                initial={{ x: "-100%" }}
+                whileHover={{ x: 0 }}
+                transition={{ duration: 0.3 }}
+              />
+            </motion.a>
+            <motion.a
               href="mailto:safeerahmadrana@gmail.com"
               className="inline-flex items-center px-8 py-4 bg-transparent border-2 border-white text-white font-semibold hover:bg-white hover:text-black transition-all duration-300 relative overflow-hidden"
               whileHover={{ scale: 1.05 }}
@@ -383,7 +411,7 @@ const Contact = () => {
                       : social.name === "GitHub"
                       ? "https://github.com/SafeerAhmed54"
                       : social.name === "Email"
-                      ? "mailto:safeerahmadrana@gmail.com"
+                      ? "mailto:safeerrana54@gmail.com"
                       : "#"
                   }
                   target="_blank"
