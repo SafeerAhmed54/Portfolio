@@ -1,17 +1,19 @@
-import React from 'react'
+import React from 'react';
 
-const design2 = () => {
+const Design2 = () => {
   return (
-    <div>{/* Space before Cyan Diagonal Banner */}
-    <div className="h-6 w-full"></div>
-    {/* Cyan Diagonal Banner */}
-    <div className="relative mt-32">
-      <div className="absolute w-full text-black h-24 text-7xl font-bold bg-cyan-500 py-2 transform whitespace-nowrap justify-center items-center shadow-2xl shadow-black">
-        &nbsp; GAME DEVELOPMENT • UI/UX DESIGN • WEB DEVELOPMENT • FRONTEND •
-        BACKEND &nbsp;
-      </div>
-    </div></div>
-  )
-}
+    <div>
+      {/* Space before Cyan Diagonal Banner */}
+      <div className="h-6 w-full"></div>
 
-export default design2
+      {/* Cyan Diagonal Marquee Banner */}
+      <div className="relative mt-32 overflow-hidden h-24 bg-cyan-500 shadow-2xl shadow-black">
+        <div className="whitespace-nowrap text-7xl font-bold text-black animate-marquee">
+          &nbsp; GAME DEVELOPMENT • UI/UX DESIGN • WEB DEVELOPMENT • FRONTEND • BACKEND &nbsp;
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Design2;

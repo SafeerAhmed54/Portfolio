@@ -1,106 +1,422 @@
-import React from 'react';
+"use client";
+import React from "react";
+import { motion } from "framer-motion";
 
 const Experience = () => {
+  // Animation variants for scroll-based animations
+  const scrollVariants = {
+    hidden: {
+      opacity: 0,
+      y: 50,
+      scale: 0.95,
+    },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+    },
+  };
+
+  const experienceData = [
+    {
+      title: "Unity Developer",
+      company: "Envision Software SMC",
+      location: "Rawalpindi, Pakistan",
+      period: "July 2025 - Present",
+      type: "Full-time",
+      responsibilities: [
+        "Contributed int the development 2+ mobile game titles, driving higher user engagement and immersive gameplay experiences",
+        "Utilized Unity and C# to enhance gameplay performance, resulting in up to a 30% boost in responsiveness on mobile platforms",
+        "Executed 50+ project commits via GitHub, maintaining efficient collaboration and streamlined workflows in a product-based environment"
+      ],
+      technologies: ["Unity", "C#", "GitHub", "Version Control"],
+      current: true,
+    },
+    {
+      title: "Unity Developer",
+      company: "Skyhisoft",
+      location: "Rawalpindi, Pakistan",
+      period: "Feb 2023 - Present",
+      type: "Full-Time / Part-Time",
+      responsibilities: [
+        "Contributed in developing 3+ international games, enhancing user engagement and immersive experiences",
+        "Utilizing Unity and C#, leading to a 30% improvement in gameplay responsiveness",
+        "Managed 200+ project commits using GitHub & Unity&apos;s Version Control for streamlined project workflows",
+      ],
+      technologies: ["Unity", "C#", "GitHub", "Plastic Version Control"],
+      current: true,
+    },
+    {
+      title: "Game Developer",
+      company: "Freelancer",
+      location: "Fiverr Platform",
+      period: "May 2020 - Present",
+      type: "Freelance",
+      responsibilities: [
+        "Developed and delivered custom game projects for international clients",
+        "Worked on GTAV & FiveM Servers supporting 100+ concurrent players",
+        "Implemented complex game mechanics and intuitive UI/UX elements",
+      ],
+      technologies: ["Lua", "C#", "FiveM", "GTAV Modding"],
+      current: true,
+    },
+  ];
+
   return (
     <section
-      id="education-id"
-      /* fills the viewport, still centred */
-      className="w-screen min-h-screen bg-black flex flex-col items-center
-                 px-4 sm:px-10 lg:px-20 pt-24"
+      id="experience-id"
+      className="w-full bg-white dark:bg-black py-20 px-6 relative overflow-hidden transition-colors duration-300"
     >
-      {/* heading */}
-      <h1 className="font-sans font-bold text-cyan-500 text-2xl sm:text-3xl md:text-4xl">
-        EXPERIENCE
-      </h1>
-      <h2 className="mt-2 font-sans font-bold text-3xl sm:text-5xl md:text-6xl text-center">
-        Companies I have worked for
-      </h2>
+      {/* Animated Background Elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        <motion.div
+          className="absolute top-1/4 right-1/4 w-64 h-64 bg-cyan-400/3 rounded-full blur-3xl"
+          animate={{
+            scale: [1, 1.3, 1],
+            opacity: [0.3, 0.6, 0.3],
+          }}
+          transition={{
+            duration: 12,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        />
+        <motion.div
+          className="absolute bottom-1/3 left-1/5 w-48 h-48 bg-blue-400/2 rounded-full blur-3xl"
+          animate={{
+            scale: [1.2, 1, 1.2],
+            opacity: [0.2, 0.5, 0.2],
+          }}
+          transition={{
+            duration: 15,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
+        />
 
-      {/* cards wrapper — 1 col on phones, 2 on tablets, 3 on big desktops */}
-      <div
-        className="w-full grid gap-8 mt-10
-                   grid-cols-1 md:grid-cols-2 xl:grid-cols-2"
-      >
-        {/* -----  CARD 1  ----- */}
-        <article
-          className="flex flex-col md:flex-row border border-white rounded-2xl
-                     p-8 sm:p-10 hover:shadow-2xl shadow-cyan-500
-                     transition-transform duration-300 hover:scale-105"
+        {/* Floating code symbols */}
+        <motion.div
+          className="absolute top-20 left-20 text-cyan-400/10 text-6xl font-mono"
+          animate={{
+            y: [-10, 10, -10],
+            rotate: [0, 5, 0],
+          }}
+          transition={{
+            duration: 8,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
         >
-          {/* left half */}
-          <div className="md:w-1/2 space-y-4">
-            <h3 className="text-xl sm:text-2xl font-bold">Unity Developer</h3>
-            <p className="text-lg sm:text-xl">Skyhisoft, Rawalpindi</p>
-            <p className="text-base sm:text-lg">
-              Status: Feb&nbsp;2023 <span className="text-cyan-500">——</span>{' '}
-              Current
-            </p>
-            <p className="font-semibold text-base sm:text-lg">Responsibilities:</p>
-            <ul className="list-disc pl-5 text-base sm:text-lg space-y-1">
-              <li>
-                Contributed in developing 3+ international games, improving user
-                engagement and immersion.
-              </li>
-              <li>
-                Utilised Unity & C#, achieving a 30 % gain in gameplay
-                responsiveness.
-              </li>
-              <li>
-                Managed 200 + commits via GitHub &amp; Unity Version Control.
-              </li>
-            </ul>
-          </div>
-
-          {/* right half */}
-          <div className="md:w-1/2 flex justify-center md:justify-end items-center mt-6 md:mt-0">
-            <a
-              href="/path/to/your/file.pdf"
-              download
-              className="inline-flex"
-              aria-label="Download details as PDF"
-            >
-              <img src="/Higher.png" alt="" width={120} height={100} />
-            </a>
-          </div>
-        </article>
-
-        {/* -----  CARD 2  ----- */}
-        <article
-          className="flex flex-col md:flex-row border border-white rounded-2xl
-                     p-8 sm:p-10 hover:shadow-2xl shadow-cyan-500
-                     transition-transform duration-300 hover:scale-105"
+          {"{}"}
+        </motion.div>
+        <motion.div
+          className="absolute bottom-32 right-32 text-cyan-400/10 text-4xl font-mono"
+          animate={{
+            y: [10, -10, 10],
+            rotate: [0, -5, 0],
+          }}
+          transition={{
+            duration: 10,
+            repeat: Infinity,
+            ease: "easeInOut",
+          }}
         >
-          <div className="md:w-1/2 space-y-4">
-            <h3 className="text-xl sm:text-2xl font-bold">
-              Freelancer&nbsp;(Game&nbsp;Developer)
-            </h3>
-            <p className="text-lg sm:text-xl">Fiverr</p>
-            <p className="text-base sm:text-lg">
-              Status: May 2020 <span className="text-cyan-500">——</span>{' '}
-              Current
-            </p>
-            <p className="font-semibold text-base sm:text-lg">Responsibilities:</p>
-            <ul className="list-disc pl-5 text-base sm:text-lg space-y-1">
-              <li>Developed and delivered game projects on Fiverr.</li>
-              <li>
-                Worked on GTAV &amp; FiveM servers (100 + players) for various
-                clients.
-              </li>
-              <li>Implemented core mechanics and UI/UX elements.</li>
-            </ul>
-          </div>
+          {"</>"}
+        </motion.div>
+      </div>
 
-          <div className="md:w-1/2 flex justify-center md:justify-end items-center mt-6 md:mt-0">
-            <a
-              href="/path/to/your/file.pdf"
-              download
-              className="inline-flex"
-              aria-label="Download details as PDF"
+      <div className="max-w-7xl mx-auto relative z-10">
+        {/* Section Header */}
+        <motion.div
+          className="mb-16"
+          variants={scrollVariants}
+          initial="hidden"
+          whileInView="visible"
+          exit="hidden"
+          transition={{ duration: 0.8 }}
+          viewport={{ once: false, amount: 0.3 }}
+        >
+          <motion.div
+            className="flex items-center gap-4 mb-6"
+            variants={{
+              hidden: { opacity: 0, x: -30 },
+              visible: { opacity: 1, x: 0 },
+            }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+          >
+            <span className="text-cyan-400 font-mono text-sm tracking-wider">
+              EXPERIENCE
+            </span>
+            <motion.div
+              className="h-px bg-cyan-400 flex-1"
+              variants={{
+                hidden: { scaleX: 0 },
+                visible: { scaleX: 1 },
+              }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+            />
+          </motion.div>
+          <motion.h2
+            className="text-5xl sm:text-6xl lg:text-7xl font-bold text-gray-900 dark:text-white mb-4 transition-colors duration-300"
+            variants={{
+              hidden: { opacity: 0, y: 30 },
+              visible: { opacity: 1, y: 0 },
+            }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+          >
+            Professional
+            <br />
+            <motion.span
+              className="text-cyan-400 inline-block"
+              variants={{
+                hidden: { opacity: 0, scale: 0.8 },
+                visible: { opacity: 1, scale: 1 },
+              }}
+              transition={{ duration: 0.8, delay: 0.5 }}
             >
-              <img src="/Higher.png" alt="" width={120} height={100} />
-            </a>
-          </div>
-        </article>
+              Experience
+            </motion.span>
+          </motion.h2>
+          <motion.p
+            className="text-xl text-gray-600 dark:text-gray-400 transition-colors duration-300"
+            variants={{
+              hidden: { opacity: 0, y: 20 },
+              visible: { opacity: 1, y: 0 },
+            }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+          >
+            Companies I have worked with
+          </motion.p>
+        </motion.div>
+
+        {/* Experience Cards */}
+        <div className="space-y-12">
+          {experienceData.map((exp, index) => (
+            <motion.div
+              key={index}
+              className="group relative"
+              variants={{
+                hidden: {
+                  opacity: 0,
+                  x: index % 2 === 0 ? -50 : 50,
+                  scale: 0.95,
+                },
+                visible: {
+                  opacity: 1,
+                  x: 0,
+                  scale: 1,
+                },
+              }}
+              initial="hidden"
+              whileInView="visible"
+              exit="hidden"
+              transition={{ duration: 0.8, delay: index * 0.2 }}
+              viewport={{ once: false, amount: 0.3 }}
+            >
+              {/* Animated Timeline Line */}
+              {index !== experienceData.length - 1 && (
+                <motion.div
+                  className="absolute left-6 top-20 w-px h-32 bg-gray-700"
+                  variants={{
+                    hidden: { scaleY: 0, opacity: 0 },
+                    visible: { scaleY: 1, opacity: 1 },
+                  }}
+                  transition={{ duration: 0.8, delay: 0.5 + index * 0.2 }}
+                />
+              )}
+
+              {/* Experience Card */}
+              <motion.div
+                className="flex flex-col lg:flex-row gap-8 p-8 bg-gray-100/50 dark:bg-gray-900/30 border border-gray-300 dark:border-gray-800 hover:border-cyan-400/50 transition-all duration-300 group-hover:bg-gray-200/50 dark:group-hover:bg-gray-900/50 relative overflow-hidden"
+                whileHover={{
+                  scale: 1.01,
+                  boxShadow: "0 20px 40px rgba(6, 182, 212, 0.1)",
+                }}
+              >
+                {/* Hover background effect */}
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-r from-cyan-400/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  initial={{ x: "-100%" }}
+                  whileHover={{ x: 0 }}
+                  transition={{ duration: 0.5 }}
+                />
+
+                {/* Animated Timeline Dot */}
+                <motion.div
+                  className="flex-shrink-0 w-12 h-12 bg-cyan-400 rounded-full flex items-center justify-center font-bold text-black text-lg relative z-10"
+                  variants={{
+                    hidden: { scale: 0, opacity: 0 },
+                    visible: { scale: 1, opacity: 1 },
+                  }}
+                  transition={{ duration: 0.5, delay: 0.3 + index * 0.2 }}
+                  whileHover={{ scale: 1.1 }}
+                >
+                  {exp.current && (
+                    <motion.div
+                      className="absolute -top-1 -right-1 w-4 h-4 bg-green-400 rounded-full"
+                      animate={{ scale: [1, 1.2, 1] }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                    />
+                  )}
+                  {index + 1}
+                </motion.div>
+
+                {/* Content */}
+                <div className="flex-1 space-y-6 relative z-10">
+                  {/* Header */}
+                  <motion.div
+                    className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
+                    variants={{
+                      hidden: { opacity: 0, y: 20 },
+                      visible: { opacity: 1, y: 0 },
+                    }}
+                    transition={{ duration: 0.6, delay: 0.4 + index * 0.2 }}
+                  >
+                    <div>
+                      <h3 className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white group-hover:text-cyan-400 transition-colors">
+                        {exp.title}
+                      </h3>
+                      <p className="text-xl text-cyan-400 font-semibold">
+                        {exp.company} • {exp.location}
+                      </p>
+                    </div>
+                    <div className="text-right">
+                      <motion.span
+                        className="inline-flex items-center px-3 py-1 bg-cyan-400/10 border border-cyan-400/30 text-cyan-400 text-sm font-mono"
+                        whileHover={{ scale: 1.05 }}
+                      >
+                        {exp.type}
+                      </motion.span>
+                      <p className="text-gray-600 dark:text-gray-400 font-mono mt-1 transition-colors duration-300">
+                        {exp.period}
+                      </p>
+                    </div>
+                  </motion.div>
+
+                  {/* Responsibilities */}
+                  <motion.div
+                    variants={{
+                      hidden: { opacity: 0, y: 20 },
+                      visible: { opacity: 1, y: 0 },
+                    }}
+                    transition={{ duration: 0.6, delay: 0.5 + index * 0.2 }}
+                  >
+                    <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3 transition-colors duration-300">
+                      Key Responsibilities:
+                    </h4>
+                    <ul className="space-y-2">
+                      {exp.responsibilities.map((resp, respIndex) => (
+                        <motion.li
+                          key={respIndex}
+                          className="flex items-start gap-3 text-gray-700 dark:text-gray-300 transition-colors duration-300"
+                          variants={{
+                            hidden: { opacity: 0, x: -20 },
+                            visible: { opacity: 1, x: 0 },
+                          }}
+                          transition={{
+                            duration: 0.5,
+                            delay: 0.6 + index * 0.2 + respIndex * 0.1,
+                          }}
+                        >
+                          <motion.div
+                            className="w-2 h-2 bg-cyan-400 rounded-full mt-2 flex-shrink-0"
+                            variants={{
+                              hidden: { scale: 0, opacity: 0 },
+                              visible: { scale: 1, opacity: 1 },
+                            }}
+                            transition={{
+                              duration: 0.3,
+                              delay: 0.7 + index * 0.2 + respIndex * 0.1,
+                            }}
+                          />
+                          <span>{resp}</span>
+                        </motion.li>
+                      ))}
+                    </ul>
+                  </motion.div>
+
+                  {/* Technologies */}
+                  <motion.div
+                    variants={{
+                      hidden: { opacity: 0, y: 20 },
+                      visible: { opacity: 1, y: 0 },
+                    }}
+                    transition={{ duration: 0.6, delay: 0.7 + index * 0.2 }}
+                  >
+                    <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3 transition-colors duration-300">
+                      Technologies:
+                    </h4>
+                    <div className="flex flex-wrap gap-2">
+                      {exp.technologies.map((tech, techIndex) => (
+                        <motion.span
+                          key={techIndex}
+                          className="px-3 py-1 bg-gray-200 dark:bg-gray-800 border border-gray-400 dark:border-gray-700 text-gray-700 dark:text-gray-300 text-sm font-mono hover:border-cyan-400/50 transition-colors"
+                          variants={{
+                            hidden: { opacity: 0, scale: 0.8 },
+                            visible: { opacity: 1, scale: 1 },
+                          }}
+                          transition={{
+                            duration: 0.4,
+                            delay: 0.8 + index * 0.2 + techIndex * 0.1,
+                          }}
+                          whileHover={{
+                            scale: 1.05,
+                            backgroundColor: "rgba(6, 182, 212, 0.1)",
+                          }}
+                        >
+                          {tech}
+                        </motion.span>
+                      ))}
+                    </div>
+                  </motion.div>
+                </div>
+              </motion.div>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Bottom Stats */}
+        <motion.div
+          className="grid grid-cols-1 sm:grid-cols-4 gap-8 mt-20 pt-16 border-t border-gray-800"
+          variants={scrollVariants}
+          initial="hidden"
+          whileInView="visible"
+          exit="hidden"
+          transition={{ duration: 0.8 }}
+          viewport={{ once: false, amount: 0.3 }}
+        >
+          {[
+            { number: "2+", label: "Years Experience" },
+            { number: "50+", label: "Projects Delivered" },
+            { number: "100+", label: "Happy Clients" },
+            { number: "2", label: "Active Roles" },
+          ].map((stat, index) => (
+            <motion.div
+              key={index}
+              className="text-center"
+              variants={{
+                hidden: { opacity: 0, scale: 0.8, y: 20 },
+                visible: { opacity: 1, scale: 1, y: 0 },
+              }}
+              transition={{ duration: 0.6, delay: index * 0.1 }}
+              whileHover={{ scale: 1.05 }}
+            >
+              <motion.div
+                className="text-4xl font-bold text-cyan-400 mb-2"
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  visible: { opacity: 1, y: 0 },
+                }}
+                transition={{ duration: 0.6, delay: 0.2 + index * 0.1 }}
+              >
+                {stat.number}
+              </motion.div>
+              <div className="text-gray-400 uppercase tracking-wider text-sm">
+                {stat.label}
+              </div>
+            </motion.div>
+          ))}
+        </motion.div>
       </div>
     </section>
   );

@@ -1,39 +1,42 @@
+"use client";
+import React from "react";
 import Header from "@/components/header";
-import Hero from "@/components/home";
-import Design from "@/components/design";
+import Home from "@/components/home";
+//import Services from "@/components/services";
 import About from "@/components/about";
-import Design2 from "@/components/design2";
 import Education from "@/components/education";
-import Skill from "@/components/skills";
 import Experience from "@/components/experience";
+import Skills from "@/components/skills-new";
 import Project from "@/components/project";
 import Contact from "@/components/contact";
+import AnimatedBackground from "@/components/background";
+import MouseLights from "@/components/mouse-lights";
+import InteractiveCursor from "@/components/interactive-cursor";
 
-// Main Page
-// Home Page
-// Need to work
-// Improving it
-// Hello
-
-export default function Home() {
+export default function HomePage() {
   return (
-    <div className="bg-black p-4">
-      <Header/>
-      <Hero/>
-      {/* <div className="h-6 w-full"></div> */}
-      {/* <Design/> */}
-      <About/>
-      {/* <Design2/> */}
-      <Education/>
-      {/* <div className="h-40 w-full"></div> */}
-      {/* <Design/> */}
-      {/* <div className="h-20 w-full"></div> */}
-      <Skill/>
-      <Experience/>
-      {/* <div className="h-40 w-full"></div> */}
-      {/* <Design/> */}
-      <Project/>
-      <Contact/>
+    <div className="bg-black relative min-h-screen">
+      {/* Interactive Custom Cursor */}
+      <InteractiveCursor />
+
+      {/* Mouse-Following Ambient Lights */}
+      <MouseLights />
+
+      {/* Sophisticated Animated Background */}
+      <AnimatedBackground />
+
+      {/* Content */}
+      <div className="relative z-10">
+        <Header />
+        <Home />
+        {/* <Services /> */}
+        <About />
+        <Education />
+        <Experience />
+        <Skills />
+        <Project />
+        <Contact />
+      </div>
     </div>
   );
 }
