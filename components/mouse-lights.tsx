@@ -4,7 +4,7 @@ import { motion, useMotionValue, useSpring } from "framer-motion";
 
 const MouseLights = () => {
   const [isClient, setIsClient] = useState(false);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
   
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -33,12 +33,18 @@ const MouseLights = () => {
     { damping: 55, stiffness: 120 }
   ];
 
-  const glowParticleSpringsX = particleSpringConfigs.map(config => 
-    useSpring(mouseX, config)
-  );
-  const glowParticleSpringsY = particleSpringConfigs.map(config => 
-    useSpring(mouseY, config)
-  );
+  const glowParticleSpringsX = [
+    useSpring(mouseX, particleSpringConfigs[0]),
+    useSpring(mouseX, particleSpringConfigs[1]),
+    useSpring(mouseX, particleSpringConfigs[2]),
+    useSpring(mouseX, particleSpringConfigs[3])
+  ];
+  const glowParticleSpringsY = [
+    useSpring(mouseY, particleSpringConfigs[0]),
+    useSpring(mouseY, particleSpringConfigs[1]),
+    useSpring(mouseY, particleSpringConfigs[2]),
+    useSpring(mouseY, particleSpringConfigs[3])
+  ];
 
   useEffect(() => {
     setIsClient(true);
@@ -46,7 +52,7 @@ const MouseLights = () => {
     const handleMouseMove = (e: MouseEvent) => {
       const newX = e.clientX;
       const newY = e.clientY;
-      setMousePosition({ x: newX, y: newY });
+
       mouseX.set(newX);
       mouseY.set(newY);
     };

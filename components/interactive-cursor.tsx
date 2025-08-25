@@ -6,7 +6,7 @@ const InteractiveCursor = () => {
   const [isClient, setIsClient] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
   const [cursorVariant, setCursorVariant] = useState("default");
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
   
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -28,12 +28,18 @@ const InteractiveCursor = () => {
     { damping: 30, stiffness: 200 }
   ];
 
-  const particleSpringsX = particleSpringConfigs.map(config => 
-    useSpring(mouseX, config)
-  );
-  const particleSpringsY = particleSpringConfigs.map(config => 
-    useSpring(mouseY, config)
-  );
+  const particleSpringsX = [
+    useSpring(mouseX, particleSpringConfigs[0]),
+    useSpring(mouseX, particleSpringConfigs[1]),
+    useSpring(mouseX, particleSpringConfigs[2]),
+    useSpring(mouseX, particleSpringConfigs[3])
+  ];
+  const particleSpringsY = [
+    useSpring(mouseY, particleSpringConfigs[0]),
+    useSpring(mouseY, particleSpringConfigs[1]),
+    useSpring(mouseY, particleSpringConfigs[2]),
+    useSpring(mouseY, particleSpringConfigs[3])
+  ];
 
   useEffect(() => {
     setIsClient(true);
@@ -41,7 +47,7 @@ const InteractiveCursor = () => {
     const handleMouseMove = (e: MouseEvent) => {
       const newX = e.clientX;
       const newY = e.clientY;
-      setMousePosition({ x: newX, y: newY });
+
       mouseX.set(newX);
       mouseY.set(newY);
     };

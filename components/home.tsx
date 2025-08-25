@@ -1,33 +1,8 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { motion } from "framer-motion";
 
 const Home = () => {
-  const [scrollDirection, setScrollDirection] = useState<'up' | 'down'>('down');
-  const [lastScrollY, setLastScrollY] = useState(0);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      setScrollDirection(currentScrollY > lastScrollY ? 'down' : 'up');
-      setLastScrollY(currentScrollY);
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [lastScrollY]);
-
-  // Animation variants for scroll-based animations
-  const scrollVariants = {
-    hidden: {
-      opacity: 0,
-      y: 50,
-      scale: 0.95,
-    },
-    visible: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
     },
   };
 

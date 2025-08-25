@@ -1,36 +1,8 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { motion } from "framer-motion";
 
 const Services = () => {
-  const [scrollDirection, setScrollDirection] = useState<'up' | 'down'>('down');
-  const [lastScrollY, setLastScrollY] = useState(0);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      setScrollDirection(currentScrollY > lastScrollY ? 'down' : 'up');
-      setLastScrollY(currentScrollY);
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [lastScrollY]);
-
-  // Animation variants for scroll-based animations
-  const scrollVariants = {
-    hidden: {
-      opacity: 0,
-      y: 50,
-      scale: 0.95,
-    },
-    visible: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-    },
-  };
-
   const services = [
     {
       icon: "💻",
@@ -63,16 +35,6 @@ const Services = () => {
       description: "Strategic guidance and technical expertise"
     }
   ];
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1
-      }
-    }
-  };
 
   const itemVariants = {
     hidden: { opacity: 0, y: 20 },
