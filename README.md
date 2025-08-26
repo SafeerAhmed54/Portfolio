@@ -1,36 +1,80 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Safeer Ahmad Rana — Portfolio
 
-## Getting Started
+[![Portfolio Screenshot](public/portfolio-preview.png)](https://safeer-ahmad-rana.vercel.app)
 
-First, run the development server:
+Welcome to my personal portfolio website, built with [Next.js](https://nextjs.org/) and [Tailwind CSS](https://tailwindcss.com/).  
+Showcasing my work in Game Development, Web Development, and UI/UX Design.
+
+🌐 **Live Project:** [safeer-ahmad-rana.vercel.app](https://safeer-ahmad-rana.vercel.app)
+
+---
+
+## 🚀 Features
+
+- Responsive design for all devices
+- Animated backgrounds and interactive UI
+- Sections for About, Education, Experience, Projects, and Contact
+- Downloadable resume
+- Modern stack: Next.js, React, Tailwind CSS, Framer Motion
+
+---
+
+## 📸 Preview
+
+![Portfolio Home](public/portfolio-home.png)
+![Portfolio About](public/portfolio-about.png)
+![Portfolio Projects](public/portfolio-projects.png)
+
+---
+
+## 🛠️ Getting Started
+
+Clone the repository and install dependencies:
+
+```bash
+git clone https://github.com/yourusername/portfolio.git
+cd portfolio
+npm install
+```
+
+Run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 📁 Project Structure
 
-## Learn More
+- `components/` — React components for each section
+- `public/` — Static assets and images
+- `styles/` — Global styles
+- `app/` — Next.js app directory
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📄 License
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+This project is open source and available under the [MIT License](LICENSE).
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🙋‍♂️ Contact
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Feel free to connect with me:
+
+- [LinkedIn](https://www.linkedin.com/in/safeer-ahmad-rana/)
+- [GitHub](https://github.com/safeer-ahmad-rana)
+- [Portfolio](https://safeer-ahmad-rana.vercel.app)
+
+---
+
+> © 2025 Safeer Ahmad Rana. All rights reserved.
+
+```
+**Note:**  
+- Place your screenshots in the `public/` folder as `portfolio-preview.png`, `portfolio-home.png`, `portfolio-about.png`, and `portfolio-projects.png` or update the image paths as needed.
+- Update the GitHub repo link if you
