@@ -20,8 +20,8 @@ const AnimatedBackground = () => {
   useEffect(() => {
     setIsClient(true);
 
-    // Generate matrix particles
-    const newParticles = [...Array(80)].map((_, i) => ({
+    // Generate matrix particles (reduced for performance)
+    const newParticles = [...Array(40)].map((_, i) => ({
       id: i,
       left: Math.random() * 100,
       delay: Math.random() * 15,
@@ -29,8 +29,8 @@ const AnimatedBackground = () => {
       text: Math.random() > 0.7 ? "{ }" : Math.random() > 0.5 ? "01" : "10",
     }));
 
-    // Generate floating geometric elements
-    const newFloatingElements = [...Array(20)].map((_, i) => ({
+    // Generate floating geometric elements (reduced for performance)
+    const newFloatingElements = [...Array(12)].map((_, i) => ({
       id: i,
       x: Math.random() * 100,
       y: Math.random() * 100,

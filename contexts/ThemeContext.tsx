@@ -40,8 +40,6 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     document.body.classList.add(theme);
     
     localStorage.setItem('theme', theme);
-    
-    console.log('Theme applied:', theme); // Debug log
   }, [theme, mounted]);
 
   const toggleTheme = () => {

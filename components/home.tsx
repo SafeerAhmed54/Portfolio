@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 const Home = () => {
 
@@ -174,12 +175,13 @@ const Home = () => {
               whileHover={{ scale: 1.02 }}
               transition={{ duration: 0.3 }}
             >
-              <img
+              <Image
                 src="/Safeer.png"
                 alt="Safeer Ahmad Rana - Software Engineer"
                 width={500}
                 height={600}
                 className="object-cover w-full h-auto max-w-md lg:max-w-lg grayscale hover:grayscale-0 transition-all duration-500"
+                priority
               />
               {/* Overlay gradient */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
