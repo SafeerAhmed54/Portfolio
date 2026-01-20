@@ -1,7 +1,20 @@
 "use client";
 import React, { useState, useEffect } from "react";
+
+// Navigation items configuration
+const navigationItems = [
+  { href: '#home-id', label: 'Home' },
+  { href: '#about-id', label: 'About' },
+  { href: '#experience-id', label: 'Experience' },
+  { href: '#skills-id', label: 'Skills' },
+  { href: '#project-id', label: 'Projects' },
+  { href: '#contact-id', label: 'Contact' }
+];
+
 const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isAnimating, setIsAnimating] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -10,6 +23,19 @@ const Header = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Mobile menu toggle functionality
+  const toggleMobileMenu = () => {
+    if (isAnimating) return; // Prevent rapid toggles during animation
+    
+    setIsAnimating(true);
+    setIsMobileMenuOpen(prev => !prev);
+    
+    // Reset animation state after animation completes
+    setTimeout(() => {
+      setIsAnimating(false);
+    }, 300); // Match animation duration
+  };
 
   return (
     <header
@@ -33,54 +59,15 @@ const Header = () => {
 
           {/* Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            <a
-              href="#home-id"
-              className="text-gray-600 dark:text-gray-300 hover:text-cyan-400 transition-colors font-medium"
-            >
-              Home
-            </a>
-            {/* <a 
-              href="#services-id" 
-              className="text-gray-600 dark:text-gray-300 hover:text-cyan-400 transition-colors font-medium"
-            >
-              Services
-            </a> */}
-            <a
-              href="#about-id"
-              className="text-gray-600 dark:text-gray-300 hover:text-cyan-400 transition-colors font-medium"
-            >
-              About
-            </a>
-            {/* <a 
-              href="#education-id" 
-              className="text-gray-600 dark:text-gray-300 hover:text-cyan-400 transition-colors font-medium"
-            >
-              Education
-            </a> */}
-            <a
-              href="#experience-id"
-              className="text-gray-600 dark:text-gray-300 hover:text-cyan-400 transition-colors font-medium"
-            >
-              Experience
-            </a>
-            <a
-              href="#skills-id"
-              className="text-gray-600 dark:text-gray-300 hover:text-cyan-400 transition-colors font-medium"
-            >
-              Skills
-            </a>
-            <a
-              href="#project-id"
-              className="text-gray-600 dark:text-gray-300 hover:text-cyan-400 transition-colors font-medium"
-            >
-              Projects
-            </a>
-            <a
-              href="#contact-id"
-              className="text-gray-600 dark:text-gray-300 hover:text-cyan-400 transition-colors font-medium"
-            >
-              Contact
-            </a>
+            {navigationItems.map((item) => (
+              <a
+                key={item.href}
+                href={item.href}
+                className="text-gray-600 dark:text-gray-300 hover:text-cyan-400 transition-colors font-medium"
+              >
+                {item.label}
+              </a>
+            ))}
           </nav>
 
           {/* CTA Button */}
@@ -111,7 +98,13 @@ const Header = () => {
             </a>
 
             {/* Mobile Menu Button */}
-            <button className="md:hidden text-gray-900 dark:text-white transition-colors duration-300">
+            <button 
+              onClick={toggleMobileMenu}
+              className="md:hidden text-gray-900 dark:text-white transition-colors duration-300 p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg"
+              aria-label={isMobileMenuOpen ? "Close mobile menu" : "Open mobile menu"}
+              aria-expanded={isMobileMenuOpen}
+              disabled={isAnimating}
+            >
               <svg
                 className="w-6 h-6"
                 fill="none"
