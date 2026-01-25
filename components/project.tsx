@@ -21,6 +21,30 @@ const Project = () => {
   const projects = [
     {
       id: 1,
+      title: "Notary Lawyer",
+      category: "Web Development",
+      year: "2025",
+      description:
+        "Modern Notary solution with cutting edge features for user experience",
+      image: "/Mock-up-Notary.png",
+      technologies: ["React", "HTML5", "Firebase", "Github"],
+      liveUrl: "https://notary-website-main.vercel.app", // Replace with your live project URL
+      sourceUrl: "https://github.com/SafeerAhmed54/Notary_Website--2", // Replace with your GitHub repo URL
+    },
+    {
+      id: 2,
+      title: "GLOBAL Lawyer",
+      category: "Web Development",
+      year: "2025",
+      description:
+        "Esthethic looking solution with advanced features for user experience",
+      image: "/Mock-up-Global.png",
+      technologies: ["React", "HTML5", "Firebase", "Github"],
+      liveUrl: "https://global-lawyer.vercel.app", // Replace with your live project URL
+      sourceUrl: "https://github.com/SafeerAhmed54/Global_Lawyer_Website", // Replace with your GitHub repo URL
+    },
+    {
+      id: 3,
       title: "YCDirectory",
       category: "Web Development",
       year: "2025",
@@ -32,7 +56,7 @@ const Project = () => {
       sourceUrl: "https://github.com/SafeerAhmed54/NextJs_Project", // Replace with your GitHub repo URL
     },
     {
-      id: 2,
+      id: 4,
       title: "Bazooka Blast",
       category: "Mobile Game Development",
       year: "2024",
@@ -43,7 +67,7 @@ const Project = () => {
       sourceUrl: "https://github.com/SafeerAhmed54/Bazooka_Blast",
     },
     {
-      id: 3,
+      id: 5,
       title: "Alpha Impact",
       category: "Game Development",
       year: "2023",

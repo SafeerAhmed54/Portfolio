@@ -19,15 +19,29 @@ const Experience = () => {
 
   const experienceData = [
     {
+      title: "Web Developer",
+      company: "Evamp & Saanga",
+      location: "Islamabad, Pakistan",
+      period: "October 2025 - Present",
+      type: "Full-time",
+      responsibilities: [
+        "Developed and maintained 10+ responsive web applications, improving overall user experience and usability.",
+        "Built modern UI components using HTML, CSS, JavaScript, and React, reducing development time by 25%.",
+        "Debugged and refactored legacy code, reducing production bugs by 45% and improving code maintainability."
+      ],
+      technologies: ["JavaScript", "React", "Redux" ,"Tailwind CSS","HTML5"],
+      current: true,
+    },
+    {
       title: "Unity Developer",
       company: "Envision Software SMC",
       location: "Rawalpindi, Pakistan",
-      period: "July 2025 - Present",
+      period: "July 2025 - October 2025",
       type: "Full-time",
       responsibilities: [
-        "Contributed int the development 2+ mobile game titles, driving higher user engagement and immersive gameplay experiences",
-        "Utilized Unity and C# to enhance gameplay performance, resulting in up to a 30% boost in responsiveness on mobile platforms",
-        "Executed 50+ project commits via GitHub, maintaining efficient collaboration and streamlined workflows in a product-based environment"
+        "Contributed int the development 2+ mobile game titles, driving higher user engagement and immersive gameplay experiences.",
+        "Utilized Unity and C# to enhance gameplay performance, resulting in up to a 30% boost in responsiveness on mobile platforms.",
+        "Executed 50+ project commits via GitHub, maintaining efficient collaboration and streamlined workflows in a product-based environment."
       ],
       technologies: ["Unity", "C#", "GitHub", "Version Control"],
       current: true,
@@ -39,9 +53,9 @@ const Experience = () => {
       period: "Feb 2023 - Present",
       type: "Full-Time / Part-Time",
       responsibilities: [
-        "Contributed in developing 3+ international games, enhancing user engagement and immersive experiences",
-        "Utilizing Unity and C#, leading to a 30% improvement in gameplay responsiveness",
-        "Managed 200+ project commits using GitHub & Unity&apos;s Version Control for streamlined project workflows",
+        "Contributed in developing 3+ international games, enhancing user engagement and immersive experiences.",
+        "Utilizing Unity and C#, leading to a 30% improvement in gameplay responsiveness.",
+        "Managed 200+ project commits using GitHub & Unity&apos;s Version Control for streamlined project workflows.",
       ],
       technologies: ["Unity", "C#", "GitHub", "Plastic Version Control"],
       current: true,
@@ -53,9 +67,9 @@ const Experience = () => {
       period: "May 2020 - Present",
       type: "Freelance",
       responsibilities: [
-        "Developed and delivered custom game projects for international clients",
-        "Worked on GTAV & FiveM Servers supporting 100+ concurrent players",
-        "Implemented complex game mechanics and intuitive UI/UX elements",
+        "Developed and delivered custom game projects for international clients.",
+        "Worked on GTAV & FiveM Servers supporting 100+ concurrent players.",
+        "Implemented complex game mechanics and intuitive UI/UX elements.",
       ],
       technologies: ["Lua", "C#", "FiveM", "GTAV Modding"],
       current: true,

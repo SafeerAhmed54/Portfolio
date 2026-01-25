@@ -18,6 +18,7 @@ const Header = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [scrollPosition, setScrollPosition] = useState(0);
 
   useEffect(() => {
     setMounted(true);
@@ -31,26 +32,41 @@ const Header = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Enhanced scroll behavior management
+  useEffect(() => {
+    if (isMobileMenuOpen) {
+      // Store current scroll position
+      const currentScrollY = window.scrollY;
+      setScrollPosition(currentScrollY);
+      
+      // Prevent body scroll and maintain scroll position
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${currentScrollY}px`;
+      document.body.style.width = '100%';
+      document.body.style.overflow = 'hidden';
+    } else {
+      // Restore body scroll and scroll position
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+      document.body.style.overflow = '';
+      
+      // Restore scroll position
+      window.scrollTo(0, scrollPosition);
+    }
+  }, [isMobileMenuOpen, scrollPosition]);
+
   // Mobile menu toggle functionality
   const toggleMobileMenu = () => {
     if (isAnimating) return; // Prevent rapid toggles during animation
     
     setIsAnimating(true);
-    setIsMobileMenuOpen(prev => {
-      const newState = !prev;
-      // Prevent body scroll when menu is open
-      if (newState) {
-        document.body.style.overflow = 'hidden';
-      } else {
-        document.body.style.overflow = 'unset';
-      }
-      return newState;
-    });
+    setIsMobileMenuOpen(prev => !prev);
     
-    // Reset animation state after animation completes
+    // Reset animation state after animation completes (increased to match new animation duration)
     setTimeout(() => {
       setIsAnimating(false);
-    }, 300); // Match animation duration
+    }, 400); // Match enhanced animation duration
   };
 
   // Close mobile menu when clicking outside or on navigation links
@@ -60,18 +76,19 @@ const Header = () => {
     setIsAnimating(true);
     setIsMobileMenuOpen(false);
     
-    // Restore body scroll
-    document.body.style.overflow = 'unset';
-    
     setTimeout(() => {
       setIsAnimating(false);
-    }, 300);
+    }, 400); // Match enhanced animation duration
   };
 
-  // Cleanup effect to restore scroll on unmount
+  // Enhanced cleanup effect to restore scroll on unmount or page navigation
   useEffect(() => {
     return () => {
-      document.body.style.overflow = 'unset';
+      // Restore body styles on cleanup
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+      document.body.style.overflow = '';
     };
   }, []);
 
@@ -194,53 +211,109 @@ const Header = () => {
 
       {/* Mobile Navigation Overlay - Rendered via Portal */}
       {mounted && createPortal(
-        <AnimatePresence>
+        <AnimatePresence mode="wait">
           {isMobileMenuOpen && (
             <>
-              {/* Background Overlay */}
+              {/* Background Overlay with enhanced animation */}
               <motion.div 
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.3 }}
+                transition={{ 
+                  duration: 0.3,
+                  ease: "easeInOut"
+                }}
                 className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[9998] md:hidden"
                 onClick={closeMobileMenu}
                 aria-hidden="true"
               />
               
-              {/* Mobile Navigation Menu - Full Width */}
+              {/* Mobile Navigation Menu - Enhanced slide-in animation */}
               <motion.div 
-                initial={{ x: "100%" }}
-                animate={{ x: 0 }}
-                exit={{ x: "100%" }}
-                transition={{ 
-                  type: "tween",
-                  duration: 0.3,
-                  ease: "easeInOut"
+                initial={{ 
+                  x: "100%",
+                  opacity: 0
                 }}
-                className="fixed inset-0 bg-white dark:bg-gray-900 z-[9999] md:hidden flex flex-col"
+                animate={{ 
+                  x: 0,
+                  opacity: 1
+                }}
+                exit={{ 
+                  x: "100%",
+                  opacity: 0
+                }}
+                transition={{ 
+                  type: "spring",
+                  damping: 25,
+                  stiffness: 200,
+                  duration: 0.4,
+                  opacity: { duration: 0.3 }
+                }}
+                className="fixed inset-0 bg-white dark:bg-gray-900 z-[9999] md:hidden flex flex-col overflow-hidden shadow-2xl"
               >
-                {/* Mobile Menu Header */}
-                <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700 flex-shrink-0">
+                {/* Mobile Menu Header with enhanced animations */}
+                <motion.div 
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ 
+                    delay: 0.1, 
+                    duration: 0.3,
+                    ease: "easeOut"
+                  }}
+                  className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700 flex-shrink-0"
+                >
                   <motion.div 
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.1, duration: 0.3 }}
+                    initial={{ opacity: 0, x: -30, scale: 0.8 }}
+                    animate={{ opacity: 1, x: 0, scale: 1 }}
+                    transition={{ 
+                      delay: 0.15, 
+                      duration: 0.4,
+                      ease: "easeOut"
+                    }}
                     className="flex items-center"
                   >
-                    <div className="w-8 h-8 bg-cyan-400 flex items-center justify-center font-bold text-black text-lg rounded">
+                    <motion.div 
+                      initial={{ rotate: -180, scale: 0 }}
+                      animate={{ rotate: 0, scale: 1 }}
+                      transition={{ 
+                        delay: 0.2,
+                        duration: 0.5,
+                        ease: "backOut"
+                      }}
+                      className="w-8 h-8 bg-cyan-400 flex items-center justify-center font-bold text-black text-lg rounded"
+                    >
                       S
-                    </div>
-                    <span className="ml-3 text-gray-900 dark:text-white font-bold text-lg">
+                    </motion.div>
+                    <motion.span 
+                      initial={{ opacity: 0, x: -10 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ 
+                        delay: 0.25,
+                        duration: 0.3
+                      }}
+                      className="ml-3 text-gray-900 dark:text-white font-bold text-lg"
+                    >
                       Safeer Ahmad Rana
-                    </span>
+                    </motion.span>
                   </motion.div>
                   
-                  {/* Close Button */}
+                  {/* Close Button with enhanced animation */}
                   <motion.button
-                    initial={{ opacity: 0, rotate: -90 }}
-                    animate={{ opacity: 1, rotate: 0 }}
-                    transition={{ delay: 0.1, duration: 0.3 }}
+                    initial={{ opacity: 0, rotate: -180, scale: 0.5 }}
+                    animate={{ opacity: 1, rotate: 0, scale: 1 }}
+                    exit={{ opacity: 0, rotate: 180, scale: 0.5 }}
+                    transition={{ 
+                      delay: 0.15, 
+                      duration: 0.4,
+                      ease: "backOut"
+                    }}
+                    whileHover={{ 
+                      scale: 1.1,
+                      rotate: 90,
+                      transition: { duration: 0.2 }
+                    }}
+                    whileTap={{ scale: 0.95 }}
                     onClick={closeMobileMenu}
                     className="p-3 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-all duration-200"
                     aria-label="Close mobile menu"
@@ -260,45 +333,117 @@ const Header = () => {
                       />
                     </svg>
                   </motion.button>
-                </div>
-
-                {/* Navigation Links */}
-                <nav className="flex-1 flex flex-col justify-center px-8 py-8 space-y-4">
-                  {navigationItems.map((item, index) => (
-                    <motion.a
-                      key={item.href}
-                      href={item.href}
-                      onClick={handleNavClick}
-                      initial={{ opacity: 0, x: 50 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ 
-                        delay: 0.2 + (index * 0.1),
-                        duration: 0.3,
-                        ease: "easeOut"
-                      }}
-                      className="flex items-center px-6 py-5 text-gray-700 dark:text-gray-300 hover:text-cyan-400 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-xl transition-all duration-200 font-medium text-2xl"
-                    >
-                      {item.label}
-                    </motion.a>
-                  ))}
-                </nav>
-
-                {/* Resume Button */}
-                <motion.div 
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.5, duration: 0.3 }}
-                  className="p-8 border-t border-gray-200 dark:border-gray-700 flex-shrink-0"
-                >
-                  <a
-                    href="/Safeer_Ahmad_Rana_Resume.pdf"
-                    download
-                    onClick={closeMobileMenu}
-                    className="flex items-center justify-center w-full px-8 py-4 bg-transparent border-2 border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-black transition-all duration-300 font-semibold rounded-xl text-lg"
-                  >
-                    Download Resume
-                  </a>
                 </motion.div>
+
+                {/* Scrollable Content Container */}
+                <div className="flex-1 flex flex-col min-h-0 overflow-y-auto overscroll-contain">
+                  {/* Navigation Links with enhanced staggered animations */}
+                  <motion.nav 
+                    initial="hidden"
+                    animate="visible"
+                    exit="hidden"
+                    variants={{
+                      hidden: { opacity: 0 },
+                      visible: {
+                        opacity: 1,
+                        transition: {
+                          delayChildren: 0.2,
+                          staggerChildren: 0.08
+                        }
+                      }
+                    }}
+                    className="flex-1 flex flex-col justify-center px-8 py-8 space-y-4"
+                  >
+                    {navigationItems.map((item) => (
+                      <motion.a
+                        key={item.href}
+                        href={item.href}
+                        onClick={handleNavClick}
+                        variants={{
+                          hidden: { 
+                            opacity: 0, 
+                            x: 60,
+                            y: 20,
+                            scale: 0.8
+                          },
+                          visible: { 
+                            opacity: 1, 
+                            x: 0,
+                            y: 0,
+                            scale: 1,
+                            transition: {
+                              type: "spring",
+                              damping: 20,
+                              stiffness: 300,
+                              duration: 0.4
+                            }
+                          }
+                        }}
+                        whileHover={{ 
+                          scale: 1.05,
+                          x: 10,
+                          transition: { 
+                            type: "spring",
+                            damping: 15,
+                            stiffness: 400
+                          }
+                        }}
+                        whileTap={{ 
+                          scale: 0.98,
+                          transition: { duration: 0.1 }
+                        }}
+                        className="flex items-center px-6 py-5 text-gray-700 dark:text-gray-300 hover:text-cyan-400 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-xl transition-all duration-200 font-medium text-2xl relative overflow-hidden"
+                      >
+                        {/* Hover effect background */}
+                        <motion.div
+                          className="absolute inset-0 bg-gradient-to-r from-cyan-400/10 to-cyan-400/5 rounded-xl"
+                          initial={{ x: "-100%" }}
+                          whileHover={{ x: 0 }}
+                          transition={{ duration: 0.3 }}
+                        />
+                        <span className="relative z-10">{item.label}</span>
+                      </motion.a>
+                    ))}
+                  </motion.nav>
+
+                  {/* Resume Button with enhanced animation */}
+                  <motion.div 
+                    initial={{ opacity: 0, y: 30, scale: 0.9 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 30, scale: 0.9 }}
+                    transition={{ 
+                      delay: 0.6, 
+                      duration: 0.4,
+                      ease: "backOut"
+                    }}
+                    className="p-8 border-t border-gray-200 dark:border-gray-700 flex-shrink-0"
+                  >
+                    <motion.a
+                      href="/Safeer_Ahmad_Rana_Resume.pdf"
+                      download
+                      onClick={closeMobileMenu}
+                      whileHover={{ 
+                        scale: 1.02,
+                        boxShadow: "0 10px 25px rgba(6, 182, 212, 0.3)",
+                        transition: { duration: 0.2 }
+                      }}
+                      whileTap={{ 
+                        scale: 0.98,
+                        transition: { duration: 0.1 }
+                      }}
+                      className="flex items-center justify-center w-full px-8 py-4 bg-transparent border-2 border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-black transition-all duration-300 font-semibold rounded-xl text-lg relative overflow-hidden"
+                    >
+                      {/* Button background animation */}
+                      <motion.div
+                        className="absolute inset-0 bg-cyan-400"
+                        initial={{ x: "-100%" }}
+                        whileHover={{ x: 0 }}
+                        transition={{ duration: 0.3 }}
+                      />
+                      <span className="relative z-10">Download Resume</span>
+                    </motion.a>
+                  </motion.div>
+                </div>
               </motion.div>
             </>
           )}
