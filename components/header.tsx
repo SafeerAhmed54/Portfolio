@@ -121,13 +121,29 @@ const Header = () => {
           {/* Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
             {navigationItems.map((item) => (
-              <a
+              <motion.a
                 key={item.href}
                 href={item.href}
-                className="text-gray-600 dark:text-gray-300 hover:text-cyan-400 transition-colors font-medium"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="group text-gray-600 dark:text-gray-300 hover:text-cyan-400 active:text-cyan-500 transition-all duration-200 font-medium relative touch-manipulation min-h-[44px] min-w-[44px] flex items-center"
+                style={{ 
+                  WebkitTapHighlightColor: 'rgba(6, 182, 212, 0.1)',
+                  touchAction: 'manipulation'
+                }}
               >
-                {item.label}
-              </a>
+                <span className="group-hover:drop-shadow-sm transition-all duration-200">
+                  {item.label}
+                </span>
+                
+                {/* Subtle underline effect */}
+                <motion.div
+                  className="absolute bottom-0 left-0 right-0 h-0.5 bg-cyan-400 opacity-0 group-hover:opacity-100"
+                  initial={{ scaleX: 0 }}
+                  whileHover={{ scaleX: 1 }}
+                  transition={{ duration: 0.2, ease: "easeOut" }}
+                />
+              </motion.a>
             ))}
           </nav>
 
@@ -150,28 +166,72 @@ const Header = () => {
               )}
             </button> */}
 
-            <a
+            <motion.a
               href="/Safeer_Ahmad_Rana_Resume.pdf"
               download
-              className="hidden sm:inline-flex items-center px-6 py-2 bg-transparent border border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-black transition-all duration-300 font-medium"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="group hidden sm:inline-flex items-center px-6 py-2 bg-transparent border border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-black active:bg-cyan-500 active:border-cyan-500 active:text-black transition-all duration-300 font-medium relative overflow-hidden touch-manipulation min-h-[44px]"
+              style={{ 
+                WebkitTapHighlightColor: 'rgba(6, 182, 212, 0.1)',
+                touchAction: 'manipulation'
+              }}
             >
-              Resume
-            </a>
+              {/* Enhanced hover background */}
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-r from-cyan-400 to-cyan-500"
+                initial={{ x: "-100%" }}
+                whileHover={{ x: 0 }}
+                transition={{ duration: 0.3, ease: "easeOut" }}
+              />
+              
+              {/* Subtle glow effect */}
+              <motion.div
+                className="absolute inset-0 opacity-0 group-hover:opacity-100"
+                style={{
+                  boxShadow: '0 0 20px rgba(6, 182, 212, 0.3)'
+                }}
+                transition={{ duration: 0.2 }}
+              />
+              
+              <span className="relative z-10 group-hover:drop-shadow-sm transition-all duration-200">
+                Resume
+              </span>
+            </motion.a>
 
             {/* Mobile Menu Button */}
             <button 
               onClick={toggleMobileMenu}
-              className="md:hidden text-gray-900 dark:text-white transition-colors duration-300 p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg"
+              className="md:hidden text-gray-900 dark:text-white transition-all duration-300 p-2 hover:bg-gray-100 dark:hover:bg-gray-800 active:bg-gray-200 dark:active:bg-gray-700 rounded-lg relative overflow-hidden touch-manipulation min-h-[44px] min-w-[44px] group"
+              style={{ 
+                WebkitTapHighlightColor: 'rgba(6, 182, 212, 0.1)',
+                touchAction: 'manipulation'
+              }}
               aria-label={isMobileMenuOpen ? "Close mobile menu" : "Open mobile menu"}
               aria-expanded={isMobileMenuOpen}
               disabled={isAnimating}
             >
+              {/* Enhanced hover background effect */}
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-r from-cyan-400/10 to-cyan-400/5 rounded-lg opacity-0 group-hover:opacity-100"
+                transition={{ duration: 0.2 }}
+              />
+              
+              {/* Active state background */}
+              <motion.div
+                className="absolute inset-0 bg-cyan-400/15 rounded-lg opacity-0"
+                whileTap={{ opacity: 1 }}
+                transition={{ duration: 0.1 }}
+              />
+              
               <motion.svg
-                className="w-6 h-6"
+                className="w-6 h-6 relative z-10 group-hover:text-cyan-400 transition-colors duration-200"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
                 animate={isMobileMenuOpen ? "open" : "closed"}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
                 <motion.path
                   strokeLinecap="round"
@@ -315,12 +375,29 @@ const Header = () => {
                     }}
                     whileTap={{ scale: 0.95 }}
                     onClick={closeMobileMenu}
-                    className="p-3 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-all duration-200"
+                    className="group p-3 text-gray-500 dark:text-gray-400 hover:text-cyan-400 active:text-cyan-500 dark:hover:text-cyan-400 hover:bg-gray-100 dark:hover:bg-gray-800/80 active:bg-gray-200 dark:active:bg-gray-700/80 rounded-lg transition-all duration-200 relative overflow-hidden touch-manipulation min-h-[44px] min-w-[44px]"
+                    style={{ 
+                      WebkitTapHighlightColor: 'rgba(6, 182, 212, 0.1)',
+                      touchAction: 'manipulation'
+                    }}
                     aria-label="Close mobile menu"
                     disabled={isAnimating}
                   >
+                    {/* Enhanced hover background effect */}
+                    <motion.div
+                      className="absolute inset-0 bg-gradient-to-r from-cyan-400/10 to-cyan-400/5 rounded-lg opacity-0 group-hover:opacity-100"
+                      transition={{ duration: 0.2 }}
+                    />
+                    
+                    {/* Active state background */}
+                    <motion.div
+                      className="absolute inset-0 bg-cyan-400/15 rounded-lg opacity-0"
+                      whileTap={{ opacity: 1 }}
+                      transition={{ duration: 0.1 }}
+                    />
+                    
                     <svg
-                      className="w-6 h-6"
+                      className="w-6 h-6 relative z-10 group-hover:drop-shadow-sm transition-all duration-200"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -392,16 +469,49 @@ const Header = () => {
                           scale: 0.98,
                           transition: { duration: 0.1 }
                         }}
-                        className="flex items-center px-6 py-5 text-gray-700 dark:text-gray-300 hover:text-cyan-400 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-xl transition-all duration-200 font-medium text-2xl relative overflow-hidden"
+                        className="group flex items-center px-6 py-5 text-gray-700 dark:text-gray-300 hover:text-cyan-400 active:text-cyan-500 hover:bg-gray-50 dark:hover:bg-gray-800/80 active:bg-gray-100 dark:active:bg-gray-700/80 rounded-xl transition-all duration-200 font-medium text-2xl relative overflow-hidden touch-manipulation min-h-[44px] min-w-[44px]"
+                        style={{ 
+                          WebkitTapHighlightColor: 'rgba(6, 182, 212, 0.1)',
+                          touchAction: 'manipulation'
+                        }}
                       >
-                        {/* Hover effect background */}
+                        {/* Enhanced hover effect background with gradient */}
                         <motion.div
-                          className="absolute inset-0 bg-gradient-to-r from-cyan-400/10 to-cyan-400/5 rounded-xl"
+                          className="absolute inset-0 bg-gradient-to-r from-cyan-400/15 via-cyan-400/10 to-cyan-400/5 rounded-xl opacity-0 group-hover:opacity-100"
                           initial={{ x: "-100%" }}
                           whileHover={{ x: 0 }}
-                          transition={{ duration: 0.3 }}
+                          transition={{ duration: 0.3, ease: "easeOut" }}
                         />
-                        <span className="relative z-10">{item.label}</span>
+                        
+                        {/* Active state background */}
+                        <motion.div
+                          className="absolute inset-0 bg-cyan-400/20 rounded-xl opacity-0"
+                          whileTap={{ opacity: 1 }}
+                          transition={{ duration: 0.1 }}
+                        />
+                        
+                        {/* Subtle glow effect on hover */}
+                        <motion.div
+                          className="absolute inset-0 rounded-xl shadow-lg opacity-0 group-hover:opacity-100"
+                          style={{
+                            boxShadow: '0 0 20px rgba(6, 182, 212, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
+                          }}
+                          transition={{ duration: 0.2 }}
+                        />
+                        
+                        {/* Text with enhanced styling */}
+                        <span className="relative z-10 group-hover:drop-shadow-sm transition-all duration-200">
+                          {item.label}
+                        </span>
+                        
+                        {/* Subtle accent indicator */}
+                        <motion.div
+                          className="absolute left-2 top-1/2 w-1 h-0 bg-cyan-400 rounded-full opacity-0 group-hover:opacity-100"
+                          initial={{ height: 0 }}
+                          whileHover={{ height: '60%' }}
+                          style={{ transform: 'translateY(-50%)' }}
+                          transition={{ duration: 0.2, ease: "easeOut" }}
+                        />
                       </motion.a>
                     ))}
                   </motion.nav>
@@ -431,16 +541,40 @@ const Header = () => {
                         scale: 0.98,
                         transition: { duration: 0.1 }
                       }}
-                      className="flex items-center justify-center w-full px-8 py-4 bg-transparent border-2 border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-black transition-all duration-300 font-semibold rounded-xl text-lg relative overflow-hidden"
+                      className="group flex items-center justify-center w-full px-8 py-4 bg-transparent border-2 border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-black active:bg-cyan-500 active:border-cyan-500 active:text-black transition-all duration-300 font-semibold rounded-xl text-lg relative overflow-hidden touch-manipulation min-h-[44px]"
+                      style={{ 
+                        WebkitTapHighlightColor: 'rgba(6, 182, 212, 0.1)',
+                        touchAction: 'manipulation'
+                      }}
                     >
-                      {/* Button background animation */}
+                      {/* Enhanced button background animation */}
                       <motion.div
-                        className="absolute inset-0 bg-cyan-400"
+                        className="absolute inset-0 bg-gradient-to-r from-cyan-400 via-cyan-400 to-cyan-500"
                         initial={{ x: "-100%" }}
                         whileHover={{ x: 0 }}
-                        transition={{ duration: 0.3 }}
+                        transition={{ duration: 0.3, ease: "easeOut" }}
                       />
-                      <span className="relative z-10">Download Resume</span>
+                      
+                      {/* Active state overlay */}
+                      <motion.div
+                        className="absolute inset-0 bg-cyan-500/20"
+                        initial={{ opacity: 0 }}
+                        whileTap={{ opacity: 1 }}
+                        transition={{ duration: 0.1 }}
+                      />
+                      
+                      {/* Subtle glow effect */}
+                      <motion.div
+                        className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100"
+                        style={{
+                          boxShadow: '0 0 30px rgba(6, 182, 212, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2)'
+                        }}
+                        transition={{ duration: 0.2 }}
+                      />
+                      
+                      <span className="relative z-10 group-hover:drop-shadow-sm transition-all duration-200">
+                        Download Resume
+                      </span>
                     </motion.a>
                   </motion.div>
                 </div>
