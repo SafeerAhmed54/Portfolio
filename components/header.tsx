@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { createPortal } from "react-dom";
 
@@ -19,6 +19,12 @@ const Header = () => {
   const [isAnimating, setIsAnimating] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [scrollPosition, setScrollPosition] = useState(0);
+  
+  // Refs for keyboard accessibility
+  const mobileMenuButtonRef = useRef<HTMLButtonElement>(null);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
+  const firstFocusableElementRef = useRef<HTMLButtonElement>(null);
+  const lastFocusableElementRef = useRef<HTMLAnchorElement>(null);
 
   useEffect(() => {
     setMounted(true);
@@ -76,6 +82,13 @@ const Header = () => {
     setIsAnimating(true);
     setIsMobileMenuOpen(false);
     
+    // Restore focus to the mobile menu button
+    setTimeout(() => {
+      if (mobileMenuButtonRef.current) {
+        mobileMenuButtonRef.current.focus();
+      }
+    }, 50); // Small delay to ensure menu is closing
+    
     setTimeout(() => {
       setIsAnimating(false);
     }, 400); // Match enhanced animation duration
@@ -91,6 +104,66 @@ const Header = () => {
       document.body.style.overflow = '';
     };
   }, []);
+
+  // Keyboard accessibility: Handle escape key and focus management
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (!isMobileMenuOpen) return;
+
+      switch (event.key) {
+        case 'Escape':
+          event.preventDefault();
+          closeMobileMenu();
+          break;
+        case 'Tab':
+          handleTabNavigation(event);
+          break;
+      }
+    };
+
+    if (isMobileMenuOpen) {
+      document.addEventListener('keydown', handleKeyDown);
+      // Set initial focus to the first focusable element when menu opens
+      setTimeout(() => {
+        if (firstFocusableElementRef.current) {
+          firstFocusableElementRef.current.focus();
+        }
+      }, 100); // Small delay to ensure animation has started
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isMobileMenuOpen]);
+
+  // Focus trapping function
+  const handleTabNavigation = (event: KeyboardEvent) => {
+    if (!mobileMenuRef.current) return;
+
+    const focusableElements = mobileMenuRef.current.querySelectorAll(
+      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    );
+    const focusableArray = Array.from(focusableElements) as HTMLElement[];
+    
+    if (focusableArray.length === 0) return;
+
+    const firstElement = focusableArray[0];
+    const lastElement = focusableArray[focusableArray.length - 1];
+
+    if (event.shiftKey) {
+      // Shift + Tab (backward)
+      if (document.activeElement === firstElement) {
+        event.preventDefault();
+        lastElement.focus();
+      }
+    } else {
+      // Tab (forward)
+      if (document.activeElement === lastElement) {
+        event.preventDefault();
+        firstElement.focus();
+      }
+    }
+  };
 
   // Handle navigation link clicks
   const handleNavClick = () => {
@@ -201,6 +274,7 @@ const Header = () => {
 
             {/* Mobile Menu Button */}
             <button 
+              ref={mobileMenuButtonRef}
               onClick={toggleMobileMenu}
               className="md:hidden text-gray-900 dark:text-white transition-all duration-300 p-2 hover:bg-gray-100 dark:hover:bg-gray-800 active:bg-gray-200 dark:active:bg-gray-700 rounded-lg relative overflow-hidden touch-manipulation min-h-[44px] min-w-[44px] group"
               style={{ 
@@ -290,6 +364,7 @@ const Header = () => {
               
               {/* Mobile Navigation Menu - Enhanced slide-in animation */}
               <motion.div 
+                ref={mobileMenuRef}
                 initial={{ 
                   x: "100%",
                   opacity: 0
@@ -310,6 +385,9 @@ const Header = () => {
                   opacity: { duration: 0.3 }
                 }}
                 className="fixed inset-0 bg-white dark:bg-gray-900 z-[9999] md:hidden flex flex-col overflow-hidden shadow-2xl"
+                role="dialog"
+                aria-modal="true"
+                aria-label="Mobile navigation menu"
               >
                 {/* Mobile Menu Header with enhanced animations */}
                 <motion.div 
@@ -360,6 +438,7 @@ const Header = () => {
                   
                   {/* Close Button with enhanced animation */}
                   <motion.button
+                    ref={firstFocusableElementRef}
                     initial={{ opacity: 0, rotate: -180, scale: 0.5 }}
                     animate={{ opacity: 1, rotate: 0, scale: 1 }}
                     exit={{ opacity: 0, rotate: 180, scale: 0.5 }}
@@ -529,6 +608,7 @@ const Header = () => {
                     className="p-8 border-t border-gray-200 dark:border-gray-700 flex-shrink-0"
                   >
                     <motion.a
+                      ref={lastFocusableElementRef}
                       href="/Safeer_Ahmad_Rana_Resume.pdf"
                       download
                       onClick={closeMobileMenu}
