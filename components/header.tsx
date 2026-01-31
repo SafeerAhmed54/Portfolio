@@ -207,7 +207,7 @@ const Header = () => {
       <div className="max-w-7xl mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <div className="flex items-center">
+          <div className="flex items-center" role="img" aria-label="Safeer Ahmad Rana Logo">
             <div className="w-10 h-10 bg-cyan-400 flex items-center justify-center font-bold text-black text-xl">
               S
             </div>
@@ -217,7 +217,7 @@ const Header = () => {
           </div>
 
           {/* Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
+          <nav className="hidden md:flex items-center space-x-8" role="navigation" aria-label="Main navigation">
             {navigationItems.map((item) => (
               <motion.a
                 key={item.href}
@@ -274,6 +274,7 @@ const Header = () => {
                 WebkitTapHighlightColor: 'rgba(6, 182, 212, 0.1)',
                 touchAction: 'manipulation'
               }}
+              aria-label="Download resume PDF file"
             >
               {/* Enhanced hover background */}
               <motion.div
