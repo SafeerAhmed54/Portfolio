@@ -307,8 +307,10 @@ const Header = () => {
                 WebkitTapHighlightColor: 'rgba(6, 182, 212, 0.1)',
                 touchAction: 'manipulation'
               }}
-              aria-label={isMobileMenuOpen ? "Close mobile menu" : "Open mobile menu"}
+              aria-label={isMobileMenuOpen ? "Close mobile navigation menu" : "Open mobile navigation menu"}
               aria-expanded={isMobileMenuOpen}
+              aria-controls="mobile-navigation-menu"
+              aria-haspopup="true"
               disabled={isAnimating}
             >
               {/* Enhanced hover background effect */}
