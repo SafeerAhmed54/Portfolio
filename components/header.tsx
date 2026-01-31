@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { createPortal } from "react-dom";
 
@@ -25,6 +25,9 @@ const Header = () => {
   const mobileMenuRef = useRef<HTMLDivElement>(null);
   const firstFocusableElementRef = useRef<HTMLButtonElement>(null);
   const lastFocusableElementRef = useRef<HTMLAnchorElement>(null);
+  
+  // Screen reader announcements
+  const [screenReaderAnnouncement, setScreenReaderAnnouncement] = useState('');
 
   useEffect(() => {
     setMounted(true);
@@ -67,7 +70,13 @@ const Header = () => {
     if (isAnimating) return; // Prevent rapid toggles during animation
     
     setIsAnimating(true);
-    setIsMobileMenuOpen(prev => !prev);
+    const newMenuState = !isMobileMenuOpen;
+    setIsMobileMenuOpen(newMenuState);
+    
+    // Screen reader announcement for menu state change
+    setScreenReaderAnnouncement(
+      newMenuState ? 'Mobile navigation menu opened' : 'Mobile navigation menu closed'
+    );
     
     // Reset animation state after animation completes (increased to match new animation duration)
     setTimeout(() => {
@@ -76,11 +85,14 @@ const Header = () => {
   };
 
   // Close mobile menu when clicking outside or on navigation links
-  const closeMobileMenu = () => {
+  const closeMobileMenu = useCallback(() => {
     if (isAnimating) return;
     
     setIsAnimating(true);
     setIsMobileMenuOpen(false);
+    
+    // Screen reader announcement for menu closing
+    setScreenReaderAnnouncement('Mobile navigation menu closed');
     
     // Restore focus to the mobile menu button
     setTimeout(() => {
@@ -92,7 +104,7 @@ const Header = () => {
     setTimeout(() => {
       setIsAnimating(false);
     }, 400); // Match enhanced animation duration
-  };
+  }, [isAnimating]);
 
   // Enhanced cleanup effect to restore scroll on unmount or page navigation
   useEffect(() => {
@@ -134,7 +146,7 @@ const Header = () => {
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [isMobileMenuOpen]);
+  }, [isMobileMenuOpen, closeMobileMenu]);
 
   // Focus trapping function
   const handleTabNavigation = (event: KeyboardEvent) => {
