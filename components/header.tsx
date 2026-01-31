@@ -388,6 +388,7 @@ const Header = () => {
                 className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[9998] md:hidden"
                 onClick={closeMobileMenu}
                 aria-hidden="true"
+                role="presentation"
               />
               
               {/* Mobile Navigation Menu - Enhanced slide-in animation */}
@@ -416,7 +417,17 @@ const Header = () => {
                 role="dialog"
                 aria-modal="true"
                 aria-label="Mobile navigation menu"
+                aria-labelledby="mobile-menu-title"
+                aria-describedby="mobile-menu-description"
+                id="mobile-navigation-menu"
               >
+                {/* Hidden title and description for screen readers */}
+                <h2 id="mobile-menu-title" className="sr-only">
+                  Mobile Navigation Menu
+                </h2>
+                <p id="mobile-menu-description" className="sr-only">
+                  Navigate to different sections of the portfolio website. Use tab to move between menu items and escape to close the menu.
+                </p>
                 {/* Mobile Menu Header with enhanced animations */}
                 <motion.div 
                   initial={{ opacity: 0, y: -20 }}
