@@ -429,7 +429,7 @@ const Header = () => {
                   Navigate to different sections of the portfolio website. Use tab to move between menu items and escape to close the menu.
                 </p>
                 {/* Mobile Menu Header with enhanced animations */}
-                <motion.div 
+                <motion.header 
                   initial={{ opacity: 0, y: -20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
@@ -439,6 +439,7 @@ const Header = () => {
                     ease: "easeOut"
                   }}
                   className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700 flex-shrink-0"
+                  role="banner"
                 >
                   <motion.div 
                     initial={{ opacity: 0, x: -30, scale: 0.8 }}
@@ -449,6 +450,8 @@ const Header = () => {
                       ease: "easeOut"
                     }}
                     className="flex items-center"
+                    role="img"
+                    aria-label="Safeer Ahmad Rana Logo"
                   >
                     <motion.div 
                       initial={{ rotate: -180, scale: 0 }}
@@ -498,7 +501,7 @@ const Header = () => {
                       WebkitTapHighlightColor: 'rgba(6, 182, 212, 0.1)',
                       touchAction: 'manipulation'
                     }}
-                    aria-label="Close mobile menu"
+                    aria-label="Close mobile navigation menu"
                     disabled={isAnimating}
                   >
                     {/* Enhanced hover background effect */}
