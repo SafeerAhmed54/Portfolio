@@ -224,10 +224,13 @@ const Header = () => {
                 href={item.href}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="group text-gray-600 dark:text-gray-300 hover:text-cyan-400 active:text-cyan-500 transition-all duration-200 font-medium relative touch-manipulation min-h-[44px] min-w-[44px] flex items-center"
+                className="group text-gray-600 dark:text-gray-300 hover:text-cyan-400 active:text-cyan-500 transition-all duration-200 font-medium relative touch-manipulation flex items-center justify-center"
                 style={{ 
                   WebkitTapHighlightColor: 'rgba(6, 182, 212, 0.1)',
-                  touchAction: 'manipulation'
+                  touchAction: 'manipulation',
+                  minHeight: '48px',
+                  minWidth: '48px',
+                  padding: '12px 16px'
                 }}
               >
                 <span className="group-hover:drop-shadow-sm transition-all duration-200">
@@ -247,8 +250,8 @@ const Header = () => {
 
           {/* CTA Button */}
           <div className="flex items-center space-x-4">
-            {/* Theme Toggle Button */}
-            {/* <button
+            {/* Theme Toggle Button - Commented out for now
+            <button
               onClick={toggleTheme}
               className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-300"
               aria-label="Toggle theme"
@@ -262,17 +265,19 @@ const Header = () => {
                   <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
                 </svg>
               )}
-            </button> */}
+            </button>
+            */}
 
             <motion.a
               href="/Safeer_Ahmad_Rana_Resume.pdf"
               download
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="group hidden sm:inline-flex items-center px-6 py-2 bg-transparent border border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-black active:bg-cyan-500 active:border-cyan-500 active:text-black transition-all duration-300 font-medium relative overflow-hidden touch-manipulation min-h-[44px]"
+              className="group hidden sm:inline-flex items-center px-6 py-3 bg-transparent border border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-black active:bg-cyan-500 active:border-cyan-500 active:text-black transition-all duration-300 font-medium relative overflow-hidden touch-manipulation"
               style={{ 
                 WebkitTapHighlightColor: 'rgba(6, 182, 212, 0.1)',
-                touchAction: 'manipulation'
+                touchAction: 'manipulation',
+                minHeight: '48px'
               }}
               aria-label="Download resume PDF file"
             >
@@ -298,14 +303,16 @@ const Header = () => {
               </span>
             </motion.a>
 
-            {/* Mobile Menu Button */}
+            {/* Mobile Menu Button - Enhanced touch target sizing */}
             <button 
               ref={mobileMenuButtonRef}
               onClick={toggleMobileMenu}
-              className="md:hidden text-gray-900 dark:text-white transition-all duration-300 p-2 hover:bg-gray-100 dark:hover:bg-gray-800 active:bg-gray-200 dark:active:bg-gray-700 rounded-lg relative overflow-hidden touch-manipulation min-h-[44px] min-w-[44px] group"
+              className="md:hidden text-gray-900 dark:text-white transition-all duration-300 p-3 hover:bg-gray-100 dark:hover:bg-gray-800 active:bg-gray-200 dark:active:bg-gray-700 rounded-lg relative overflow-hidden touch-manipulation group"
               style={{ 
                 WebkitTapHighlightColor: 'rgba(6, 182, 212, 0.1)',
-                touchAction: 'manipulation'
+                touchAction: 'manipulation',
+                minHeight: '48px',
+                minWidth: '48px'
               }}
               aria-label={isMobileMenuOpen ? "Close mobile navigation menu" : "Open mobile navigation menu"}
               aria-expanded={isMobileMenuOpen}
@@ -478,7 +485,7 @@ const Header = () => {
                     </motion.span>
                   </motion.div>
                   
-                  {/* Close Button with enhanced animation */}
+                  {/* Close Button with enhanced animation and proper touch targets */}
                   <motion.button
                     ref={firstFocusableElementRef}
                     initial={{ opacity: 0, rotate: -180, scale: 0.5 }}
@@ -496,10 +503,12 @@ const Header = () => {
                     }}
                     whileTap={{ scale: 0.95 }}
                     onClick={closeMobileMenu}
-                    className="group p-3 text-gray-500 dark:text-gray-400 hover:text-cyan-400 active:text-cyan-500 dark:hover:text-cyan-400 hover:bg-gray-100 dark:hover:bg-gray-800/80 active:bg-gray-200 dark:active:bg-gray-700/80 rounded-lg transition-all duration-200 relative overflow-hidden touch-manipulation min-h-[44px] min-w-[44px]"
+                    className="group p-3 text-gray-500 dark:text-gray-400 hover:text-cyan-400 active:text-cyan-500 dark:hover:text-cyan-400 hover:bg-gray-100 dark:hover:bg-gray-800/80 active:bg-gray-200 dark:active:bg-gray-700/80 rounded-lg transition-all duration-200 relative overflow-hidden touch-manipulation"
                     style={{ 
                       WebkitTapHighlightColor: 'rgba(6, 182, 212, 0.1)',
-                      touchAction: 'manipulation'
+                      touchAction: 'manipulation',
+                      minHeight: '48px',
+                      minWidth: '48px'
                     }}
                     aria-label="Close mobile navigation menu"
                     disabled={isAnimating}
@@ -531,7 +540,7 @@ const Header = () => {
                       />
                     </svg>
                   </motion.button>
-                </motion.div>
+                </motion.header>
 
                 {/* Scrollable Content Container */}
                 <div className="flex-1 flex flex-col min-h-0 overflow-y-auto overscroll-contain">
@@ -590,10 +599,12 @@ const Header = () => {
                           scale: 0.98,
                           transition: { duration: 0.1 }
                         }}
-                        className="group flex items-center px-6 py-5 text-gray-700 dark:text-gray-300 hover:text-cyan-400 active:text-cyan-500 hover:bg-gray-50 dark:hover:bg-gray-800/80 active:bg-gray-100 dark:active:bg-gray-700/80 rounded-xl transition-all duration-200 font-medium text-2xl relative overflow-hidden touch-manipulation min-h-[44px] min-w-[44px]"
+                        className="group flex items-center px-6 py-6 text-gray-700 dark:text-gray-300 hover:text-cyan-400 active:text-cyan-500 hover:bg-gray-50 dark:hover:bg-gray-800/80 active:bg-gray-100 dark:active:bg-gray-700/80 rounded-xl transition-all duration-200 font-medium text-2xl relative overflow-hidden touch-manipulation"
                         style={{ 
                           WebkitTapHighlightColor: 'rgba(6, 182, 212, 0.1)',
-                          touchAction: 'manipulation'
+                          touchAction: 'manipulation',
+                          minHeight: '56px',
+                          minWidth: '56px'
                         }}
                       >
                         {/* Enhanced hover effect background with gradient */}
@@ -663,10 +674,11 @@ const Header = () => {
                         scale: 0.98,
                         transition: { duration: 0.1 }
                       }}
-                      className="group flex items-center justify-center w-full px-8 py-4 bg-transparent border-2 border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-black active:bg-cyan-500 active:border-cyan-500 active:text-black transition-all duration-300 font-semibold rounded-xl text-lg relative overflow-hidden touch-manipulation min-h-[44px]"
+                      className="group flex items-center justify-center w-full px-8 py-5 bg-transparent border-2 border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-black active:bg-cyan-500 active:border-cyan-500 active:text-black transition-all duration-300 font-semibold rounded-xl text-lg relative overflow-hidden touch-manipulation"
                       style={{ 
                         WebkitTapHighlightColor: 'rgba(6, 182, 212, 0.1)',
-                        touchAction: 'manipulation'
+                        touchAction: 'manipulation',
+                        minHeight: '56px'
                       }}
                     >
                       {/* Enhanced button background animation */}
