@@ -20,6 +20,10 @@ const Header = () => {
   const [mounted, setMounted] = useState(false);
   const [scrollPosition, setScrollPosition] = useState(0);
   
+  // Responsive design state
+  const [viewportWidth, setViewportWidth] = useState(0);
+  const [orientation, setOrientation] = useState<'portrait' | 'landscape'>('portrait');
+  
   // Refs for keyboard accessibility
   const mobileMenuButtonRef = useRef<HTMLButtonElement>(null);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
@@ -31,6 +35,14 @@ const Header = () => {
 
   useEffect(() => {
     setMounted(true);
+    
+    // Initialize viewport dimensions and orientation
+    const updateViewportInfo = () => {
+      setViewportWidth(window.innerWidth);
+      setOrientation(window.innerWidth > window.innerHeight ? 'landscape' : 'portrait');
+    };
+    
+    updateViewportInfo();
   }, []);
 
   useEffect(() => {
@@ -40,6 +52,64 @@ const Header = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Responsive design and device handling
+  useEffect(() => {
+    const updateViewportInfo = () => {
+      const newWidth = window.innerWidth;
+      const newOrientation = newWidth > window.innerHeight ? 'landscape' : 'portrait';
+      
+      setViewportWidth(newWidth);
+      
+      // Handle orientation change - close mobile menu to prevent layout issues
+      if (orientation !== newOrientation) {
+        setOrientation(newOrientation);
+        
+        if (isMobileMenuOpen) {
+          setIsMobileMenuOpen(false);
+          setIsAnimating(false);
+          
+          // Restore body scroll immediately on orientation change
+          document.body.style.position = '';
+          document.body.style.top = '';
+          document.body.style.width = '';
+          document.body.style.overflow = '';
+        }
+      }
+    };
+
+    const handleResize = () => {
+      updateViewportInfo();
+    };
+
+    const handleOrientationChange = () => {
+      // Add a small delay to ensure viewport dimensions are updated
+      setTimeout(() => {
+        updateViewportInfo();
+      }, 100);
+    };
+
+    // Add event listeners
+    window.addEventListener('resize', handleResize);
+    window.addEventListener('orientationchange', handleOrientationChange);
+    
+    // Also listen for visual viewport changes (for mobile browsers with dynamic UI)
+    if ('visualViewport' in window) {
+      window.visualViewport?.addEventListener('resize', handleResize);
+    }
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      window.removeEventListener('orientationchange', handleOrientationChange);
+      if ('visualViewport' in window) {
+        window.visualViewport?.removeEventListener('resize', handleResize);
+      }
+    };
+  }, [orientation, isMobileMenuOpen]);
+
+  // Check if we're in mobile viewport (below 768px breakpoint)
+  // Only calculate after component is mounted to prevent hydration mismatch
+  const isMobileViewport = mounted && viewportWidth > 0 && viewportWidth < 768;
 
   // Enhanced scroll behavior management
   useEffect(() => {
@@ -197,14 +267,14 @@ const Header = () => {
       </div>
       
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 safe-area-inset-top safe-area-inset-x ${
           isScrolled
             ? "bg-white/90 dark:bg-black/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-800"
             : "bg-transparent"
         }`}
         role="banner"
       >
-      <div className="max-w-7xl mx-auto px-6 py-4">
+      <div className="max-w-7xl mx-auto px-6 py-4 safe-area-inset-x">
         <div className="flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center" role="img" aria-label="Safeer Ahmad Rana Logo">
@@ -307,7 +377,9 @@ const Header = () => {
             <button 
               ref={mobileMenuButtonRef}
               onClick={toggleMobileMenu}
-              className="md:hidden text-gray-900 dark:text-white transition-all duration-300 p-3 hover:bg-gray-100 dark:hover:bg-gray-800 active:bg-gray-200 dark:active:bg-gray-700 rounded-lg relative overflow-hidden touch-manipulation group"
+              className={`text-gray-900 dark:text-white transition-all duration-300 p-3 hover:bg-gray-100 dark:hover:bg-gray-800 active:bg-gray-200 dark:active:bg-gray-700 rounded-lg relative overflow-hidden touch-manipulation group ${
+                !mounted ? 'md:hidden' : (isMobileViewport ? 'flex' : 'hidden')
+              }`}
               style={{ 
                 WebkitTapHighlightColor: 'rgba(6, 182, 212, 0.1)',
                 touchAction: 'manipulation',
@@ -381,7 +453,7 @@ const Header = () => {
       {/* Mobile Navigation Overlay - Rendered via Portal */}
       {mounted && createPortal(
         <AnimatePresence mode="wait">
-          {isMobileMenuOpen && (
+          {isMobileMenuOpen && (!mounted || isMobileViewport) && (
             <>
               {/* Background Overlay with enhanced animation */}
               <motion.div 
@@ -392,7 +464,7 @@ const Header = () => {
                   duration: 0.3,
                   ease: "easeInOut"
                 }}
-                className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[9998] md:hidden"
+                className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[9998]"
                 onClick={closeMobileMenu}
                 aria-hidden="true"
                 role="presentation"
@@ -420,7 +492,7 @@ const Header = () => {
                   duration: 0.4,
                   opacity: { duration: 0.3 }
                 }}
-                className="fixed inset-0 bg-white dark:bg-gray-900 z-[9999] md:hidden flex flex-col overflow-hidden shadow-2xl"
+                className="fixed inset-0 bg-white dark:bg-gray-900 z-[9999] flex flex-col overflow-hidden shadow-2xl safe-area-inset-y safe-area-inset-x"
                 role="dialog"
                 aria-modal="true"
                 aria-label="Mobile navigation menu"
@@ -719,6 +791,7 @@ const Header = () => {
         document.body
       )}
     </header>
+    </>
   );
 };
 
