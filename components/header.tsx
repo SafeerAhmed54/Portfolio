@@ -30,6 +30,10 @@ const Header = () => {
   const firstFocusableElementRef = useRef<HTMLButtonElement>(null);
   const lastFocusableElementRef = useRef<HTMLAnchorElement>(null);
   
+  // Refs for animation timeout management
+  const animationTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const focusTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  
   // Screen reader announcements
   const [screenReaderAnnouncement, setScreenReaderAnnouncement] = useState('');
 
@@ -111,95 +115,180 @@ const Header = () => {
   // Only calculate after component is mounted to prevent hydration mismatch
   const isMobileViewport = mounted && viewportWidth > 0 && viewportWidth < 768;
 
-  // Enhanced scroll behavior management
+  // Enhanced scroll behavior management with error handling
   useEffect(() => {
-    if (isMobileMenuOpen) {
-      // Store current scroll position
-      const currentScrollY = window.scrollY;
-      setScrollPosition(currentScrollY);
+    try {
+      if (isMobileMenuOpen) {
+        // Store current scroll position
+        const currentScrollY = window.scrollY;
+        setScrollPosition(currentScrollY);
+        
+        // Prevent body scroll and maintain scroll position
+        document.body.style.position = 'fixed';
+        document.body.style.top = `-${currentScrollY}px`;
+        document.body.style.width = '100%';
+        document.body.style.overflow = 'hidden';
+      } else {
+        // Restore body scroll and scroll position
+        document.body.style.position = '';
+        document.body.style.top = '';
+        document.body.style.width = '';
+        document.body.style.overflow = '';
+        
+        // Restore scroll position
+        window.scrollTo(0, scrollPosition);
+      }
+    } catch (error) {
+      // Gracefully handle scroll management errors
+      console.error('Error managing scroll behavior:', error);
       
-      // Prevent body scroll and maintain scroll position
-      document.body.style.position = 'fixed';
-      document.body.style.top = `-${currentScrollY}px`;
-      document.body.style.width = '100%';
-      document.body.style.overflow = 'hidden';
-    } else {
-      // Restore body scroll and scroll position
+      // Ensure body styles are reset on error
       document.body.style.position = '';
       document.body.style.top = '';
       document.body.style.width = '';
       document.body.style.overflow = '';
-      
-      // Restore scroll position
-      window.scrollTo(0, scrollPosition);
     }
   }, [isMobileMenuOpen, scrollPosition]);
 
-  // Mobile menu toggle functionality
-  const toggleMobileMenu = () => {
+  // Debounced mobile menu toggle functionality with error handling
+  const toggleMobileMenu = useCallback(() => {
     if (isAnimating) return; // Prevent rapid toggles during animation
     
-    setIsAnimating(true);
-    const newMenuState = !isMobileMenuOpen;
-    setIsMobileMenuOpen(newMenuState);
-    
-    // Screen reader announcement for menu state change
-    setScreenReaderAnnouncement(
-      newMenuState ? 'Mobile navigation menu opened' : 'Mobile navigation menu closed'
-    );
-    
-    // Reset animation state after animation completes (increased to match new animation duration)
-    setTimeout(() => {
+    try {
+      // Clear any existing animation timeout to handle interruption
+      if (animationTimeoutRef.current) {
+        clearTimeout(animationTimeoutRef.current);
+        animationTimeoutRef.current = null;
+      }
+      
+      setIsAnimating(true);
+      const newMenuState = !isMobileMenuOpen;
+      setIsMobileMenuOpen(newMenuState);
+      
+      // Screen reader announcement for menu state change
+      setScreenReaderAnnouncement(
+        newMenuState ? 'Mobile navigation menu opened' : 'Mobile navigation menu closed'
+      );
+      
+      // Reset animation state after animation completes (increased to match new animation duration)
+      animationTimeoutRef.current = setTimeout(() => {
+        setIsAnimating(false);
+        animationTimeoutRef.current = null;
+      }, 400); // Match enhanced animation duration
+    } catch (error) {
+      // Gracefully handle any errors during toggle
+      console.error('Error toggling mobile menu:', error);
       setIsAnimating(false);
-    }, 400); // Match enhanced animation duration
-  };
+      setIsMobileMenuOpen(false);
+      
+      // Clear timeout on error
+      if (animationTimeoutRef.current) {
+        clearTimeout(animationTimeoutRef.current);
+        animationTimeoutRef.current = null;
+      }
+    }
+  }, [isAnimating, isMobileMenuOpen]);
 
-  // Close mobile menu when clicking outside or on navigation links
+  // Close mobile menu when clicking outside or on navigation links with error handling
   const closeMobileMenu = useCallback(() => {
     if (isAnimating) return;
     
-    setIsAnimating(true);
-    setIsMobileMenuOpen(false);
-    
-    // Screen reader announcement for menu closing
-    setScreenReaderAnnouncement('Mobile navigation menu closed');
-    
-    // Restore focus to the mobile menu button
-    setTimeout(() => {
-      if (mobileMenuButtonRef.current) {
-        mobileMenuButtonRef.current.focus();
+    try {
+      // Clear any existing animation and focus timeouts to handle interruption
+      if (animationTimeoutRef.current) {
+        clearTimeout(animationTimeoutRef.current);
+        animationTimeoutRef.current = null;
       }
-    }, 50); // Small delay to ensure menu is closing
-    
-    setTimeout(() => {
+      if (focusTimeoutRef.current) {
+        clearTimeout(focusTimeoutRef.current);
+        focusTimeoutRef.current = null;
+      }
+      
+      setIsAnimating(true);
+      setIsMobileMenuOpen(false);
+      
+      // Screen reader announcement for menu closing
+      setScreenReaderAnnouncement('Mobile navigation menu closed');
+      
+      // Restore focus to the mobile menu button
+      focusTimeoutRef.current = setTimeout(() => {
+        if (mobileMenuButtonRef.current) {
+          mobileMenuButtonRef.current.focus();
+        }
+        focusTimeoutRef.current = null;
+      }, 50); // Small delay to ensure menu is closing
+      
+      animationTimeoutRef.current = setTimeout(() => {
+        setIsAnimating(false);
+        animationTimeoutRef.current = null;
+      }, 400); // Match enhanced animation duration
+    } catch (error) {
+      // Gracefully handle any errors during close
+      console.error('Error closing mobile menu:', error);
       setIsAnimating(false);
-    }, 400); // Match enhanced animation duration
+      setIsMobileMenuOpen(false);
+      
+      // Clear timeouts on error
+      if (animationTimeoutRef.current) {
+        clearTimeout(animationTimeoutRef.current);
+        animationTimeoutRef.current = null;
+      }
+      if (focusTimeoutRef.current) {
+        clearTimeout(focusTimeoutRef.current);
+        focusTimeoutRef.current = null;
+      }
+      
+      // Ensure body scroll is restored even on error
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.width = '';
+      document.body.style.overflow = '';
+    }
   }, [isAnimating]);
 
   // Enhanced cleanup effect to restore scroll on unmount or page navigation
   useEffect(() => {
     return () => {
-      // Restore body styles on cleanup
-      document.body.style.position = '';
-      document.body.style.top = '';
-      document.body.style.width = '';
-      document.body.style.overflow = '';
+      try {
+        // Clear all timeouts on cleanup
+        if (animationTimeoutRef.current) {
+          clearTimeout(animationTimeoutRef.current);
+          animationTimeoutRef.current = null;
+        }
+        if (focusTimeoutRef.current) {
+          clearTimeout(focusTimeoutRef.current);
+          focusTimeoutRef.current = null;
+        }
+        
+        // Restore body styles on cleanup
+        document.body.style.position = '';
+        document.body.style.top = '';
+        document.body.style.width = '';
+        document.body.style.overflow = '';
+      } catch (error) {
+        // Silently handle cleanup errors
+        console.error('Error during cleanup:', error);
+      }
     };
   }, []);
 
-  // Keyboard accessibility: Handle escape key and focus management
+  // Keyboard accessibility: Handle escape key and focus management with error handling
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (!isMobileMenuOpen) return;
 
-      switch (event.key) {
-        case 'Escape':
-          event.preventDefault();
-          closeMobileMenu();
-          break;
-        case 'Tab':
-          handleTabNavigation(event);
-          break;
+      try {
+        switch (event.key) {
+          case 'Escape':
+            event.preventDefault();
+            closeMobileMenu();
+            break;
+          case 'Tab':
+            handleTabNavigation(event);
+            break;
+        }
+      } catch (error) {
+        console.error('Error handling keyboard event:', error);
       }
     };
 
@@ -207,8 +296,12 @@ const Header = () => {
       document.addEventListener('keydown', handleKeyDown);
       // Set initial focus to the first focusable element when menu opens
       setTimeout(() => {
-        if (firstFocusableElementRef.current) {
-          firstFocusableElementRef.current.focus();
+        try {
+          if (firstFocusableElementRef.current) {
+            firstFocusableElementRef.current.focus();
+          }
+        } catch (error) {
+          console.error('Error setting initial focus:', error);
         }
       }, 100); // Small delay to ensure animation has started
     }
@@ -218,39 +311,65 @@ const Header = () => {
     };
   }, [isMobileMenuOpen, closeMobileMenu]);
 
-  // Focus trapping function
+  // Focus trapping function with error handling
   const handleTabNavigation = (event: KeyboardEvent) => {
     if (!mobileMenuRef.current) return;
 
-    const focusableElements = mobileMenuRef.current.querySelectorAll(
-      'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-    );
-    const focusableArray = Array.from(focusableElements) as HTMLElement[];
-    
-    if (focusableArray.length === 0) return;
+    try {
+      const focusableElements = mobileMenuRef.current.querySelectorAll(
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+      );
+      const focusableArray = Array.from(focusableElements) as HTMLElement[];
+      
+      if (focusableArray.length === 0) return;
 
-    const firstElement = focusableArray[0];
-    const lastElement = focusableArray[focusableArray.length - 1];
+      const firstElement = focusableArray[0];
+      const lastElement = focusableArray[focusableArray.length - 1];
 
-    if (event.shiftKey) {
-      // Shift + Tab (backward)
-      if (document.activeElement === firstElement) {
-        event.preventDefault();
-        lastElement.focus();
+      if (event.shiftKey) {
+        // Shift + Tab (backward)
+        if (document.activeElement === firstElement) {
+          event.preventDefault();
+          lastElement.focus();
+        }
+      } else {
+        // Tab (forward)
+        if (document.activeElement === lastElement) {
+          event.preventDefault();
+          firstElement.focus();
+        }
       }
-    } else {
-      // Tab (forward)
-      if (document.activeElement === lastElement) {
-        event.preventDefault();
-        firstElement.focus();
-      }
+    } catch (error) {
+      console.error('Error handling tab navigation:', error);
     }
   };
 
-  // Handle navigation link clicks
-  const handleNavClick = () => {
-    closeMobileMenu();
-    // Allow default anchor behavior to handle navigation
+  // Handle navigation link clicks with fallback for broken links
+  const handleNavClick = (event: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    try {
+      // Validate the href before navigation
+      if (!href || href === '#') {
+        event.preventDefault();
+        console.warn('Invalid navigation target:', href);
+        closeMobileMenu();
+        return;
+      }
+      
+      // Check if the target element exists
+      const targetId = href.replace('#', '');
+      const targetElement = document.getElementById(targetId);
+      
+      if (!targetElement) {
+        console.warn('Navigation target not found:', href);
+        // Still close the menu even if target doesn't exist
+      }
+      
+      closeMobileMenu();
+      // Allow default anchor behavior to handle navigation
+    } catch (error) {
+      console.error('Error handling navigation click:', error);
+      closeMobileMenu();
+    }
   };
 
   return (
@@ -637,7 +756,7 @@ const Header = () => {
                       <motion.a
                         key={item.href}
                         href={item.href}
-                        onClick={handleNavClick}
+                        onClick={(e) => handleNavClick(e, item.href)}
                         variants={{
                           hidden: { 
                             opacity: 0, 

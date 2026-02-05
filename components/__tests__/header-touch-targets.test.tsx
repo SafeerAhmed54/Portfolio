@@ -6,21 +6,21 @@ import Header from '../header';
 // Mock framer-motion to avoid animation issues in tests
 jest.mock('framer-motion', () => ({
   motion: {
-    div: ({ children, ...props }: any) => <div {...props}>{children}</div>,
-    a: ({ children, ...props }: any) => <a {...props}>{children}</a>,
-    button: ({ children, ...props }: any) => <button {...props}>{children}</button>,
-    svg: ({ children, ...props }: any) => <svg {...props}>{children}</svg>,
-    path: ({ children, ...props }: any) => <path {...props}>{children}</path>,
-    header: ({ children, ...props }: any) => <header {...props}>{children}</header>,
-    nav: ({ children, ...props }: any) => <nav {...props}>{children}</nav>,
+    div: ({ children, ...props }: React.PropsWithChildren<Record<string, unknown>>) => <div {...props}>{children}</div>,
+    a: ({ children, ...props }: React.PropsWithChildren<Record<string, unknown>>) => <a {...props}>{children}</a>,
+    button: ({ children, ...props }: React.PropsWithChildren<Record<string, unknown>>) => <button {...props}>{children}</button>,
+    svg: ({ children, ...props }: React.PropsWithChildren<Record<string, unknown>>) => <svg {...props}>{children}</svg>,
+    path: ({ children, ...props }: React.PropsWithChildren<Record<string, unknown>>) => <path {...props}>{children}</path>,
+    header: ({ children, ...props }: React.PropsWithChildren<Record<string, unknown>>) => <header {...props}>{children}</header>,
+    nav: ({ children, ...props }: React.PropsWithChildren<Record<string, unknown>>) => <nav {...props}>{children}</nav>,
   },
-  AnimatePresence: ({ children }: any) => children,
+  AnimatePresence: ({ children }: React.PropsWithChildren) => children,
 }));
 
 // Mock createPortal to render in the same container
 jest.mock('react-dom', () => ({
   ...jest.requireActual('react-dom'),
-  createPortal: (children: any) => children,
+  createPortal: (children: React.ReactNode) => children,
 }));
 
 describe('Header Touch Target Sizing', () => {
@@ -42,7 +42,6 @@ describe('Header Touch Target Sizing', () => {
     expect(mobileMenuButton).toBeInTheDocument();
     
     // Check computed styles for minimum touch target size
-    const styles = window.getComputedStyle(mobileMenuButton);
     const minHeight = mobileMenuButton.style.minHeight;
     const minWidth = mobileMenuButton.style.minWidth;
     
