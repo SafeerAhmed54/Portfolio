@@ -1,10 +1,398 @@
 "use client";
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef, useCallback, memo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { createPortal } from "react-dom";
 
+// TypeScript interfaces for type safety
+interface NavigationItem {
+  href: string;
+  label: string;
+}
+
+interface MobileMenuState {
+  isOpen: boolean;
+  isAnimating: boolean;
+}
+
+interface ViewportState {
+  width: number;
+  orientation: 'portrait' | 'landscape';
+}
+
+interface MobileNavOverlayProps {
+  isOpen: boolean;
+  isMobileViewport: boolean;
+  isAnimating: boolean;
+  onClose: () => void;
+  onNavClick: (event: React.MouseEvent<HTMLAnchorElement>, href: string) => void;
+  mobileMenuRef: React.RefObject<HTMLDivElement | null>;
+  firstFocusableElementRef: React.RefObject<HTMLButtonElement | null>;
+  lastFocusableElementRef: React.RefObject<HTMLAnchorElement | null>;
+}
+
+// Memoized Mobile Navigation Overlay Component for performance
+const MobileNavOverlay = memo<MobileNavOverlayProps>(({ 
+  isOpen, 
+  isMobileViewport, 
+  isAnimating,
+  onClose, 
+  onNavClick,
+  mobileMenuRef,
+  firstFocusableElementRef,
+  lastFocusableElementRef
+}) => {
+  if (!isOpen || isMobileViewport === false) return null;
+
+  return (
+    <>
+      {/* Background Overlay with enhanced animation */}
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ 
+          duration: 0.3,
+          ease: "easeInOut"
+        }}
+        className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[9998]"
+        onClick={onClose}
+        aria-hidden="true"
+        role="presentation"
+        style={{ willChange: 'opacity' }}
+      />
+      
+      {/* Mobile Navigation Menu - Enhanced slide-in animation */}
+      <motion.div 
+        ref={mobileMenuRef}
+        initial={{ 
+          x: "100%",
+          opacity: 0
+        }}
+        animate={{ 
+          x: 0,
+          opacity: 1
+        }}
+        exit={{ 
+          x: "100%",
+          opacity: 0
+        }}
+        transition={{ 
+          type: "spring",
+          damping: 25,
+          stiffness: 200,
+          duration: 0.4,
+          opacity: { duration: 0.3 }
+        }}
+        className="fixed inset-0 bg-white dark:bg-gray-900 z-[9999] flex flex-col overflow-hidden shadow-2xl safe-area-inset-y safe-area-inset-x"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Mobile navigation menu"
+        aria-labelledby="mobile-menu-title"
+        aria-describedby="mobile-menu-description"
+        id="mobile-navigation-menu"
+        style={{ willChange: 'transform, opacity' }}
+      >
+        {/* Hidden title and description for screen readers */}
+        <h2 id="mobile-menu-title" className="sr-only">
+          Mobile Navigation Menu
+        </h2>
+        <p id="mobile-menu-description" className="sr-only">
+          Navigate to different sections of the portfolio website. Use tab to move between menu items and escape to close the menu.
+        </p>
+        {/* Mobile Menu Header with enhanced animations */}
+        <motion.header 
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ 
+            delay: 0.1, 
+            duration: 0.3,
+            ease: "easeOut"
+          }}
+          className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700 flex-shrink-0"
+          role="banner"
+          style={{ willChange: 'opacity, transform' }}
+        >
+          <motion.div 
+            initial={{ opacity: 0, x: -30, scale: 0.8 }}
+            animate={{ opacity: 1, x: 0, scale: 1 }}
+            transition={{ 
+              delay: 0.15, 
+              duration: 0.4,
+              ease: "easeOut"
+            }}
+            className="flex items-center"
+            role="img"
+            aria-label="Safeer Ahmad Rana Logo"
+            style={{ willChange: 'opacity, transform' }}
+          >
+            <motion.div 
+              initial={{ rotate: -180, scale: 0 }}
+              animate={{ rotate: 0, scale: 1 }}
+              transition={{ 
+                delay: 0.2,
+                duration: 0.5,
+                ease: "backOut"
+              }}
+              className="w-8 h-8 bg-cyan-400 flex items-center justify-center font-bold text-black text-lg rounded"
+              style={{ willChange: 'transform' }}
+            >
+              S
+            </motion.div>
+            <motion.span 
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ 
+                delay: 0.25,
+                duration: 0.3
+              }}
+              className="ml-3 text-gray-900 dark:text-white font-bold text-lg"
+              style={{ willChange: 'opacity, transform' }}
+            >
+              Safeer Ahmad Rana
+            </motion.span>
+          </motion.div>
+          
+          {/* Close Button with enhanced animation and proper touch targets */}
+          <motion.button
+            ref={firstFocusableElementRef}
+            initial={{ opacity: 0, rotate: -180, scale: 0.5 }}
+            animate={{ opacity: 1, rotate: 0, scale: 1 }}
+            exit={{ opacity: 0, rotate: 180, scale: 0.5 }}
+            transition={{ 
+              delay: 0.15, 
+              duration: 0.4,
+              ease: "backOut"
+            }}
+            whileHover={{ 
+              scale: 1.1,
+              rotate: 90,
+              transition: { duration: 0.2 }
+            }}
+            whileTap={{ scale: 0.95 }}
+            onClick={onClose}
+            className="group p-3 text-gray-500 dark:text-gray-400 hover:text-cyan-400 active:text-cyan-500 dark:hover:text-cyan-400 hover:bg-gray-100 dark:hover:bg-gray-800/80 active:bg-gray-200 dark:active:bg-gray-700/80 rounded-lg transition-all duration-200 relative overflow-hidden touch-manipulation"
+            style={{ 
+              WebkitTapHighlightColor: 'rgba(6, 182, 212, 0.1)',
+              touchAction: 'manipulation',
+              minHeight: '48px',
+              minWidth: '48px',
+              willChange: 'transform, opacity'
+            }}
+            aria-label="Close mobile navigation menu"
+            disabled={isAnimating}
+          >
+            {/* Enhanced hover background effect */}
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-r from-cyan-400/10 to-cyan-400/5 rounded-lg opacity-0 group-hover:opacity-100"
+              transition={{ duration: 0.2 }}
+            />
+            
+            {/* Active state background */}
+            <motion.div
+              className="absolute inset-0 bg-cyan-400/15 rounded-lg opacity-0"
+              whileTap={{ opacity: 1 }}
+              transition={{ duration: 0.1 }}
+            />
+            
+            <svg
+              className="w-6 h-6 relative z-10 group-hover:drop-shadow-sm transition-all duration-200"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </motion.button>
+        </motion.header>
+
+        {/* Scrollable Content Container */}
+        <div className="flex-1 flex flex-col min-h-0 overflow-y-auto overscroll-contain">
+          {/* Navigation Links with enhanced staggered animations */}
+          <motion.nav 
+            initial="hidden"
+            animate="visible"
+            exit="hidden"
+            variants={{
+              hidden: { opacity: 0 },
+              visible: {
+                opacity: 1,
+                transition: {
+                  delayChildren: 0.2,
+                  staggerChildren: 0.08
+                }
+              }
+            }}
+            className="flex-1 flex flex-col justify-center px-8 py-8 space-y-4"
+          >
+            {navigationItems.map((item) => (
+              <motion.a
+                key={item.href}
+                href={item.href}
+                onClick={(e) => onNavClick(e, item.href)}
+                variants={{
+                  hidden: { 
+                    opacity: 0, 
+                    x: 60,
+                    y: 20,
+                    scale: 0.8
+                  },
+                  visible: { 
+                    opacity: 1, 
+                    x: 0,
+                    y: 0,
+                    scale: 1,
+                    transition: {
+                      type: "spring",
+                      damping: 20,
+                      stiffness: 300,
+                      duration: 0.4
+                    }
+                  }
+                }}
+                whileHover={{ 
+                  scale: 1.05,
+                  x: 10,
+                  transition: { 
+                    type: "spring",
+                    damping: 15,
+                    stiffness: 400
+                  }
+                }}
+                whileTap={{ 
+                  scale: 0.98,
+                  transition: { duration: 0.1 }
+                }}
+                className="group flex items-center px-6 py-6 text-gray-700 dark:text-gray-300 hover:text-cyan-400 active:text-cyan-500 hover:bg-gray-50 dark:hover:bg-gray-800/80 active:bg-gray-100 dark:active:bg-gray-700/80 rounded-xl transition-all duration-200 font-medium text-2xl relative overflow-hidden touch-manipulation"
+                style={{ 
+                  WebkitTapHighlightColor: 'rgba(6, 182, 212, 0.1)',
+                  touchAction: 'manipulation',
+                  minHeight: '56px',
+                  minWidth: '56px',
+                  willChange: 'transform'
+                }}
+              >
+                {/* Enhanced hover effect background with gradient */}
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-r from-cyan-400/15 via-cyan-400/10 to-cyan-400/5 rounded-xl opacity-0 group-hover:opacity-100"
+                  initial={{ x: "-100%" }}
+                  whileHover={{ x: 0 }}
+                  transition={{ duration: 0.3, ease: "easeOut" }}
+                />
+                
+                {/* Active state background */}
+                <motion.div
+                  className="absolute inset-0 bg-cyan-400/20 rounded-xl opacity-0"
+                  whileTap={{ opacity: 1 }}
+                  transition={{ duration: 0.1 }}
+                />
+                
+                {/* Subtle glow effect on hover */}
+                <motion.div
+                  className="absolute inset-0 rounded-xl shadow-lg opacity-0 group-hover:opacity-100"
+                  style={{
+                    boxShadow: '0 0 20px rgba(6, 182, 212, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
+                  }}
+                  transition={{ duration: 0.2 }}
+                />
+                
+                {/* Text with enhanced styling */}
+                <span className="relative z-10 group-hover:drop-shadow-sm transition-all duration-200">
+                  {item.label}
+                </span>
+                
+                {/* Subtle accent indicator */}
+                <motion.div
+                  className="absolute left-2 top-1/2 w-1 h-0 bg-cyan-400 rounded-full opacity-0 group-hover:opacity-100"
+                  initial={{ height: 0 }}
+                  whileHover={{ height: '60%' }}
+                  style={{ transform: 'translateY(-50%)' }}
+                  transition={{ duration: 0.2, ease: "easeOut" }}
+                />
+              </motion.a>
+            ))}
+          </motion.nav>
+
+          {/* Resume Button with enhanced animation */}
+          <motion.div 
+            initial={{ opacity: 0, y: 30, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 30, scale: 0.9 }}
+            transition={{ 
+              delay: 0.6, 
+              duration: 0.4,
+              ease: "backOut"
+            }}
+            className="p-8 border-t border-gray-200 dark:border-gray-700 flex-shrink-0"
+            style={{ willChange: 'opacity, transform' }}
+          >
+            <motion.a
+              ref={lastFocusableElementRef}
+              href="/Safeer_Ahmad_Rana_Resume.pdf"
+              download
+              onClick={onClose}
+              whileHover={{ 
+                scale: 1.02,
+                boxShadow: "0 10px 25px rgba(6, 182, 212, 0.3)",
+                transition: { duration: 0.2 }
+              }}
+              whileTap={{ 
+                scale: 0.98,
+                transition: { duration: 0.1 }
+              }}
+              className="group flex items-center justify-center w-full px-8 py-5 bg-transparent border-2 border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-black active:bg-cyan-500 active:border-cyan-500 active:text-black transition-all duration-300 font-semibold rounded-xl text-lg relative overflow-hidden touch-manipulation"
+              style={{ 
+                WebkitTapHighlightColor: 'rgba(6, 182, 212, 0.1)',
+                touchAction: 'manipulation',
+                minHeight: '56px',
+                willChange: 'transform'
+              }}
+            >
+              {/* Enhanced button background animation */}
+              <motion.div
+                className="absolute inset-0 bg-gradient-to-r from-cyan-400 via-cyan-400 to-cyan-500"
+                initial={{ x: "-100%" }}
+                whileHover={{ x: 0 }}
+                transition={{ duration: 0.3, ease: "easeOut" }}
+              />
+              
+              {/* Active state overlay */}
+              <motion.div
+                className="absolute inset-0 bg-cyan-500/20"
+                initial={{ opacity: 0 }}
+                whileTap={{ opacity: 1 }}
+                transition={{ duration: 0.1 }}
+              />
+              
+              {/* Subtle glow effect */}
+              <motion.div
+                className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100"
+                style={{
+                  boxShadow: '0 0 30px rgba(6, 182, 212, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2)'
+                }}
+                transition={{ duration: 0.2 }}
+              />
+              
+              <span className="relative z-10 group-hover:drop-shadow-sm transition-all duration-200">
+                Download Resume
+              </span>
+            </motion.a>
+          </motion.div>
+        </div>
+      </motion.div>
+    </>
+  );
+});
+
+MobileNavOverlay.displayName = 'MobileNavOverlay';
+
 // Navigation items configuration
-const navigationItems = [
+const navigationItems: NavigationItem[] = [
   { href: '#home-id', label: 'Home' },
   { href: '#about-id', label: 'About' },
   { href: '#experience-id', label: 'Experience' },
@@ -503,7 +891,8 @@ const Header = () => {
                 WebkitTapHighlightColor: 'rgba(6, 182, 212, 0.1)',
                 touchAction: 'manipulation',
                 minHeight: '48px',
-                minWidth: '48px'
+                minWidth: '48px',
+                willChange: isAnimating ? 'transform' : 'auto'
               }}
               aria-label={isMobileMenuOpen ? "Close mobile navigation menu" : "Open mobile navigation menu"}
               aria-expanded={isMobileMenuOpen}
@@ -532,6 +921,7 @@ const Header = () => {
                 animate={isMobileMenuOpen ? "open" : "closed"}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
+                style={{ willChange: 'transform' }}
               >
                 <motion.path
                   strokeLinecap="round"
@@ -572,339 +962,17 @@ const Header = () => {
       {/* Mobile Navigation Overlay - Rendered via Portal */}
       {mounted && createPortal(
         <AnimatePresence mode="wait">
-          {isMobileMenuOpen && (!mounted || isMobileViewport) && (
-            <>
-              {/* Background Overlay with enhanced animation */}
-              <motion.div 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                transition={{ 
-                  duration: 0.3,
-                  ease: "easeInOut"
-                }}
-                className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[9998]"
-                onClick={closeMobileMenu}
-                aria-hidden="true"
-                role="presentation"
-              />
-              
-              {/* Mobile Navigation Menu - Enhanced slide-in animation */}
-              <motion.div 
-                ref={mobileMenuRef}
-                initial={{ 
-                  x: "100%",
-                  opacity: 0
-                }}
-                animate={{ 
-                  x: 0,
-                  opacity: 1
-                }}
-                exit={{ 
-                  x: "100%",
-                  opacity: 0
-                }}
-                transition={{ 
-                  type: "spring",
-                  damping: 25,
-                  stiffness: 200,
-                  duration: 0.4,
-                  opacity: { duration: 0.3 }
-                }}
-                className="fixed inset-0 bg-white dark:bg-gray-900 z-[9999] flex flex-col overflow-hidden shadow-2xl safe-area-inset-y safe-area-inset-x"
-                role="dialog"
-                aria-modal="true"
-                aria-label="Mobile navigation menu"
-                aria-labelledby="mobile-menu-title"
-                aria-describedby="mobile-menu-description"
-                id="mobile-navigation-menu"
-              >
-                {/* Hidden title and description for screen readers */}
-                <h2 id="mobile-menu-title" className="sr-only">
-                  Mobile Navigation Menu
-                </h2>
-                <p id="mobile-menu-description" className="sr-only">
-                  Navigate to different sections of the portfolio website. Use tab to move between menu items and escape to close the menu.
-                </p>
-                {/* Mobile Menu Header with enhanced animations */}
-                <motion.header 
-                  initial={{ opacity: 0, y: -20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  transition={{ 
-                    delay: 0.1, 
-                    duration: 0.3,
-                    ease: "easeOut"
-                  }}
-                  className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700 flex-shrink-0"
-                  role="banner"
-                >
-                  <motion.div 
-                    initial={{ opacity: 0, x: -30, scale: 0.8 }}
-                    animate={{ opacity: 1, x: 0, scale: 1 }}
-                    transition={{ 
-                      delay: 0.15, 
-                      duration: 0.4,
-                      ease: "easeOut"
-                    }}
-                    className="flex items-center"
-                    role="img"
-                    aria-label="Safeer Ahmad Rana Logo"
-                  >
-                    <motion.div 
-                      initial={{ rotate: -180, scale: 0 }}
-                      animate={{ rotate: 0, scale: 1 }}
-                      transition={{ 
-                        delay: 0.2,
-                        duration: 0.5,
-                        ease: "backOut"
-                      }}
-                      className="w-8 h-8 bg-cyan-400 flex items-center justify-center font-bold text-black text-lg rounded"
-                    >
-                      S
-                    </motion.div>
-                    <motion.span 
-                      initial={{ opacity: 0, x: -10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ 
-                        delay: 0.25,
-                        duration: 0.3
-                      }}
-                      className="ml-3 text-gray-900 dark:text-white font-bold text-lg"
-                    >
-                      Safeer Ahmad Rana
-                    </motion.span>
-                  </motion.div>
-                  
-                  {/* Close Button with enhanced animation and proper touch targets */}
-                  <motion.button
-                    ref={firstFocusableElementRef}
-                    initial={{ opacity: 0, rotate: -180, scale: 0.5 }}
-                    animate={{ opacity: 1, rotate: 0, scale: 1 }}
-                    exit={{ opacity: 0, rotate: 180, scale: 0.5 }}
-                    transition={{ 
-                      delay: 0.15, 
-                      duration: 0.4,
-                      ease: "backOut"
-                    }}
-                    whileHover={{ 
-                      scale: 1.1,
-                      rotate: 90,
-                      transition: { duration: 0.2 }
-                    }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={closeMobileMenu}
-                    className="group p-3 text-gray-500 dark:text-gray-400 hover:text-cyan-400 active:text-cyan-500 dark:hover:text-cyan-400 hover:bg-gray-100 dark:hover:bg-gray-800/80 active:bg-gray-200 dark:active:bg-gray-700/80 rounded-lg transition-all duration-200 relative overflow-hidden touch-manipulation"
-                    style={{ 
-                      WebkitTapHighlightColor: 'rgba(6, 182, 212, 0.1)',
-                      touchAction: 'manipulation',
-                      minHeight: '48px',
-                      minWidth: '48px'
-                    }}
-                    aria-label="Close mobile navigation menu"
-                    disabled={isAnimating}
-                  >
-                    {/* Enhanced hover background effect */}
-                    <motion.div
-                      className="absolute inset-0 bg-gradient-to-r from-cyan-400/10 to-cyan-400/5 rounded-lg opacity-0 group-hover:opacity-100"
-                      transition={{ duration: 0.2 }}
-                    />
-                    
-                    {/* Active state background */}
-                    <motion.div
-                      className="absolute inset-0 bg-cyan-400/15 rounded-lg opacity-0"
-                      whileTap={{ opacity: 1 }}
-                      transition={{ duration: 0.1 }}
-                    />
-                    
-                    <svg
-                      className="w-6 h-6 relative z-10 group-hover:drop-shadow-sm transition-all duration-200"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M6 18L18 6M6 6l12 12"
-                      />
-                    </svg>
-                  </motion.button>
-                </motion.header>
-
-                {/* Scrollable Content Container */}
-                <div className="flex-1 flex flex-col min-h-0 overflow-y-auto overscroll-contain">
-                  {/* Navigation Links with enhanced staggered animations */}
-                  <motion.nav 
-                    initial="hidden"
-                    animate="visible"
-                    exit="hidden"
-                    variants={{
-                      hidden: { opacity: 0 },
-                      visible: {
-                        opacity: 1,
-                        transition: {
-                          delayChildren: 0.2,
-                          staggerChildren: 0.08
-                        }
-                      }
-                    }}
-                    className="flex-1 flex flex-col justify-center px-8 py-8 space-y-4"
-                  >
-                    {navigationItems.map((item) => (
-                      <motion.a
-                        key={item.href}
-                        href={item.href}
-                        onClick={(e) => handleNavClick(e, item.href)}
-                        variants={{
-                          hidden: { 
-                            opacity: 0, 
-                            x: 60,
-                            y: 20,
-                            scale: 0.8
-                          },
-                          visible: { 
-                            opacity: 1, 
-                            x: 0,
-                            y: 0,
-                            scale: 1,
-                            transition: {
-                              type: "spring",
-                              damping: 20,
-                              stiffness: 300,
-                              duration: 0.4
-                            }
-                          }
-                        }}
-                        whileHover={{ 
-                          scale: 1.05,
-                          x: 10,
-                          transition: { 
-                            type: "spring",
-                            damping: 15,
-                            stiffness: 400
-                          }
-                        }}
-                        whileTap={{ 
-                          scale: 0.98,
-                          transition: { duration: 0.1 }
-                        }}
-                        className="group flex items-center px-6 py-6 text-gray-700 dark:text-gray-300 hover:text-cyan-400 active:text-cyan-500 hover:bg-gray-50 dark:hover:bg-gray-800/80 active:bg-gray-100 dark:active:bg-gray-700/80 rounded-xl transition-all duration-200 font-medium text-2xl relative overflow-hidden touch-manipulation"
-                        style={{ 
-                          WebkitTapHighlightColor: 'rgba(6, 182, 212, 0.1)',
-                          touchAction: 'manipulation',
-                          minHeight: '56px',
-                          minWidth: '56px'
-                        }}
-                      >
-                        {/* Enhanced hover effect background with gradient */}
-                        <motion.div
-                          className="absolute inset-0 bg-gradient-to-r from-cyan-400/15 via-cyan-400/10 to-cyan-400/5 rounded-xl opacity-0 group-hover:opacity-100"
-                          initial={{ x: "-100%" }}
-                          whileHover={{ x: 0 }}
-                          transition={{ duration: 0.3, ease: "easeOut" }}
-                        />
-                        
-                        {/* Active state background */}
-                        <motion.div
-                          className="absolute inset-0 bg-cyan-400/20 rounded-xl opacity-0"
-                          whileTap={{ opacity: 1 }}
-                          transition={{ duration: 0.1 }}
-                        />
-                        
-                        {/* Subtle glow effect on hover */}
-                        <motion.div
-                          className="absolute inset-0 rounded-xl shadow-lg opacity-0 group-hover:opacity-100"
-                          style={{
-                            boxShadow: '0 0 20px rgba(6, 182, 212, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
-                          }}
-                          transition={{ duration: 0.2 }}
-                        />
-                        
-                        {/* Text with enhanced styling */}
-                        <span className="relative z-10 group-hover:drop-shadow-sm transition-all duration-200">
-                          {item.label}
-                        </span>
-                        
-                        {/* Subtle accent indicator */}
-                        <motion.div
-                          className="absolute left-2 top-1/2 w-1 h-0 bg-cyan-400 rounded-full opacity-0 group-hover:opacity-100"
-                          initial={{ height: 0 }}
-                          whileHover={{ height: '60%' }}
-                          style={{ transform: 'translateY(-50%)' }}
-                          transition={{ duration: 0.2, ease: "easeOut" }}
-                        />
-                      </motion.a>
-                    ))}
-                  </motion.nav>
-
-                  {/* Resume Button with enhanced animation */}
-                  <motion.div 
-                    initial={{ opacity: 0, y: 30, scale: 0.9 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: 30, scale: 0.9 }}
-                    transition={{ 
-                      delay: 0.6, 
-                      duration: 0.4,
-                      ease: "backOut"
-                    }}
-                    className="p-8 border-t border-gray-200 dark:border-gray-700 flex-shrink-0"
-                  >
-                    <motion.a
-                      ref={lastFocusableElementRef}
-                      href="/Safeer_Ahmad_Rana_Resume.pdf"
-                      download
-                      onClick={closeMobileMenu}
-                      whileHover={{ 
-                        scale: 1.02,
-                        boxShadow: "0 10px 25px rgba(6, 182, 212, 0.3)",
-                        transition: { duration: 0.2 }
-                      }}
-                      whileTap={{ 
-                        scale: 0.98,
-                        transition: { duration: 0.1 }
-                      }}
-                      className="group flex items-center justify-center w-full px-8 py-5 bg-transparent border-2 border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-black active:bg-cyan-500 active:border-cyan-500 active:text-black transition-all duration-300 font-semibold rounded-xl text-lg relative overflow-hidden touch-manipulation"
-                      style={{ 
-                        WebkitTapHighlightColor: 'rgba(6, 182, 212, 0.1)',
-                        touchAction: 'manipulation',
-                        minHeight: '56px'
-                      }}
-                    >
-                      {/* Enhanced button background animation */}
-                      <motion.div
-                        className="absolute inset-0 bg-gradient-to-r from-cyan-400 via-cyan-400 to-cyan-500"
-                        initial={{ x: "-100%" }}
-                        whileHover={{ x: 0 }}
-                        transition={{ duration: 0.3, ease: "easeOut" }}
-                      />
-                      
-                      {/* Active state overlay */}
-                      <motion.div
-                        className="absolute inset-0 bg-cyan-500/20"
-                        initial={{ opacity: 0 }}
-                        whileTap={{ opacity: 1 }}
-                        transition={{ duration: 0.1 }}
-                      />
-                      
-                      {/* Subtle glow effect */}
-                      <motion.div
-                        className="absolute inset-0 rounded-xl opacity-0 group-hover:opacity-100"
-                        style={{
-                          boxShadow: '0 0 30px rgba(6, 182, 212, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2)'
-                        }}
-                        transition={{ duration: 0.2 }}
-                      />
-                      
-                      <span className="relative z-10 group-hover:drop-shadow-sm transition-all duration-200">
-                        Download Resume
-                      </span>
-                    </motion.a>
-                  </motion.div>
-                </div>
-              </motion.div>
-            </>
+          {isMobileMenuOpen && (
+            <MobileNavOverlay
+              isOpen={isMobileMenuOpen}
+              isMobileViewport={isMobileViewport}
+              isAnimating={isAnimating}
+              onClose={closeMobileMenu}
+              onNavClick={handleNavClick}
+              mobileMenuRef={mobileMenuRef}
+              firstFocusableElementRef={firstFocusableElementRef}
+              lastFocusableElementRef={lastFocusableElementRef}
+            />
           )}
         </AnimatePresence>,
         document.body
