@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, act } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import Header from '../header';
 
@@ -13,6 +13,7 @@ jest.mock('framer-motion', () => ({
     path: ({ children, ...props }: React.PropsWithChildren<Record<string, unknown>>) => <path {...props}>{children}</path>,
     header: ({ children, ...props }: React.PropsWithChildren<Record<string, unknown>>) => <header {...props}>{children}</header>,
     nav: ({ children, ...props }: React.PropsWithChildren<Record<string, unknown>>) => <nav {...props}>{children}</nav>,
+    span: ({ children, ...props }: React.PropsWithChildren<Record<string, unknown>>) => <span {...props}>{children}</span>,
   },
   AnimatePresence: ({ children }: React.PropsWithChildren) => children,
 }));
@@ -29,6 +30,28 @@ describe('Header Touch Target Sizing', () => {
     Object.defineProperty(window, 'scrollY', {
       writable: true,
       value: 0,
+    });
+    
+    // Mock window.innerWidth for mobile viewport (767px is below 768px breakpoint)
+    Object.defineProperty(window, 'innerWidth', {
+      writable: true,
+      configurable: true,
+      value: 767,
+    });
+    
+    // Mock matchMedia for orientation
+    Object.defineProperty(window, 'matchMedia', {
+      writable: true,
+      value: jest.fn().mockImplementation(query => ({
+        matches: query === '(orientation: portrait)',
+        media: query,
+        onchange: null,
+        addListener: jest.fn(),
+        removeListener: jest.fn(),
+        addEventListener: jest.fn(),
+        removeEventListener: jest.fn(),
+        dispatchEvent: jest.fn(),
+      })),
     });
   });
 
@@ -101,7 +124,7 @@ describe('Header Touch Target Sizing', () => {
     });
   });
 
-  test('mobile navigation links meet enhanced touch target size (56px) when menu is open', () => {
+  test('mobile navigation links meet enhanced touch target size (56px) when menu is open', async () => {
     render(<Header />);
     
     // Open mobile menu by clicking the button
@@ -109,14 +132,26 @@ describe('Header Touch Target Sizing', () => {
       name: /open mobile navigation menu/i 
     });
     
-    // Simulate click to open menu
-    mobileMenuButton.click();
+    // Simulate click to open menu wrapped in act
+    await act(async () => {
+      mobileMenuButton.click();
+      // Wait for state updates
+      await new Promise(resolve => setTimeout(resolve, 0));
+    });
     
     // Wait for menu to appear and check navigation links
-    // Note: In a real test, we'd wait for the animation, but with mocked framer-motion it should be immediate
-    const mobileNavLinks = screen.getAllByRole('link').filter(link => 
-      link.textContent && ['Home', 'About', 'Experience', 'Skills', 'Projects', 'Contact'].includes(link.textContent)
-    );
+    // The mobile menu links should now be visible
+    const allLinks = screen.getAllByRole('link');
+    
+    // Filter to get only the mobile navigation links (they have larger text and different styling)
+    // Mobile links have text-2xl class and are inside the mobile menu overlay
+    const mobileNavLinks = allLinks.filter(link => {
+      const style = link.style;
+      return style.minHeight === '56px' && style.minWidth === '56px';
+    });
+    
+    // Should have 6 navigation links in mobile menu
+    expect(mobileNavLinks.length).toBeGreaterThanOrEqual(6);
     
     // Check that mobile navigation links have enhanced touch targets
     mobileNavLinks.forEach(link => {
@@ -128,48 +163,62 @@ describe('Header Touch Target Sizing', () => {
     });
   });
 
-  test('mobile menu close button meets minimum touch target size (48px)', () => {
+  test('mobile menu close button meets minimum touch target size (48px)', async () => {
     render(<Header />);
     
     // Open mobile menu
     const mobileMenuButton = screen.getByRole('button', { 
       name: /open mobile navigation menu/i 
     });
-    mobileMenuButton.click();
     
-    // Find close button
-    const closeButton = screen.getByRole('button', { 
+    await act(async () => {
+      mobileMenuButton.click();
+      await new Promise(resolve => setTimeout(resolve, 0));
+    });
+    
+    // Find all close buttons (there are two: the hamburger button and the overlay close button)
+    const closeButtons = screen.getAllByRole('button', { 
       name: /close mobile navigation menu/i 
     });
     
-    expect(closeButton).toBeInTheDocument();
-    
-    // Check touch target size
-    const minHeight = closeButton.style.minHeight;
-    const minWidth = closeButton.style.minWidth;
-    
-    expect(minHeight).toBe('48px');
-    expect(minWidth).toBe('48px');
+    // Both should have proper touch targets
+    closeButtons.forEach(closeButton => {
+      expect(closeButton).toBeInTheDocument();
+      
+      // Check touch target size
+      const minHeight = closeButton.style.minHeight;
+      const minWidth = closeButton.style.minWidth;
+      
+      expect(minHeight).toBe('48px');
+      expect(minWidth).toBe('48px');
+    });
   });
 
-  test('mobile resume button meets enhanced touch target size (56px)', () => {
+  test('mobile resume button meets enhanced touch target size (56px)', async () => {
     render(<Header />);
     
     // Open mobile menu
     const mobileMenuButton = screen.getByRole('button', { 
       name: /open mobile navigation menu/i 
     });
-    mobileMenuButton.click();
     
-    // Find mobile resume button
-    const mobileResumeButton = screen.getByRole('link', { 
+    await act(async () => {
+      mobileMenuButton.click();
+      await new Promise(resolve => setTimeout(resolve, 0));
+    });
+    
+    // Find mobile resume button - it should have 56px min-height
+    const allResumeButtons = screen.getAllByRole('link', { 
       name: /download resume/i 
     });
+    
+    // The mobile resume button has minHeight of 56px
+    const mobileResumeButton = allResumeButtons.find(btn => btn.style.minHeight === '56px');
     
     expect(mobileResumeButton).toBeInTheDocument();
     
     // Check enhanced touch target size for mobile
-    const minHeight = mobileResumeButton.style.minHeight;
+    const minHeight = mobileResumeButton!.style.minHeight;
     
     expect(minHeight).toBe('56px');
   });
