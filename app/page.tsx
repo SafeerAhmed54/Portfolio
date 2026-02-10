@@ -36,7 +36,6 @@ export default function HomePage() {
         <Skills />
         <Project />
         <Contact />
-        <Contact />
       </div>
     </div>
   );
