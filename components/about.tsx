@@ -22,6 +22,7 @@ const About = () => {
     { name: "Game Development", number: "01" },
     { name: "Web Development", number: "02" },
     { name: "Mobile Game Development", number: "03" },
+    { name: "UI/UX", number: "05" }.
     { name: "UI/UX", number: "05" }
 
   ];

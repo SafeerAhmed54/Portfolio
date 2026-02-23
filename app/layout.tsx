@@ -20,13 +20,7 @@ export const metadata: Metadata = {
   keywords:
     "Software Engineer, Web Developer, Game Developer, UI/UX Designer, React, Next.js, TypeScript",
   authors: [{ name: "Safeer Ahmad Rana" }],
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    maximumScale: 5,
-    userScalable: true,
-    viewportFit: "cover", // Support for devices with notches
-  },
+  viewport: "width=device-width, initial-scale=1",
   icons: {
     icon: [
       { url: "/Plain Smile.png", type: "image/png" },
