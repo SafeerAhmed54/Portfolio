@@ -1,8 +1,10 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
+import { usePerformanceConfig } from "@/hooks/usePerformanceConfig";
 
 const InteractiveCursor = () => {
+  const config = usePerformanceConfig();
   const [isClient, setIsClient] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
   const [cursorVariant, setCursorVariant] = useState("default");
@@ -12,12 +14,23 @@ const InteractiveCursor = () => {
   const mouseY = useMotionValue(0);
   
   // Different spring configs for different elements
-  const cursorX = useSpring(mouseX, { damping: 30, stiffness: 200 });
-  const cursorY = useSpring(mouseY, { damping: 30, stiffness: 200 });
+  // Simplify on low-end devices
+  const cursorSpringConfig = config.shouldReduceAnimations 
+    ? { damping: 40, stiffness: 150 }
+    : { damping: 30, stiffness: 200 };
+  const lightSpringConfig = config.shouldReduceAnimations
+    ? { damping: 35, stiffness: 100 }
+    : { damping: 25, stiffness: 150 };
   
-  const lightX = useSpring(mouseX, { damping: 25, stiffness: 150 });
-  const lightY = useSpring(mouseY, { damping: 25, stiffness: 150 });
+  const cursorX = useSpring(mouseX, cursorSpringConfig);
+  const cursorY = useSpring(mouseY, cursorSpringConfig);
+  
+  const lightX = useSpring(mouseX, lightSpringConfig);
+  const lightY = useSpring(mouseY, lightSpringConfig);
 
+  // Reduce particle count on low-end devices (2 instead of 4)
+  const particleCount = config.shouldReduceAnimations ? 2 : 4;
+  
   // Pre-create all particle springs to avoid hooks order issues
   const particleSpringConfigs = [
     { damping: 15, stiffness: 100 },
@@ -84,8 +97,10 @@ const InteractiveCursor = () => {
       mouseX.set(centerX);
       mouseY.set(centerY);
       
-      // Add custom cursor class to body
-      document.body.classList.add('custom-cursor-active');
+      // Don't add custom cursor class on touch devices
+      if (!config.isTouchDevice) {
+        document.body.classList.add('custom-cursor-active');
+      }
       
       document.addEventListener("mousemove", handleMouseMove);
       document.addEventListener("mouseover", handleMouseOver);
@@ -96,7 +111,12 @@ const InteractiveCursor = () => {
         document.removeEventListener("mouseover", handleMouseOver);
       };
     }
-  }, [mouseX, mouseY]);
+  }, [mouseX, mouseY, config.isTouchDevice]);
+
+  // Early return for touch devices or when mouse effects should be disabled
+  if (config.shouldDisableMouseEffects || config.isTouchDevice) {
+    return null;
+  }
 
   const variants = {
     default: {
@@ -161,7 +181,7 @@ const InteractiveCursor = () => {
       />
       
       {/* Interactive Particles */}
-      {isClient && particleSpringsX.map((springX, i) => (
+      {isClient && particleSpringsX.slice(0, particleCount).map((springX, i) => (
         <motion.div
           key={`particle-${i}`}
           className="fixed w-1 h-1 bg-cyan-400/40 rounded-full pointer-events-none z-30"

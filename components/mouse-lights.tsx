@@ -1,8 +1,10 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { motion, useMotionValue, useSpring } from "framer-motion";
+import { usePerformanceConfig } from "@/hooks/usePerformanceConfig";
 
 const MouseLights = () => {
+  const config = usePerformanceConfig();
   const [isClient, setIsClient] = useState(false);
 
   
@@ -20,6 +22,9 @@ const MouseLights = () => {
   
   const x3 = useSpring(mouseX, { damping: 35, stiffness: 80 });
   const y3 = useSpring(mouseY, { damping: 35, stiffness: 80 });
+
+  // Reduce glow particles from 4 to 2 on low-end devices
+  const glowParticleCount = config.shouldReduceAnimations ? 2 : 4;
 
   // Pre-create all particle springs to avoid hooks order issues
   const particleSpringConfigs = [
@@ -69,6 +74,11 @@ const MouseLights = () => {
       return () => window.removeEventListener("mousemove", handleMouseMove);
     }
   }, [mouseX, mouseY]);
+
+  // Early return for touch devices or when mouse effects should be disabled
+  if (config.shouldDisableMouseEffects || config.isTouchDevice) {
+    return null;
+  }
 
   return (
     <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden" style={{ opacity: isClient ? 1 : 0 }}>
@@ -127,7 +137,7 @@ const MouseLights = () => {
       />
       
       {/* Ambient Glow Particles that follow mouse */}
-      {isClient && glowParticleSpringsX.map((springX, i) => (
+      {isClient && glowParticleSpringsX.slice(0, glowParticleCount).map((springX, i) => (
         <motion.div
           key={`glow-particle-${i}`}
           className="absolute w-2 h-2 bg-cyan-400/30 rounded-full pointer-events-none"
@@ -149,43 +159,47 @@ const MouseLights = () => {
         />
       ))}
       
-      {/* Interactive Ripple Effect */}
-      <motion.div
-        className="absolute w-80 h-80 border border-cyan-400/10 rounded-full pointer-events-none"
-        style={{
-          x: x1,
-          y: y1,
-          transform: "translate(-50%, -50%)",
-        }}
-        animate={{
-          scale: [1, 1.5, 1],
-          opacity: [0.1, 0.3, 0.1],
-        }}
-        transition={{
-          duration: 4,
-          repeat: Infinity,
-          ease: "easeInOut"
-        }}
-      />
-      
-      <motion.div
-        className="absolute w-60 h-60 border border-cyan-400/15 rounded-full pointer-events-none"
-        style={{
-          x: x2,
-          y: y2,
-          transform: "translate(-50%, -50%)",
-        }}
-        animate={{
-          scale: [1, 1.3, 1],
-          opacity: [0.15, 0.4, 0.15],
-        }}
-        transition={{
-          duration: 3,
-          repeat: Infinity,
-          ease: "easeInOut",
-          delay: 1
-        }}
-      />
+      {/* Interactive Ripple Effect - Disabled on low-end devices */}
+      {!config.shouldReduceAnimations && (
+        <>
+          <motion.div
+            className="absolute w-80 h-80 border border-cyan-400/10 rounded-full pointer-events-none"
+            style={{
+              x: x1,
+              y: y1,
+              transform: "translate(-50%, -50%)",
+            }}
+            animate={{
+              scale: [1, 1.5, 1],
+              opacity: [0.1, 0.3, 0.1],
+            }}
+            transition={{
+              duration: 4,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          />
+          
+          <motion.div
+            className="absolute w-60 h-60 border border-cyan-400/15 rounded-full pointer-events-none"
+            style={{
+              x: x2,
+              y: y2,
+              transform: "translate(-50%, -50%)",
+            }}
+            animate={{
+              scale: [1, 1.3, 1],
+              opacity: [0.15, 0.4, 0.15],
+            }}
+            transition={{
+              duration: 3,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: 1
+            }}
+          />
+        </>
+      )}
       
       {/* Spotlight Effect */}
       <motion.div
@@ -199,21 +213,23 @@ const MouseLights = () => {
         }}
       />
       
-      {/* Subtle Grid Highlight */}
-      <motion.div
-        className="absolute w-40 h-40 pointer-events-none opacity-20"
-        style={{
-          x: mouseX,
-          y: mouseY,
-          transform: "translate(-50%, -50%)",
-          backgroundImage: `
-            linear-gradient(rgba(6, 182, 212, 0.3) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(6, 182, 212, 0.3) 1px, transparent 1px)
-          `,
-          backgroundSize: '20px 20px',
-          mask: "radial-gradient(circle, white 30%, transparent 70%)",
-        }}
-      />
+      {/* Subtle Grid Highlight - Disabled on low-end devices */}
+      {!config.shouldReduceAnimations && (
+        <motion.div
+          className="absolute w-40 h-40 pointer-events-none opacity-20"
+          style={{
+            x: mouseX,
+            y: mouseY,
+            transform: "translate(-50%, -50%)",
+            backgroundImage: `
+              linear-gradient(rgba(6, 182, 212, 0.3) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(6, 182, 212, 0.3) 1px, transparent 1px)
+            `,
+            backgroundSize: '20px 20px',
+            mask: "radial-gradient(circle, white 30%, transparent 70%)",
+          }}
+        />
+      )}
     </div>
   );
 };

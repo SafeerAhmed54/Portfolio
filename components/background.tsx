@@ -1,9 +1,11 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { usePerformanceConfig } from "@/hooks/usePerformanceConfig";
 
 const AnimatedBackground = () => {
   const [isClient, setIsClient] = useState(false);
+  const config = usePerformanceConfig();
   const [particles, setParticles] = useState<
     Array<{
       id: number;
@@ -20,8 +22,8 @@ const AnimatedBackground = () => {
   useEffect(() => {
     setIsClient(true);
 
-    // Generate matrix particles (reduced for performance)
-    const newParticles = [...Array(40)].map((_, i) => ({
+    // Generate matrix particles based on device capabilities
+    const newParticles = [...Array(config.particleCount)].map((_, i) => ({
       id: i,
       left: Math.random() * 100,
       delay: Math.random() * 15,
@@ -29,8 +31,8 @@ const AnimatedBackground = () => {
       text: Math.random() > 0.7 ? "{ }" : Math.random() > 0.5 ? "01" : "10",
     }));
 
-    // Generate floating geometric elements (reduced for performance)
-    const newFloatingElements = [...Array(12)].map((_, i) => ({
+    // Generate floating geometric elements based on device capabilities
+    const newFloatingElements = [...Array(config.floatingElementCount)].map((_, i) => ({
       id: i,
       x: Math.random() * 100,
       y: Math.random() * 100,
@@ -40,7 +42,7 @@ const AnimatedBackground = () => {
 
     setParticles(newParticles);
     setFloatingElements(newFloatingElements);
-  }, []);
+  }, [config.particleCount, config.floatingElementCount]);
 
   return (
     <div
@@ -126,83 +128,91 @@ const AnimatedBackground = () => {
         ))}
       </div>
 
-      {/* Large Geometric Shapes */}
-      <motion.div
-        className="absolute top-1/4 left-1/4 w-64 h-64 border-2 border-cyan-400/60 rotate-45"
-        animate={{
-          rotate: [45, 405],
-          scale: [1, 1.1, 1],
-          opacity: [0.4, 0.8, 0.4],
-        }}
-        transition={{
-          duration: 20,
-          repeat: Infinity,
-          ease: "linear",
-        }}
-      />
+      {/* Large Geometric Shapes - Only on high-end devices */}
+      {!config.shouldReduceAnimations && (
+        <>
+          <motion.div
+            className="absolute top-1/4 left-1/4 w-64 h-64 border-2 border-cyan-400/60 rotate-45"
+            animate={{
+              rotate: [45, 405],
+              scale: [1, 1.1, 1],
+              opacity: [0.4, 0.8, 0.4],
+            }}
+            transition={{
+              duration: 20,
+              repeat: Infinity,
+              ease: "linear",
+            }}
+          />
 
-      <motion.div
-        className="absolute bottom-1/3 right-1/3 w-48 h-48 border-2 border-cyan-400/70"
-        animate={{
-          rotate: [0, -360],
-          scale: [1, 1.2, 1],
-          opacity: [0.5, 0.9, 0.5],
-        }}
-        transition={{
-          duration: 25,
-          repeat: Infinity,
-          ease: "linear",
-        }}
-      />
+          <motion.div
+            className="absolute bottom-1/3 right-1/3 w-48 h-48 border-2 border-cyan-400/70"
+            animate={{
+              rotate: [0, -360],
+              scale: [1, 1.2, 1],
+              opacity: [0.5, 0.9, 0.5],
+            }}
+            transition={{
+              duration: 25,
+              repeat: Infinity,
+              ease: "linear",
+            }}
+          />
 
-      {/* Tech-inspired Hexagon */}
-      <motion.div
-        className="absolute top-1/3 right-1/4 w-32 h-32 border-2 border-cyan-400/80"
-        style={{
-          clipPath:
-            "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)",
-        }}
-        animate={{
-          rotate: [0, 360],
-          scale: [1, 1.3, 1],
-          opacity: [0.6, 1, 0.6],
-        }}
-        transition={{
-          duration: 30,
-          repeat: Infinity,
-          ease: "linear",
-        }}
-      />
+          {/* Tech-inspired Hexagon */}
+          <motion.div
+            className="absolute top-1/3 right-1/4 w-32 h-32 border-2 border-cyan-400/80"
+            style={{
+              clipPath:
+                "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)",
+            }}
+            animate={{
+              rotate: [0, 360],
+              scale: [1, 1.3, 1],
+              opacity: [0.6, 1, 0.6],
+            }}
+            transition={{
+              duration: 30,
+              repeat: Infinity,
+              ease: "linear",
+            }}
+          />
+        </>
+      )}
 
-      {/* Pulsing Circles with Enhanced Visibility */}
-      <motion.div
-        className="absolute top-1/2 left-1/2 w-96 h-96 border-2 border-cyan-400/50 rounded-full"
-        style={{ transform: "translate(-50%, -50%)" }}
-        animate={{
-          scale: [1, 2.5, 1],
-          opacity: [0.6, 0.2, 0.6],
-        }}
-        transition={{
-          duration: 8,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
-      />
+      {/* Pulsing Circles with Enhanced Visibility - Only on high-end devices */}
+      {!config.shouldReduceAnimations && (
+        <>
+          <motion.div
+            className="absolute top-1/2 left-1/2 w-96 h-96 border-2 border-cyan-400/50 rounded-full"
+            style={{ transform: "translate(-50%, -50%)" }}
+            animate={{
+              scale: [1, 2.5, 1],
+              opacity: [0.6, 0.2, 0.6],
+            }}
+            transition={{
+              duration: 8,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+          />
 
-      <motion.div
-        className="absolute top-1/2 left-1/2 w-64 h-64 border-2 border-cyan-400/70 rounded-full"
-        style={{ transform: "translate(-50%, -50%)" }}
-        animate={{
-          scale: [1, 1.8, 1],
-          opacity: [0.7, 0.3, 0.7],
-        }}
-        transition={{
-          duration: 6,
-          repeat: Infinity,
-          ease: "easeInOut",
-          delay: 2,
-        }}
-      />
+          <motion.div
+            className="absolute top-1/2 left-1/2 w-64 h-64 border-2 border-cyan-400/70 rounded-full"
+            style={{ transform: "translate(-50%, -50%)" }}
+            animate={{
+              scale: [1, 1.8, 1],
+              opacity: [0.7, 0.3, 0.7],
+            }}
+            transition={{
+              duration: 6,
+              repeat: Infinity,
+              ease: "easeInOut",
+              delay: 2,
+            }}
+          />
+        </>
+      )}
 
       {/* Orbiting Elements */}
       <motion.div
@@ -223,45 +233,49 @@ const AnimatedBackground = () => {
         />
       </motion.div>
 
-      {/* Enhanced Scanning Lines */}
-      <motion.div
-        className="absolute left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-400/80 to-transparent shadow-lg shadow-cyan-400/50"
-        animate={{
-          top: ["0%", "100%"],
-        }}
-        transition={{
-          duration: 12,
-          repeat: Infinity,
-          ease: "linear",
-        }}
-      />
+      {/* Enhanced Scanning Lines - Only on high-end devices */}
+      {!config.shouldReduceAnimations && (
+        <>
+          <motion.div
+            className="absolute left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-400/80 to-transparent shadow-lg shadow-cyan-400/50"
+            animate={{
+              top: ["0%", "100%"],
+            }}
+            transition={{
+              duration: 12,
+              repeat: Infinity,
+              ease: "linear",
+            }}
+          />
 
-      <motion.div
-        className="absolute left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-400/60 to-transparent"
-        animate={{
-          top: ["100%", "0%"],
-        }}
-        transition={{
-          duration: 15,
-          repeat: Infinity,
-          ease: "linear",
-          delay: 4,
-        }}
-      />
+          <motion.div
+            className="absolute left-0 w-full h-1 bg-gradient-to-r from-transparent via-cyan-400/60 to-transparent"
+            animate={{
+              top: ["100%", "0%"],
+            }}
+            transition={{
+              duration: 15,
+              repeat: Infinity,
+              ease: "linear",
+              delay: 4,
+            }}
+          />
 
-      {/* Vertical Scanning Lines */}
-      <motion.div
-        className="absolute top-0 h-full w-1 bg-gradient-to-b from-transparent via-cyan-400/70 to-transparent"
-        animate={{
-          left: ["0%", "100%"],
-        }}
-        transition={{
-          duration: 18,
-          repeat: Infinity,
-          ease: "linear",
-          delay: 2,
-        }}
-      />
+          {/* Vertical Scanning Lines */}
+          <motion.div
+            className="absolute top-0 h-full w-1 bg-gradient-to-b from-transparent via-cyan-400/70 to-transparent"
+            animate={{
+              left: ["0%", "100%"],
+            }}
+            transition={{
+              duration: 18,
+              repeat: Infinity,
+              ease: "linear",
+              delay: 2,
+            }}
+          />
+        </>
+      )}
 
       {/* Data Stream Effect */}
       <motion.div
@@ -293,81 +307,85 @@ const AnimatedBackground = () => {
         }}
       />
 
-      {/* Enhanced Corner Decorations */}
-      <div className="absolute top-0 left-0 w-32 h-32">
-        <motion.div
-          className="w-full h-full border-l-3 border-t-3 border-cyan-400/80"
-          animate={{
-            opacity: [0.6, 1, 0.6],
-            scale: [1, 1.05, 1],
-          }}
-          transition={{
-            duration: 4,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-        />
-        <motion.div
-          className="absolute top-3 left-3 w-6 h-6 border-2 border-cyan-400 shadow-lg shadow-cyan-400/30"
-          animate={{
-            rotate: [0, 90, 0],
-            opacity: [0.7, 1, 0.7],
-          }}
-          transition={{
-            duration: 3,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-        />
-      </div>
+      {/* Enhanced Corner Decorations - Only on high-end devices */}
+      {!config.shouldReduceAnimations && (
+        <>
+          <div className="absolute top-0 left-0 w-32 h-32">
+            <motion.div
+              className="w-full h-full border-l-3 border-t-3 border-cyan-400/80"
+              animate={{
+                opacity: [0.6, 1, 0.6],
+                scale: [1, 1.05, 1],
+              }}
+              transition={{
+                duration: 4,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            />
+            <motion.div
+              className="absolute top-3 left-3 w-6 h-6 border-2 border-cyan-400 shadow-lg shadow-cyan-400/30"
+              animate={{
+                rotate: [0, 90, 0],
+                opacity: [0.7, 1, 0.7],
+              }}
+              transition={{
+                duration: 3,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+            />
+          </div>
 
-      <div className="absolute top-0 right-0 w-32 h-32">
-        <motion.div
-          className="w-full h-full border-r-3 border-t-3 border-cyan-400/80"
-          animate={{
-            opacity: [0.6, 1, 0.6],
-            scale: [1, 1.05, 1],
-          }}
-          transition={{
-            duration: 4,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: 1,
-          }}
-        />
-      </div>
+          <div className="absolute top-0 right-0 w-32 h-32">
+            <motion.div
+              className="w-full h-full border-r-3 border-t-3 border-cyan-400/80"
+              animate={{
+                opacity: [0.6, 1, 0.6],
+                scale: [1, 1.05, 1],
+              }}
+              transition={{
+                duration: 4,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: 1,
+              }}
+            />
+          </div>
 
-      <div className="absolute bottom-0 left-0 w-24 h-24">
-        <motion.div
-          className="w-full h-full border-l-2 border-b-2 border-cyan-400/30"
-          animate={{
-            opacity: [0.2, 0.8, 0.2],
-            scale: [1, 1.05, 1],
-          }}
-          transition={{
-            duration: 4,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: 2,
-          }}
-        />
-      </div>
+          <div className="absolute bottom-0 left-0 w-24 h-24">
+            <motion.div
+              className="w-full h-full border-l-2 border-b-2 border-cyan-400/30"
+              animate={{
+                opacity: [0.2, 0.8, 0.2],
+                scale: [1, 1.05, 1],
+              }}
+              transition={{
+                duration: 4,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: 2,
+              }}
+            />
+          </div>
 
-      <div className="absolute bottom-0 right-0 w-24 h-24">
-        <motion.div
-          className="w-full h-full border-r-2 border-b-2 border-cyan-400/30"
-          animate={{
-            opacity: [0.2, 0.8, 0.2],
-            scale: [1, 1.05, 1],
-          }}
-          transition={{
-            duration: 4,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: 0.5,
-          }}
-        />
-      </div>
+          <div className="absolute bottom-0 right-0 w-24 h-24">
+            <motion.div
+              className="w-full h-full border-r-2 border-b-2 border-cyan-400/30"
+              animate={{
+                opacity: [0.2, 0.8, 0.2],
+                scale: [1, 1.05, 1],
+              }}
+              transition={{
+                duration: 4,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: 0.5,
+              }}
+            />
+          </div>
+        </>
+      )}
 
       {/* Particle Burst Effect */}
       <motion.div
