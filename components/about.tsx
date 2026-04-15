@@ -2,29 +2,28 @@
 import React from 'react';
 import { motion } from "framer-motion";
 
-const About = () => {
+// Animation variants for scroll-based animations
+const scrollVariants = {
+  hidden: {
+    opacity: 0,
+    y: 50,
+    scale: 0.95,
+  },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+  },
+};
 
-  // Animation variants for scroll-based animations
-  const scrollVariants = {
-    hidden: {
-      opacity: 0,
-      y: 50,
-      scale: 0.95,
-    },
-    visible: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-    },
-  };
+const services = [
+  { name: "Game Development", number: "01" },
+  { name: "Web Development", number: "02" },
+  { name: "Mobile Game Development", number: "03" },
+  { name: "UI/UX", number: "05" }
+];
 
-  const services = [
-    { name: "Game Development", number: "01" },
-    { name: "Web Development", number: "02" },
-    { name: "Mobile Game Development", number: "03" },
-    { name: "UI/UX", number: "05" }
-
-  ];
+const About = React.memo(() => {
 
   return (
     <section id="about-id" className="w-full bg-black py-20 px-6 relative overflow-hidden">
@@ -253,6 +252,8 @@ const About = () => {
       </div>
     </section>
   );
-};
+});
+
+About.displayName = 'About';
 
 export default About;
