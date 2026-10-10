@@ -22,7 +22,7 @@ const Experience = () => {
       title: "Web Developer",
       company: "Evamp & Saanga",
       location: "Islamabad, Pakistan",
-      period: "October 2025 - Present",
+      period: "October 2025 - July 2026",
       type: "Full-time",
       responsibilities: [
         "Developed and maintained 10+ responsive web applications, improving overall user experience and usability.",
