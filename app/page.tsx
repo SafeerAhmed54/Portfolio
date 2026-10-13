@@ -8,6 +8,7 @@ import Education from "@/components/education";
 import Experience from "@/components/experience";
 import Skills from "@/components/skills-new";
 import Project from "@/components/project";
+import Highlights from "@/components/highlights";
 import Contact from "@/components/contact";
 import AnimatedBackground from "@/components/background";
 import MouseLights from "@/components/mouse-lights";
@@ -37,6 +38,7 @@ export default function HomePage() {
         <Education />
         <Experience />
         <Skills />
+        <Highlights />
         <Project />
         <Contact />
       </div>
