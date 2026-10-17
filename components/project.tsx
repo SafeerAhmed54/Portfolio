@@ -1,9 +1,12 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import SearchBar from "./searchbar";
 
 const Project = () => {
+  const [searchQuery, setSearchQuery] = useState("");
+
   // Animation variants for scroll-based animations
   const scrollVariants = {
     hidden: {
@@ -79,6 +82,19 @@ const Project = () => {
       sourceUrl: "https://github.com/your-username/alpha-impact",
     },
   ];
+  const normalizedQuery = searchQuery.trim().toLowerCase();
+  const filteredProjects = projects.filter((project) =>
+    [
+      project.title,
+      project.category,
+      project.year,
+      project.description,
+      ...project.technologies,
+    ]
+      .join(" ")
+      .toLowerCase()
+      .includes(normalizedQuery)
+  );
 
   return (
     <section
@@ -203,9 +219,17 @@ const Project = () => {
           </motion.p>
         </motion.div>
 
+        <SearchBar
+          value={searchQuery}
+          onChange={setSearchQuery}
+          resultCount={filteredProjects.length}
+          totalCount={projects.length}
+        />
+
         {/* Projects Grid */}
-        <div className="space-y-16">
-          {projects.map((project, index) => (
+        {filteredProjects.length > 0 ? (
+          <div className="space-y-16">
+            {filteredProjects.map((project, index) => (
             <motion.div
               key={project.id}
               className={`flex flex-col ${
@@ -386,8 +410,13 @@ const Project = () => {
                 </motion.div>
               </motion.div>
             </motion.div>
-          ))}
-        </div>
+            ))}
+          </div>
+        ) : (
+          <p className="rounded-lg border border-gray-800 bg-gray-950/60 px-6 py-10 text-center text-gray-400">
+            No projects match “{searchQuery.trim()}”. Try another search.
+          </p>
+        )}
       </div>
     </section>
   );
